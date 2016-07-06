@@ -1,0 +1,154 @@
+<resources>
+    <!-- 标题 -->
+    <string name="app_name">巡检助手</string>
+    <string name="activity_title_main">巡检助手</string>
+    <string name="activity_title_data_view">数据浏览</string>
+    <string name="activity_title_polling_event">巡检任务</string>
+    <string name="activity_title_warning_information">告警信息</string>
+    <string name="activity_title_polling_record">巡检记录</string>
+    <string name="activity_title_sensor_configuration">传感器配置</string>
+    <string name="activity_title_function_setting">功能设定</string>
+    <string name="activity_title_polling_config">巡检配置</string>
+    <string name="activity_title_polling_config_project">巡检项目配置</string>
+    <string name="activity_title_polling_config_mission">巡检任务配置</string>
+    <string name="activity_title_polling_config_item">测量参数配置</string>
+
+    <!-- 菜单 -->
+    <string name="actionbar_setting">设置</string>
+    <string name="actionbar_setting_polling_config">巡检配置</string>
+    <string name="actionbar_setting_sensor_config">传感器配置</string>
+    <string name="actionbar_setting_else_config">其他配置</string>
+    <string name="actionbar_display_mode">显示模式</string>
+    <string name="actionbar_display_mode_analog_dial">模拟表盘</string>
+    <string name="actionbar_display_mode_digital_table">数字表格</string>
+    <string name="actionbar_data_type">数据类型</string>
+    <string name="actionbar_data_type_realtime">实时数据</string>
+    <string name="actionbar_data_typee_history">历史数据</string>
+    <string name="actionbar_polling_config_save">保存巡检配置</string>
+
+    <!-- 界面提示用语 -->
+    <string name="ui_prompt_no_polling_confugured">尚未进行巡检配置</string>
+    <string name="ui_prompt_input_project_record_result">请记录该项目巡检结果</string>
+    <string name="ui_prompt_input_mission_record_result">请记录该任务巡检结果</string>
+    <string name="ui_prompt_exit_polling_project">巡检项目尚未完成，是否退出？</string>
+    <string name="ui_prompt_yes">是</string>
+    <string name="ui_prompt_no">否</string>
+    <string name="ui_prompt_empty_sensor_config">请先进行传感器配置</string>
+    <string name="ui_prompt_ok">确定</string>
+    <string name="ui_prompt_cancel">取消</string>
+    <string name="ui_prompt_measure_name_empty">测量名称不得为空</string>
+    <string name="ui_prompt_alarm_down_empty">告警下限不得为空</string>
+    <string name="ui_prompt_alarm_down_convert_error">告警下限应为double型数值</string>
+    <string name="ui_prompt_alarm_up_empty">告警上限不得为空</string>
+    <string name="ui_prompt_alarm_up_convert_error">告警上限应为double型数值</string>
+    <string name="ui_prompt_sensor_empty">必须选用一个传感器</string>
+    <string name="ui_prompt_sensor_config_unknown_error">传感器配置出现未知错误，请重试</string>
+    <string name="ui_prompt_item_config_unknown_error">巡检条目配置出现未知错误，请重试</string>
+    <string name="ui_prompt_mission_config_unknown_error">巡检任务配置出现未知错误，请重试</string>
+    <string name="ui_prompt_project_config_unknown_error">巡检项目配置出现未知错误，请重试</string>
+    <string name="ui_prompt_mission_name_empty">巡检任务名称不得为空</string>
+    <string name="ui_prompt_mission_name_repetition">巡检任务不得重名</string>
+    <string name="ui_prompt_device_image_empty">请添加设备图片</string>
+    <string name="ui_prompt_project_name_empty">巡检项目名称不得为空</string>
+    <string name="ui_prompt_project_name_repetition">巡检项目名称不得重名</string>
+    <string name="ui_prompt_project_time_least_one">巡检项目至少有一个巡检时间</string>
+    <string name="ui_prompt_project_time_repetition">巡检时间不得相同</string>
+    <string name="ui_prompt_polling_config_modified">检查到当前巡检配置发生改动，是否保存所做改动</string>
+    <string name="ui_prompt_polling_config_invariant">当前巡检配置尚无任何改动，无需保存</string>
+    <string name="ui_prompt_sensor_config_modified">检查到当前传感器配置发生改动，是否保存所做改动</string>
+    <string name="ui_prompt_sensor_name_empty">传感器名称不得为空</string>
+    <string name="ui_prompt_sensor_name_repetition">传感器不得重名</string>
+    <string name="ui_prompt_sensor_address_empty">传感器地址不得为空</string>
+    <string name="ui_prompt_sensor_address_repetition">传感器地址不得重复</string>
+    <string name="ui_prompt_import_project_and_sensor_configs_failed">巡检配置和传感器配置导入失败</string>
+    <string name="ui_prompt_export_polling_configs_success">巡检配置保存成功</string>
+    <string name="ui_prompt_export_polling_configs_failed">巡检配置保存失败</string>
+    <string name="ui_prompt_export_sensor_configs_success">传感器配置保存成功</string>
+    <string name="ui_prompt_export_sensor_configs_failed">传感器配置保存失败</string>
+    <string name="ui_prompt_udp_launch_failed">UDP通讯启用失败</string>
+    <string name="ui_prompt_ble_launch_failed">蓝牙通讯启动失败</string>
+    <string name="ui_prompt_polling_time_hit">您有一个巡检项目等待执行</string>
+    <string-array name="ui_prompt_current_polling_project">
+        <item>巡检项目“</item>
+        <item>”将于</item>
+        <item>开始</item>
+    </string-array>
+    <string name="ui_prompt_new_polling_project">新的巡检项目</string>
+
+    <!-- 加载提示用语 -->
+    <string name="ui_import_project_and_sensor_configs">正在加载巡检配置和传感器配置</string>
+    <string name="ui_export_polling_configs">正在保存巡检配置</string>
+    <string name="ui_export_sensor_configs">正在保存传感器配置</string>
+
+    <!-- 界面控件显示用语 -->
+    <string name="ui_control_record_result_ini">未完成</string>
+    <string name="ui_rdogrp_evaluation">总体评价</string>
+    <string name="ui_rdo_good">好</string>
+    <string name="ui_rdo_normal">正常</string>
+    <string name="ui_rdo_bad">差</string>
+    <string name="ui_li_down_alarm">下限：</string>
+    <string name="ui_li_up_alarm">上限：</string>
+    <string name="ui_li_appendix_unfold">（-）</string>
+    <string name="ui_li_appendix_fold">（+）</string>
+    <string name="ui_li_project_entity">巡检项目</string>
+    <string name="ui_li_project_virtual">点击此处添加巡检项目</string>
+    <string name="ui_li_mission_entity">巡检任务</string>
+    <string name="ui_li_mission_virtual">点击此处添加巡检任务</string>
+    <string name="ui_li_item_entity">测量参数</string>
+    <string name="ui_li_item_virtual">点击此处添加测量参数</string>
+    <string name="ui_li_delete">删除</string>
+    <string name="ui_btn_choice">选择</string>
+    <string name="ui_btn_add">添加</string>
+    <string name="ui_btn_delete">删除</string>
+    <string name="ui_li_item_config_label_measure_name">测量名称</string>
+    <string name="ui_li_item_config_label_measure_unit">测量单位</string>
+    <string name="ui_li_item_config_label_description">功能描述</string>
+    <string name="ui_li_item_config_label_alarm_up">告警上限</string>
+    <string name="ui_li_item_config_label_alarm_down">告警下限</string>
+    <string name="ui_li_item_config_label_sensor">所用传感器</string>
+    <string name="ui_li_item_config_default_measure_name">如：电流</string>
+    <string name="ui_li_item_config_default_measure_unit">如：安培</string>
+    <string name="ui_li_item_config_default_description">如：测量电流</string>
+    <string name="ui_li_item_config_default_alarm_up">如：1.5</string>
+    <string name="ui_li_item_config_default_alarm_down">如：0.6</string>
+    <string name="ui_li_item_config_default_sensor">如：电流传感器</string>
+    <string name="ui_tv_sensor_name_label">传感器名称</string>
+    <string name="ui_tv_sensor_address_label">传感器地址</string>
+    <string name="ui_tv_sensor_description_label">功能描述</string>
+    <string name="ui_tv_mission_config_label_name">任务名称</string>
+    <string name="ui_tv_mission_config_label_description">任务描述</string>
+    <string name="ui_tv_mission_config_label_device_image">设备图片</string>
+    <string name="ui_tv_project_config_label_name">项目名称</string>
+    <string name="ui_tv_project_config_label_description">项目描述</string>
+    <string name="ui_tv_project_config_label_time">巡检时间</string>
+    <string name="ui_btn_project_config_add_time">添加巡检时间</string>
+    <string name="ui_btn_sensor_config_add_sensor">添加传感器</string>
+    <string name="ui_tv_schedule_time_prefix">巡检时间:</string>
+    <string name="ui_tv_finish_time_prefix">完成时间:</string>
+    <string name="ui_tv_finish_state_prefix">完成情况:</string>
+
+    <!-- 广播地址(broadcast address = ba)  -->
+    <string name="ba_update_project_time">android.intent.action.UPDATE_PROJECT_TIME</string>
+    <string name="ba_awake_application">android.intent.action.AWAKE_APPLICATION</string>
+    <string name="ba_renew_project_record">android.intent.action.RENEW_PROJECT_RECORD</string>
+
+    <!-- 标记(tag) -->
+    <string name="tag_project_schedule_times">times</string>
+    <string name="tag_project_name">project name</string>
+
+    <!-- 其他 -->
+    <string name="analog_dialplate">模拟表盘</string>
+    <string name="digital_table">数字表格</string>
+    <string name="scheduled_date_format">hh:mm</string>
+    <string name="deleted">（已删除）</string>
+    <string name="base_station_ip">192.168.1.100</string>
+
+    <!-- 常数 -->
+    <integer name="main_activity_fix_item_count">3</integer>
+    <integer name="polling_config_listitem_indent">50</integer>
+    <integer name="base_station_port">5000</integer>
+    <integer name="time_interval_request_data">500</integer>
+    <integer name="time_interval_update_sensor_data">2000</integer>
+    <integer name="time_interval_scan_ble">300000</integer>
+    <integer name="time_duration_scan_ble">10000</integer>
+</resources>

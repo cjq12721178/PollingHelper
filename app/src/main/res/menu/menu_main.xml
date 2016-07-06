@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mi_setting"
+        app:showAsAction="always"
+        android:title="@string/actionbar_setting"
+        android:icon="@drawable/ic_actionbar_setting">
+        <menu>
+            <item
+                android:id="@+id/mi_polling_config"
+                app:showAsAction="always|withText"
+                android:title="@string/actionbar_setting_polling_config"/>
+            <item
+                android:id="@+id/mi_sensor_config"
+                app:showAsAction="always|withText"
+                android:title="@string/actionbar_setting_sensor_config"/>
+            <item
+                android:id="@+id/mi_else_config"
+                app:showAsAction="always|withText"
+                android:title="@string/actionbar_setting_else_config"/>
+        </menu>
+    </item>
+</menu>

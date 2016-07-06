@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mi_data_type"
+        app:showAsAction="always"
+        android:title="@string/actionbar_data_type"
+        android:icon="@drawable/ic_actionbar_datamode">
+        <menu>
+            <item
+                android:id="@+id/mi_data_realtime"
+                app:showAsAction="always|withText"
+                android:title="@string/actionbar_data_type_realtime"/>
+            <item
+                android:id="@+id/mi_data_history"
+                app:showAsAction="always|withText"
+                android:title="@string/actionbar_data_typee_history"/>
+        </menu>
+    </item>
+</menu>

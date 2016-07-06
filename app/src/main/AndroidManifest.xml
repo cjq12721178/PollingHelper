@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.kat.pollinghelper">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--
+ Declare this required feature if you want to make the app available to BLE-capable
+ devices only.  If you want to make your app available to devices that don't support BLE,
+ you should omit this in the manifest.  Instead, determine BLE capability by using
+ PackageManager.hasSystemFeature(FEATURE_BLUETOOTH_LE)
+    -->
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_app_logo"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:label="@string/activity_title_main">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.DataViewActivity"
+            android:label="@string/activity_title_data_view" />
+
+        <service
+            android:name=".processor.service.ManagerService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".ui.activity.PollingProjectRecordActivity"
+            android:label="@string/activity_title_polling_event" />
+        <activity
+            android:name=".ui.activity.WarningInformationActivity"
+            android:label="@string/activity_title_warning_information" />
+        <activity
+            android:name=".ui.activity.SensorEntityActivity"
+            android:label="@string/activity_title_sensor_configuration" />
+        <activity
+            android:name=".ui.activity.FunctionSettingActivity"
+            android:label="@string/activity_title_function_setting" />
+        <activity android:name=".ui.activity.PollingMissionRecordActivity" />
+        <activity
+            android:name=".ui.activity.PollingConfigActivity"
+            android:label="@string/activity_title_polling_config" />
+        <activity
+            android:name=".ui.activity.PollingProjectConfigActivity"
+            android:label="@string/activity_title_polling_config_project" />
+        <activity
+            android:name=".ui.activity.PollingMissionConfigActivity"
+            android:label="@string/activity_title_polling_config_mission" />
+        <activity
+            android:name=".ui.activity.PollingItemConfigActivity"
+            android:label="@string/activity_title_polling_config_item" />
+        <activity
+            android:name=".ui.activity.SensorConfigActivity"
+            android:label="@string/activity_title_sensor_configuration" />
+
+        <service
+            android:name=".processor.service.NotificationService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".processor.receiver.AwakeApplicationReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.AWAKE_APPLICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".ui.activity.PollingRecordActivity"></activity>
+    </application>
+
+</manifest>

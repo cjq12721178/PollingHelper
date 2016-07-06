@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <EditText
+        android:id="@+id/et_polling_config_dialog_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/style_edittext_selector"
+        android:padding="5dp"
+        android:textColorHint="#AAAAAA"
+        android:textSize="15dp"
+        android:inputType="textMultiLine"
+        android:textCursorDrawable="@null"
+        android:selectAllOnFocus="true" />
+
+</LinearLayout>
