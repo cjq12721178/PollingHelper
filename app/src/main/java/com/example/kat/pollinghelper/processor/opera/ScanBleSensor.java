@@ -7,16 +7,18 @@ import com.example.kat.pollinghelper.communicator.Ble;
  */
 public class ScanBleSensor extends Operation {
 
-    public ScanBleSensor(Ble ble, int scanDurationTime) {
+    private final Ble ble;
+    private final int scanDurationTime;
+
+    public ScanBleSensor(OperationInfo operationInfo, Ble ble, int scanDurationTime) {
+        super(operationInfo);
         this.ble = ble;
         this.scanDurationTime = scanDurationTime;
     }
 
     @Override
-    protected void onExecute() {
+    protected boolean onExecute() {
         ble.startScan(0, scanDurationTime);
+        return true;
     }
-
-    private final Ble ble;
-    private final int scanDurationTime;
 }

@@ -34,24 +34,11 @@ import java.io.InputStream;
  */
 public class ManagedActivity extends AppCompatActivity {
 
-    private class ManagerServiceConnection implements ServiceConnection {
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            operationInfo = ((ManagerService.ManagerBinder)service).getOperationInfo();
-
-            if (isInitial()) {
-                initial = false;
-                provideMaterial();
-                onInitializeBusiness();
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    }
+    private Handler handler;
+    private LoadingDialog loadingDialog;
+    private boolean initial;
+    private OperationInfo operationInfo;
+    private ManagerServiceConnection managerServiceConnection;
 
     protected void onInitializeBusiness() {
     }
@@ -77,8 +64,33 @@ public class ManagedActivity extends AppCompatActivity {
         unbindService(managerServiceConnection);
     }
 
-    protected void notifyManager(OperaType newOpera) {
+    //提供操作类型和反馈处理，success和failed可以为null
+    protected void notifyManager(OperaType newOpera, Runnable success, Runnable failed) {
+        operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_SUCCESS, success);
+        operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_FAILED, failed);
         operationInfo.notifyExecutor(newOpera);
+    }
+
+    protected void notifyManager(OperaType newOpera, Runnable success) {
+        notifyManager(newOpera, success, null);
+    }
+
+    protected void notifyManager(OperaType newOpera) {
+        notifyManager(newOpera, null, null);
+    }
+
+    protected void notifyManager(Runnable success, Runnable failed, OperaType... newOperas) {
+        operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_SUCCESS, success);
+        operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_FAILED, failed);
+        operationInfo.notifyExecutor(newOperas);
+    }
+
+    protected void notifyManager(Runnable success, OperaType... newOperas) {
+        notifyManager(success, null, newOperas);
+    }
+
+    protected void notifyManager(OperaType... newOperas) {
+        notifyManager(null, null, newOperas);
     }
 
     protected ManagedActivity putArgument(ArgumentTag tag, Object arg) {
@@ -196,9 +208,22 @@ public class ManagedActivity extends AppCompatActivity {
         loadingDialog.dismiss();
     }
 
-    private Handler handler;
-    private LoadingDialog loadingDialog;
-    private boolean initial;
-    private OperationInfo operationInfo;
-    private ManagerServiceConnection managerServiceConnection;
+    private class ManagerServiceConnection implements ServiceConnection {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            operationInfo = ((ManagerService.ManagerBinder)service).getOperationInfo();
+
+            if (isInitial()) {
+                initial = false;
+                provideMaterial();
+                onInitializeBusiness();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    }
 }

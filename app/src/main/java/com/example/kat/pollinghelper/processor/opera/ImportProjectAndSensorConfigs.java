@@ -26,28 +26,25 @@ import java.util.Map;
  */
 public class ImportProjectAndSensorConfigs extends Operation {
 
-    public ImportProjectAndSensorConfigs(Context context) {
+    private Context context;
+
+//    @Override
+//    protected boolean onPreExecute() {
+//        uiProcessor = (Runnable)getValue(ArgumentTag.AT_RUNNABLE_IMPORT_PROJECT_AND_SENSOR_CONFIGS);
+//        return super.onPreExecute(operationInfo);
+//    }
+
+    public ImportProjectAndSensorConfigs(OperationInfo operationInfo, Context context) {
+        super(operationInfo);
         this.context = context;
     }
 
     @Override
-    protected boolean onPreExecute(OperationInfo operationInfo) {
-        uiProcessor = (Runnable)operationInfo.getArgument(ArgumentTag.AT_RUNNABLE_IMPORT_PROJECT_AND_SENSOR_CONFIGS);
-        return super.onPreExecute(operationInfo);
-    }
-
-    @Override
-    protected void onExecute() {
+    protected boolean onExecute() {
+        //TODO 有时间引入执行是否成功判断
         //实际处理
         impotSensorConfig();
         importProjectConfig();
-        //TODO 搜索所有现有巡检项目的最新一次的巡检记录
-        //注意，不是最近一次巡检时间的不要
-        //如巡检项目有10:00,14:00,18:00三个巡检时间，当前时间为15:00，则只要14:00那一次巡检记录，
-        //若搜索出来没有14:00的巡检记录，则不用添加到结果中
-        //可以通过projectConfig.getCurrentScheduledTime(System.currentTimeMillis())
-        //方式来获取预设巡检时间，将其作为搜索条件即可
-
 
         //debug
 //        List<PollingProjectConfig> projectConfigs = new ArrayList<>();
@@ -214,6 +211,7 @@ public class ImportProjectAndSensorConfigs extends Operation {
 //
 //        setValue(ArgumentTag.AT_LIST_PROJECT_CONFIG, projectConfigs);
 //        setValue(ArgumentTag.AT_LIST_SENSOR_CONFIG, sensorConfigs);
+        return true;
     }
 
     //从数据库载入项目巡检配置
@@ -304,6 +302,4 @@ public class ImportProjectAndSensorConfigs extends Operation {
         BitmapFactory.decodeResource(context.getResources(), resID).compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-
-    private Context context;
 }

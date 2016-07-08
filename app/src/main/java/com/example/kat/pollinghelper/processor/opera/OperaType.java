@@ -4,7 +4,6 @@ package com.example.kat.pollinghelper.processor.opera;
  * Created by KAT on 2016/5/5.
  */
 public enum OperaType {
-    OT_FINISH_PROCESS,
     OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS,
     OT_EXPORT_POLLING_PROJECT_RECORD,
     OT_UPDATE_SENSOR_DATA,
@@ -13,5 +12,6 @@ public enum OperaType {
     OT_IMPORT_SENSOR_CONFIG,
     OT_EXPORT_SENSOR_CONFIG,
     OT_CREATE_POLLING_DATABASE,
-    OT_SCAN_BLE_SENSOR
+    OT_SCAN_BLE_SENSOR,
+    OT_QUERY_RECORD
 }

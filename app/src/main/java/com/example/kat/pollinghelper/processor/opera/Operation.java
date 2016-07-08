@@ -1,48 +1,40 @@
 package com.example.kat.pollinghelper.processor.opera;
 
-import android.os.Handler;
-
 /**
  * Created by KAT on 2016/6/12.
  */
-public abstract class Operation implements Command {
-    @Override
-    public void execute(OperationInfo operationInfo) {
-        if (onPreExecute(operationInfo)) {
-            onExecute();
-        }
-        onPostExecute();
+public abstract class Operation  {
+
+    protected String errorMessage = "";
+    private OperationInfo operationInfo;
+
+    public Operation(OperationInfo operationInfo) {
+        this.operationInfo = operationInfo;
     }
 
-    protected boolean onPreExecute(OperationInfo operationInfo) {
-        paraSetter = operationInfo;
-        uiFeedBacker = (Handler)operationInfo.getArgument(ArgumentTag.AT_HANDLER_UI_FEEDBACK);
+    public boolean execute() {
+        return onPreExecute() && onExecute() && onPostExecute();
+    }
+
+    protected boolean onPreExecute() {
         return true;
     }
 
-    protected void onExecute() {
-
+    protected boolean onPostExecute() {
+        return true;
     }
 
-    protected void onPostExecute() {
-        feedbackToUI(uiProcessor);
-    }
-
-    protected void feedbackToUI(Runnable runnable) {
-        if (runnable != null) {
-            uiFeedBacker.post(runnable);
-        }
-    }
+    protected abstract boolean onExecute();
 
     protected void setValue(ArgumentTag tag, Object arg) {
-        paraSetter.putArgument(tag, arg);
+        operationInfo.putArgument(tag, arg);
     }
 
     protected Object getValue(ArgumentTag tag) {
-        return paraSetter.getArgument(tag);
+        return operationInfo.getArgument(tag);
     }
 
-    private Handler uiFeedBacker;
-    private OperationInfo paraSetter;
-    protected Runnable uiProcessor;
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }

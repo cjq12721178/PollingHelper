@@ -11,21 +11,30 @@ import com.example.kat.pollinghelper.io.sqlite.InspRecordMission;
  * Created by KAT on 2016/6/13.
  */
 public class ExportMissionRecord extends Operation {
-    @Override
-    protected boolean onPreExecute(OperationInfo operationInfo) {
-        missionRecord = (PollingMissionRecord)operationInfo.getArgument(ArgumentTag.AT_MISSION_RECORD_CURRENT);
-        return super.onPreExecute(operationInfo);
+
+    private PollingMissionRecord missionRecord;
+
+    public ExportMissionRecord(OperationInfo operationInfo) {
+        super(operationInfo);
     }
 
     @Override
-    protected void onExecute() {
+    protected boolean onPreExecute() {
+        missionRecord = (PollingMissionRecord)getValue(ArgumentTag.AT_MISSION_RECORD_CURRENT);
+        return true;
+    }
+
+    @Override
+    protected boolean onExecute() {
+        boolean result = false;
         try {
             //执行处理
             exportConfig();
+            result = true;
         } catch (Exception e) {
-            e.printStackTrace();
-            //isSuccess = false;
+            errorMessage = e.getMessage();
         }
+        return result;
     }
 
     private void exportConfig() {
@@ -53,6 +62,4 @@ public class ExportMissionRecord extends Operation {
             itermRecordDB.addDB(itermRecordDB);
         }
     }
-
-    private PollingMissionRecord missionRecord;
 }

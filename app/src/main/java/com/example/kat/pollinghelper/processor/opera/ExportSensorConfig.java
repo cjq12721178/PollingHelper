@@ -9,15 +9,32 @@ import java.util.List;
  * Created by KAT on 2016/6/13.
  */
 public class ExportSensorConfig extends Operation {
+
+    private List<PollingConfigListItemSensorEntity> existSensorEntities;
+    private List<PollingConfigListItemSensorEntity> desertedSensorEntities;
+
+    public ExportSensorConfig(OperationInfo operationInfo) {
+        super(operationInfo);
+    }
+
+//    @Override
+//    protected void onPostExecute() {
+//        uiProcessor = (Runnable)getValue(isSuccess ? ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_SUCCESS :
+//                ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_FAILED);
+//        super.onPostExecute();
+//    }
+
     @Override
-    protected boolean onPreExecute(OperationInfo operationInfo) {
-        existSensorEntities = (List<PollingConfigListItemSensorEntity>)operationInfo.getArgument(ArgumentTag.AT_LIST_SENSOR_ENTITY_EXIST);
-        desertedSensorEntities = (List<PollingConfigListItemSensorEntity>)operationInfo.getArgument(ArgumentTag.AT_LIST_SENSOR_ENTITY_DESERTED);
-        return super.onPreExecute(operationInfo);
+    protected boolean onPreExecute() {
+        existSensorEntities = (List<PollingConfigListItemSensorEntity>)getValue(ArgumentTag.AT_LIST_SENSOR_ENTITY_EXIST);
+        desertedSensorEntities = (List<PollingConfigListItemSensorEntity>)getValue(ArgumentTag.AT_LIST_SENSOR_ENTITY_DESERTED);
+        return existSensorEntities != null && desertedSensorEntities != null;
     }
 
     @Override
-    protected void onExecute() {
+    protected boolean onExecute() {
+        //TODO 有时间引入执行是否成功判断
+
         Integer i=0;
         for(PollingConfigListItemSensorEntity iterm:existSensorEntities){
             SensorCfg data = new SensorCfg();
@@ -37,17 +54,6 @@ public class ExportSensorConfig extends Operation {
             data.deleteDB(iterm.getName());
         }
 
-        isSuccess = true;
+        return true;
     }
-
-    @Override
-    protected void onPostExecute() {
-        uiProcessor = (Runnable)getValue(isSuccess ? ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_SUCCESS :
-                ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_FAILED);
-        super.onPostExecute();
-    }
-
-    private boolean isSuccess;
-    private List<PollingConfigListItemSensorEntity> existSensorEntities;
-    private List<PollingConfigListItemSensorEntity> desertedSensorEntities;
 }
