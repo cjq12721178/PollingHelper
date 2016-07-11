@@ -42,13 +42,15 @@ public class ExportProjectRecord extends Operation {
     private void exportConfig() {
         InspRecordProject projectRecordDB = new  InspRecordProject();
         projectRecordDB.setId( projectRecord.getId());
-        projectRecordDB.setState(projectRecord.getPollingState().ordinal());
+        Integer state_process = projectRecord.getPollingState().ordinal();
+        projectRecordDB.setState_process(state_process);
+
+        projectRecordDB.setState(projectRecord.getEvaluationType().ordinal());
         projectRecordDB.setName_project(projectRecord.getProjectConfig().getName());
         projectRecordDB.setResult(projectRecord.getRecordResult());
         projectRecordDB.setFinishDate(projectRecord.getFinishedTime());
         projectRecordDB.setDate(projectRecord.getScheduledTime());
-        //projectRecordDB.setDesc(projectRecord.get);
-        //projectRecordDB.setDate(projectRecord.getFinishedTime());
+        projectRecordDB.setDesc(projectRecord.getRecordResult());
 
         int i=0;
         for(PollingMissionRecord missionRecord:projectRecord.getMissionRecords()){
@@ -59,7 +61,7 @@ public class ExportProjectRecord extends Operation {
             missionRecordDB.setName_mission(missionRecord.getMissionConfig().getName());
             missionRecordDB.setId_project_record(projectRecord.getId());
             missionRecordDB.setState(missionRecord.getEvaluationType().ordinal());
-            missionRecordDB.setState(missionRecord.getPollingState().ordinal());
+            missionRecordDB.setState_process(missionRecord.getPollingState().ordinal());
             missionRecordDB.setDesc(missionRecord.getRecordResult());
 
             missionRecordDB.deleteDB(missionRecordDB.getId());
