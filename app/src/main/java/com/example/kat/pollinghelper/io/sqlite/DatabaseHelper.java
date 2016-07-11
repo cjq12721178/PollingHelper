@@ -13,7 +13,7 @@ import android.util.Log;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     // 数据库版本号
-    private static final int DATABASE_VERSION = 17;
+    private static final int DATABASE_VERSION = 20;
     // 数据库名
     private static final String DATABASE_NAME = "WinsInspDB.db";
 
@@ -250,8 +250,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             sBuffer.append("CREATE TABLE [" + TABLE_INSP_RECORD_PROJECT + "] (");
             sBuffer.append("[id] INT64 NOT NULL PRIMARY KEY,");
-            sBuffer.append("[id_project] INTEGER,");
+            //sBuffer.append("[id_project] INTEGER,");
+            sBuffer.append("[name_project] TEXT,");
             sBuffer.append("[date] DATETIME,");
+            sBuffer.append("[finish_date] DATETIME,");
             sBuffer.append("[desc] TEXT,");
             sBuffer.append("[state] INTEGER,");
             sBuffer.append("[state_progress] INTEGER,");
@@ -268,7 +270,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             sBuffer.append("CREATE TABLE [" + TABLE_INSP_RECORD_MISSION + "] (");
             sBuffer.append("[id] INT64 NOT NULL PRIMARY KEY,");
-            sBuffer.append("[id_mission] INTEGER,");
+            sBuffer.append("[name_mission] TEXT,");
             sBuffer.append("[id_project_record] INT64,");
             sBuffer.append("[date] DATETIME,");
             sBuffer.append("[desc] TEXT,");

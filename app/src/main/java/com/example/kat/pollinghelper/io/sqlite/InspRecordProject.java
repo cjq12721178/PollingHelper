@@ -15,12 +15,10 @@ import java.util.List;
  */
 public class InspRecordProject extends DBData  {
     private Long id; //Project record ID
-    private Long id_project; //Project ID
-
-
-
+    //private Long id_project; //Project ID
     private String name_project; //项目名称
     private Date  date;
+    private Date  finishDate;
     private String desc; //巡检任务描述巡检时间描述,如201605041000;年月日时分
     private Integer state; //0：great1：good2：bad
     private Integer state_process; //0：建立 1：执行中 2：完成 3：终止
@@ -49,17 +47,18 @@ public class InspRecordProject extends DBData  {
             StringBuffer sBuffer = new StringBuffer();
 
             sBuffer.append("INSERT INTO " + tableName
-                    + " VALUES(?, ?, ?, ?, ?, ?, ?)" );
+                    + " VALUES(?, ?, ?, ?, ?, ?, ?, ?)" );
 
-            Object[] obj = new Object[7];
+            Object[] obj = new Object[8];
 
             obj[0] = data.getId();
-            obj[1] = data.getId_project();
+            obj[1] = data.getName_project();
             obj[2] = data.getDate().getTime();
-            obj[3] = data.getDesc();
-            obj[4] = data.getState();
-            obj[5] = data.getState_process();
-            obj[6] = data.getResult();
+            obj[3] = data.getFinishDate().getTime();
+            obj[4] = data.getDesc();
+            obj[5] = data.getState();
+            obj[6] = data.getState_process();
+            obj[7] = data.getResult();
 
             // 执行创建表的SQL语句
             db.execSQL(sBuffer.toString(), obj);
@@ -87,8 +86,9 @@ public class InspRecordProject extends DBData  {
     {
         Log.d(AppConstants.LOG_TAG, "DBManager --> InspRecordProject");
         ContentValues cv = new ContentValues();
-        cv.put("id_project", data.getId_project());
+        cv.put("name_project", data.getName_project());
         cv.put("date", data.getDate().getTime());
+        cv.put("finish_date", data.getFinishDate().getTime());
         cv.put("desc", data.getDesc());
         cv.put("state", data.getState());
         cv.put("state_progress", data.getState_process());
@@ -116,10 +116,11 @@ public class InspRecordProject extends DBData  {
         {
             InspRecordProject data = new InspRecordProject();
             data.setId(c.getLong(c.getColumnIndex("id")));
-            data.setId_project(c.getLong(c.getColumnIndex("id_project")));
+            data.setName_project(c.getString(c.getColumnIndex("name_project")));
 
             Date date = new Date(c.getLong(c.getColumnIndex("date")));
             data.setDate(date);
+            data.setFinishDate(new Date(c.getLong(c.getColumnIndex("finish_date"))));
 
             data.setDesc(c.getString(c.getColumnIndex("desc")));
             data.setState(c.getInt(c.getColumnIndex("state")));
@@ -142,10 +143,11 @@ public class InspRecordProject extends DBData  {
         {
             InspRecordProject data = new InspRecordProject();
             data.setId(c.getLong(c.getColumnIndex("id")));
-            data.setId_project(c.getLong(c.getColumnIndex("id_project")));
+            data.setName_project(c.getString(c.getColumnIndex("name_project")));
 
             Date date = new Date(c.getLong(c.getColumnIndex("date")));
             data.setDate(date);
+            data.setFinishDate(new Date(c.getLong(c.getColumnIndex("finish_date"))));
 
             data.setDesc(c.getString(c.getColumnIndex("desc")));
             data.setState(c.getInt(c.getColumnIndex("state")));
@@ -171,10 +173,11 @@ public class InspRecordProject extends DBData  {
             {
                 InspRecordProject data = new InspRecordProject();
                 data.setId(c.getLong(c.getColumnIndex("id")));
-                data.setId_project(c.getLong(c.getColumnIndex("id_project")));
+                data.setName_project(c.getString(c.getColumnIndex("name_project")));
 
                 Date date = new Date(c.getLong(c.getColumnIndex("date")));
                 data.setDate(date);
+                data.setFinishDate(new Date(c.getLong(c.getColumnIndex("finish_date"))));
 
                 data.setDesc(c.getString(c.getColumnIndex("desc")));
                 data.setState(c.getInt(c.getColumnIndex("state")));
@@ -210,13 +213,6 @@ public class InspRecordProject extends DBData  {
     public void setName_project(String name_project) {
         this.name_project = name_project;
     }
-    public Long getId_project() {
-        return id_project;
-    }
-
-    public void setId_project(Long id_project) {
-        this.id_project = id_project;
-    }
 
     public Date getDate() {
         return date;
@@ -225,7 +221,13 @@ public class InspRecordProject extends DBData  {
     public void setDate(Date date) {
         this.date = date;
     }
+    public Date getFinishDate() {
+        return finishDate;
+    }
 
+    public void setFinishDate(Date finishDate) {
+        this.finishDate = finishDate;
+    }
     public String getDesc() {
         return desc;
     }

@@ -13,6 +13,7 @@ public enum PollingState {
         this.lable = lable;
     }
 
+
     @Override
     public String toString() {
         return lable;

@@ -36,8 +36,10 @@ public class ExportProjectRecord extends Operation {
         projectRecordDB.setState(projectRecord.getPollingState().ordinal());
         projectRecordDB.setName_project(projectRecord.getProjectConfig().getName());
         projectRecordDB.setResult(projectRecord.getRecordResult());
+        projectRecordDB.setFinishDate(projectRecord.getFinishedTime());
+        projectRecordDB.setDate(projectRecord.getScheduledTime());
         //projectRecordDB.setDesc(projectRecord.get);
-        projectRecordDB.setDate(projectRecord.getFinishedTime());
+        //projectRecordDB.setDate(projectRecord.getFinishedTime());
 
         int i=0;
         for(PollingMissionRecord missionRecord:projectRecord.getMissionRecords()){
@@ -48,7 +50,7 @@ public class ExportProjectRecord extends Operation {
             missionRecordDB.setName_mission(missionRecord.getMissionConfig().getName());
             missionRecordDB.setId_project_record(projectRecord.getId());
             missionRecordDB.setState(missionRecord.getEvaluationType().ordinal());
-            //missionRecordDB.setState(missionRecord.getPollingState());
+            missionRecordDB.setState(missionRecord.getPollingState().ordinal());
             missionRecordDB.setDesc(missionRecord.getRecordResult());
 
             missionRecordDB.deleteDB(missionRecordDB.getId());

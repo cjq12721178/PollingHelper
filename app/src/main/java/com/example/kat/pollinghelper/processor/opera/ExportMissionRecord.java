@@ -29,6 +29,9 @@ public class ExportMissionRecord extends Operation {
     }
 
     private void exportConfig() {
+        if(true)
+            return;
+
         InspRecordMission missionRecordDB = new InspRecordMission();
 
         missionRecordDB.setId(missionRecord.getId());
@@ -36,7 +39,7 @@ public class ExportMissionRecord extends Operation {
         missionRecordDB.setName_mission(missionRecord.getMissionConfig().getName());
         //missionRecordDB.setId_project_record(projectRecord.getId());
         missionRecordDB.setState(missionRecord.getEvaluationType().ordinal());
-        //missionRecordDB.setState(missionRecord.getPollingState());
+        missionRecordDB.setState(missionRecord.getPollingState().ordinal());
         missionRecordDB.setDesc(missionRecord.getRecordResult());
 
         missionRecordDB.deleteDB(missionRecordDB.getId());

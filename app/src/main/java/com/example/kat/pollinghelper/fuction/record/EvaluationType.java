@@ -21,6 +21,15 @@ public enum EvaluationType {
         }
     }
 
+    public static EvaluationType createFromIndex(int lable) {
+        switch (lable) {
+            case 0: return ET_GOOD;
+            case 1: return ET_NORMAL;
+            case 2: return ET_BAD;
+            default: throw new IllegalArgumentException();
+        }
+    }
+
     public static EvaluationType createFromString(CharSequence lable) {
         return createFromString(lable.toString());
     }

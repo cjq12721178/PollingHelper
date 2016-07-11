@@ -76,6 +76,10 @@ public class PollingMissionRecord {
         }
     }
 
+    public void setFinishedTime(Date time) {
+        finishedTime =time;
+    }
+
     private boolean changed;
     private PollingState state;
     private final PollingMissionConfig missionConfig;

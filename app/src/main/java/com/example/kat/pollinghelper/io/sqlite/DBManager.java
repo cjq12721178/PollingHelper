@@ -428,7 +428,7 @@ public class DBManager {
             for (InspRecordProject data : inspRecordProjects) {
                 db.execSQL("INSERT INTO " + DatabaseHelper.TABLE_INSP_RECORD_PROJECT
                         + " VALUES(?, ?, ?, ?, ?, ?, ?, ?)", new Object[]{data.getId(),
-                        data.getId_project(), data.getDate().toString(),data.getDesc(),data.getState(),
+                        data.getName_project(), data.getDate().toString(),data.getDesc(),data.getState(),
                         data.getState_process(), data.getResult()});
             }
             db.setTransactionSuccessful(); // 设置事务成功完成
@@ -458,7 +458,7 @@ public class DBManager {
     {
         Log.d(AppConstants.LOG_TAG, "DBManager --> update InspRecordProject");
         ContentValues cv = new ContentValues();
-        cv.put("id_project", data.getId_project());
+        cv.put("name_project", data.getName_project());
         cv.put("date", data.getDate().toString());
         cv.put("desc", data.getDesc());
         cv.put("state", data.getState());
@@ -486,7 +486,7 @@ public class DBManager {
             for (InspRecordMission data : inspRecordMissions) {
                 db.execSQL("INSERT INTO " + DatabaseHelper.TABLE_INSP_RECORD_MISSION
                         + " VALUES(?, ?, ?, ?, ?, ?, ?)", new Object[]{data.getId(),
-                        data.getId_mission(),data.getId_project_record(),
+                        data.getName_mission(),data.getId_project_record(),
                         data.getDate().toString(),data.getDesc(), data.getState(),});
             }
 
@@ -517,7 +517,7 @@ public class DBManager {
     {
         Log.d(AppConstants.LOG_TAG, "DBManager --> update InspRecordMission");
         ContentValues cv = new ContentValues();
-        cv.put("id_mission", data.getId_mission());
+        cv.put("name_mission", data.getName_mission());
         cv.put("id_project_record", data.getId_project_record());
         cv.put("date", data.getDate().toString());
         cv.put("desc", data.getDesc());

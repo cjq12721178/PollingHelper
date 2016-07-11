@@ -15,12 +15,9 @@ import java.util.List;
  */
 public class InspRecordMission extends DBData {
     private Long id; //mission record ID
-    private Integer id_mission; //mission ID
+    private String name_mission;
     private Long id_project_record; //Project record ID
 
-
-
-    private String name_mission;
 
     private Date date;
     private String desc; //巡检任务记录描述
@@ -55,7 +52,7 @@ public class InspRecordMission extends DBData {
             Object[] obj = new Object[7];
 
             obj[0] = data.getId();
-            obj[1] = data.getId_mission();
+            obj[1] = data.getName_mission();
             obj[2] = data.getId_project_record();
             obj[3] = data.getDate().getTime();
             obj[4] = data.getDesc();
@@ -87,7 +84,7 @@ public class InspRecordMission extends DBData {
     {
         Log.d(AppConstants.LOG_TAG, "DBManager --> InspRecordProject");
         ContentValues cv = new ContentValues();
-        cv.put("id_mission", data.getId_mission());
+        cv.put("name_mission", data.getName_mission());
         cv.put("id_project_record", data.getId_project_record());
         cv.put("desc", data.getDesc());
         cv.put("state", data.getState());
@@ -115,7 +112,7 @@ public class InspRecordMission extends DBData {
         {
             InspRecordMission data = new InspRecordMission();
             data.setId(c.getLong(c.getColumnIndex("id")));
-            data.setId_mission(c.getInt(c.getColumnIndex("id_mission")));
+            data.setName_mission(c.getString(c.getColumnIndex("name_mission")));
             data.setId_project_record(c.getLong(c.getColumnIndex("id_project_record")));
             data.setDesc(c.getString(c.getColumnIndex("desc")));
             data.setState(c.getInt(c.getColumnIndex("state")));
@@ -140,7 +137,7 @@ public class InspRecordMission extends DBData {
         {
             InspRecordMission data = new InspRecordMission();
             data.setId(c.getLong(c.getColumnIndex("id")));
-            data.setId_mission(c.getInt(c.getColumnIndex("id_mission")));
+            data.setName_mission(c.getString(c.getColumnIndex("name_mission")));
             data.setId_project_record(c.getLong(c.getColumnIndex("id_project_record")));
             data.setDesc(c.getString(c.getColumnIndex("desc")));
             data.setState(c.getInt(c.getColumnIndex("state")));
@@ -167,7 +164,7 @@ public class InspRecordMission extends DBData {
             {
                 InspRecordMission data = new InspRecordMission();
                 data.setId(c.getLong(c.getColumnIndex("id")));
-                data.setId_mission(c.getInt(c.getColumnIndex("id_mission")));
+                data.setName_mission(c.getString(c.getColumnIndex("name_mission")));
                 data.setId_project_record(c.getLong(c.getColumnIndex("id_project_record")));
                 data.setDesc(c.getString(c.getColumnIndex("desc")));
                 data.setState(c.getInt(c.getColumnIndex("state")));
@@ -198,7 +195,7 @@ public class InspRecordMission extends DBData {
             {
                 InspRecordMission data = new InspRecordMission();
                 data.setId(c.getLong(c.getColumnIndex("id")));
-                data.setId_mission(c.getInt(c.getColumnIndex("id_mission")));
+                data.setName_mission(c.getString(c.getColumnIndex("name_mission")));
                 data.setId_project_record(c.getLong(c.getColumnIndex("id_project_record")));
                 data.setDesc(c.getString(c.getColumnIndex("desc")));
                 data.setState(c.getInt(c.getColumnIndex("state")));
@@ -236,13 +233,6 @@ public class InspRecordMission extends DBData {
 
     public void setName_mission(String name_mission) {
         this.name_mission = name_mission;
-    }
-    public Integer getId_mission() {
-        return id_mission;
-    }
-
-    public void setId_mission(Integer id_mission) {
-        this.id_mission = id_mission;
     }
 
     public Date getDate() {

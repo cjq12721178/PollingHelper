@@ -80,6 +80,9 @@ public class PollingProjectRecord {
             changed = false;
         }
     }
+    public void setFinishedTime(Date time) {
+            finishedTime = time;
+    }
 
     public void setScheduledTime(Date scheduledTime) {
         this.scheduledTime = scheduledTime;
