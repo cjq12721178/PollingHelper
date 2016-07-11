@@ -42,40 +42,9 @@ public class PollingMissionRecordActivity extends ManagedActivity {
     private TimerTask updateSensorData = new TimerTask() {
         @Override
         public void run() {
-            notifyManager(OperaType.OT_UPDATE_SENSOR_DATA);
+            notifyManager(OperaType.OT_UPDATE_SENSOR_DATA, updateItemTextList);
         }
     };
-
-    private class PollingItemAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return missionRecord.getItemRecords().size();
-        }
-
-        @Override
-        public PollingItemRecord getItem(int position) {
-            return missionRecord.getItemRecords().get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(PollingMissionRecordActivity.this).inflate(R.layout.listitem_polling_item_record, null);
-                convertView.setTag(convertView.findViewById(R.id.tv_polling_item_record));
-            }
-            TextView content = (TextView)convertView.getTag();
-            PollingItemRecord currentItemRecord = getItem(position);
-            content.setText(generateItemText(currentItemRecord));
-            content.setTextColor(currentItemRecord.isOutOfAlarm() ? Color.RED : Color.BLACK);
-            return convertView;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +57,6 @@ public class PollingMissionRecordActivity extends ManagedActivity {
         timer.cancel();
         //Log.d("PollingHelper", "timer cancel");
         super.onDestroy();
-    }
-
-    @Override
-    protected void provideMaterial() {
-        putArgument(ArgumentTag.AT_RUNNABLE_UPDATE_SENSOR_DATA, updateItemTextList);
     }
 
     @Override
@@ -188,5 +152,36 @@ public class PollingMissionRecordActivity extends ManagedActivity {
         missionRecord.setRecordResult(edttxtEvaluation.getText().toString());
         missionRecord.setPollingState(PollingState.PS_COMPLETED);
         missionRecord.setFinishedTime();
+    }
+
+    private class PollingItemAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return missionRecord.getItemRecords().size();
+        }
+
+        @Override
+        public PollingItemRecord getItem(int position) {
+            return missionRecord.getItemRecords().get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(PollingMissionRecordActivity.this).inflate(R.layout.listitem_polling_item_record, null);
+                convertView.setTag(convertView.findViewById(R.id.tv_polling_item_record));
+            }
+            TextView content = (TextView)convertView.getTag();
+            PollingItemRecord currentItemRecord = getItem(position);
+            content.setText(generateItemText(currentItemRecord));
+            content.setTextColor(currentItemRecord.isOutOfAlarm() ? Color.RED : Color.BLACK);
+            return convertView;
+        }
     }
 }

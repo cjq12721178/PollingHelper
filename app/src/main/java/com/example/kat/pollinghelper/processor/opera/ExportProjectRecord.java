@@ -13,21 +13,30 @@ import com.example.kat.pollinghelper.io.sqlite.InspRecordProject;
  * Created by KAT on 2016/6/13.
  */
 public class ExportProjectRecord extends Operation {
-    @Override
-    protected boolean onPreExecute(OperationInfo operationInfo) {
-        projectRecord = (PollingProjectRecord)operationInfo.getArgument(ArgumentTag.AT_PROJECT_RECORD_CURRENT);
-        return super.onPreExecute(operationInfo);
+
+    private PollingProjectRecord projectRecord;
+
+    public ExportProjectRecord(OperationInfo operationInfo) {
+        super(operationInfo);
     }
 
     @Override
-    protected void onExecute() {
+    protected boolean onPreExecute() {
+        projectRecord = (PollingProjectRecord)getValue(ArgumentTag.AT_PROJECT_RECORD_CURRENT);
+        return projectRecord != null;
+    }
+
+    @Override
+    protected boolean onExecute() {
+        boolean result = false;
         try {
             //执行处理
             exportConfig();
+            result = true;
         } catch (Exception e) {
-            e.printStackTrace();
-            //isSuccess = false;
+            errorMessage = e.getMessage();
         }
+        return result;
     }
 
     private void exportConfig() {
@@ -72,6 +81,4 @@ public class ExportProjectRecord extends Operation {
         projectRecordDB.deleteDB(projectRecordDB.getId());
         projectRecordDB.addDB(projectRecordDB);
     }
-
-    private PollingProjectRecord projectRecord;
 }

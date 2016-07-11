@@ -16,21 +16,20 @@ import com.example.kat.pollinghelper.communicator.Udp;
 import com.example.kat.pollinghelper.data.DataStorage;
 import com.example.kat.pollinghelper.io.sqlite.DBData;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
-import com.example.kat.pollinghelper.processor.opera.Command;
 import com.example.kat.pollinghelper.processor.opera.EstablishPollingDatabase;
 import com.example.kat.pollinghelper.processor.opera.ExportMissionRecord;
 import com.example.kat.pollinghelper.processor.opera.ExportPollingConfig;
 import com.example.kat.pollinghelper.processor.opera.ExportProjectRecord;
 import com.example.kat.pollinghelper.processor.opera.ExportSensorConfig;
-import com.example.kat.pollinghelper.processor.opera.FinishProcess;
 import com.example.kat.pollinghelper.processor.opera.ImportProjectAndSensorConfigs;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
+import com.example.kat.pollinghelper.processor.opera.Operation;
 import com.example.kat.pollinghelper.processor.opera.OperationInfo;
+import com.example.kat.pollinghelper.processor.opera.QueryPollingRecord;
 import com.example.kat.pollinghelper.processor.opera.ScanBleSensor;
 import com.example.kat.pollinghelper.processor.opera.UpdateSensorData;
 import com.example.kat.pollinghelper.protocol.BaseStationUdpProtocol;
 import com.example.kat.pollinghelper.protocol.SensorBleProtocol;
-import com.example.kat.pollinghelper.ui.structure.ElseFunctionListItem;
 import com.example.kat.pollinghelper.ui.toast.BeautyToast;
 
 import java.util.HashMap;
@@ -38,11 +37,45 @@ import java.util.Map;
 
 public class ManagerService extends Service {
 
-    public class ManagerBinder extends Binder {
-        public OperationInfo getOperationInfo() {
-            return operationInfo;
+    private SensorBleProtocol bleProtocol;
+    private Ble ble;
+    private DataStorage dataStorage;
+    private BluetoothAdapter.LeScanCallback onBleScannedListener = new BluetoothAdapter.LeScanCallback() {
+        @Override
+        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+            SensorBleProtocol.SensorParameter sensorParameter = bleProtocol.analyze(device.getAddress(), scanRecord);
+            if (sensorParameter != null) {
+                dataStorage.receiveSensorInfo(sensorParameter.SensorInfos);
+            }
         }
-    }
+    };
+    private BaseStationUdpProtocol udpProtocol;
+    private Communicator.OnDataReceivedListener onUdpDataReceivedListener = new Communicator.OnDataReceivedListener() {
+        @Override
+        public void onDataReceived(byte[] data) {
+            BaseStationUdpProtocol.BaseStationInfo baseStationInfo = udpProtocol.analyze(data);
+            if (baseStationInfo != null && baseStationInfo.CommandCode == BaseStationUdpProtocol.COMMAND_CODE_REQUEST_DATA) {
+                dataStorage.receiveSensorInfo(baseStationInfo.SensorInfos);
+            }
+        }
+    };
+    private Udp udp;
+    private Handler uiEventProcessor;
+    private Map<OperaType, Operation> operationMap;
+    private boolean running;
+    private OperationInfo operationInfo;
+    private Runnable onOperationProcess = new Runnable() {
+        @Override
+        public void run() {
+            while (running) {
+                if (operationInfo.hasOpera()) {
+                    operationInfo.waitNotifier();
+                } else {
+                    feedbackUI(operationMap.get(operationInfo.popOpera()).execute());
+                }
+            }
+        }
+    };
 
     @Override
     public void onCreate() {
@@ -52,8 +85,8 @@ public class ManagerService extends Service {
         initProtocol();
         createDataStorage();
         launchCommunicator();
-        createOperationMap();
         initOperationInfo();
+        createOperationMap();
         launchOperationListener();
     }
 
@@ -109,22 +142,22 @@ public class ManagerService extends Service {
 
     private void createOperationMap() {
         operationMap = new HashMap<>();
-        operationMap.put(OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS, new ImportProjectAndSensorConfigs(this));
-        operationMap.put(OperaType.OT_FINISH_PROCESS, new FinishProcess());
-        operationMap.put(OperaType.OT_EXPORT_POLLING_PROJECT_RECORD, new ExportProjectRecord());
-        operationMap.put(OperaType.OT_UPDATE_SENSOR_DATA, new UpdateSensorData(dataStorage));
-        operationMap.put(OperaType.OT_EXPORT_POLLING_CONFIGS, new ExportPollingConfig());
-        operationMap.put(OperaType.OT_EXPORT_SENSOR_CONFIG, new ExportSensorConfig());
-        operationMap.put(OperaType.OT_EXPORT_POLLING_MISSION_RECORD, new ExportMissionRecord());
-        operationMap.put(OperaType.OT_CREATE_POLLING_DATABASE, new EstablishPollingDatabase(this));
-        operationMap.put(OperaType.OT_SCAN_BLE_SENSOR, new ScanBleSensor(ble, getResources().getInteger(R.integer.time_duration_scan_ble)));
+        operationMap.put(OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS, new ImportProjectAndSensorConfigs(operationInfo, this));
+        operationMap.put(OperaType.OT_EXPORT_POLLING_PROJECT_RECORD, new ExportProjectRecord(operationInfo));
+        operationMap.put(OperaType.OT_UPDATE_SENSOR_DATA, new UpdateSensorData(operationInfo, dataStorage));
+        operationMap.put(OperaType.OT_EXPORT_POLLING_CONFIGS, new ExportPollingConfig(operationInfo));
+        operationMap.put(OperaType.OT_EXPORT_SENSOR_CONFIG, new ExportSensorConfig(operationInfo));
+        operationMap.put(OperaType.OT_EXPORT_POLLING_MISSION_RECORD, new ExportMissionRecord(operationInfo));
+        operationMap.put(OperaType.OT_CREATE_POLLING_DATABASE, new EstablishPollingDatabase(operationInfo, this));
+        operationMap.put(OperaType.OT_SCAN_BLE_SENSOR, new ScanBleSensor(operationInfo, ble, getResources().getInteger(R.integer.time_duration_scan_ble)));
+        operationMap.put(OperaType.OT_QUERY_RECORD, new QueryPollingRecord(operationInfo));
     }
 
     private void initOperationInfo() {
         operationInfo = new OperationInfo();
         uiEventProcessor = new Handler();
-        operationInfo.putArgument(ArgumentTag.AT_HANDLER_UI_FEEDBACK, uiEventProcessor);
-        operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_FINISH_PROCESSOR, onFinishProcessor);
+        //operationInfo.putArgument(ArgumentTag.AT_HANDLER_UI_FEEDBACK, uiEventProcessor);
+        //operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_FINISH_PROCESSOR, onFinishProcessor);
     }
 
     @Override
@@ -155,75 +188,20 @@ public class ManagerService extends Service {
     }
 
     private void closeOperationListener() {
-        operationInfo.notifyExecutor(OperaType.OT_FINISH_PROCESS);
+        running = false;
+        operationInfo.notifyExecutor();
     }
 
-    private Communicator.OnDataReceivedListener onUdpDataReceivedListener = new Communicator.OnDataReceivedListener() {
-        @Override
-        public void onDataReceived(byte[] data) {
-            BaseStationUdpProtocol.BaseStationInfo baseStationInfo = udpProtocol.analyze(data);
-            if (baseStationInfo != null && baseStationInfo.CommandCode == BaseStationUdpProtocol.COMMAND_CODE_REQUEST_DATA) {
-                dataStorage.receiveSensorInfo(baseStationInfo.SensorInfos);
-            }
+    private void feedbackUI(boolean executeResult) {
+        Runnable processor = (Runnable)operationInfo.getArgument(executeResult ? ArgumentTag.AT_RUNNABLE_SUCCESS : ArgumentTag.AT_RUNNABLE_FAILED);
+        if (processor != null && !operationInfo.isRunningContinuousOpera()) {
+            uiEventProcessor.post(processor);
         }
-    };
-
-    private Runnable onFinishProcessor = new Runnable() {
-        @Override
-        public void run() {
-            running = false;
-        }
-    };
-
-    private Runnable onOperationProcess = new Runnable() {
-        @Override
-        public void run() {
-            while (running) {
-                if (operationInfo.getOperaQueue().isEmpty()) {
-                    operationInfo.waitNotifier();
-                } else {
-                    operationMap.get(operationInfo.getOperaQueue().remove()).execute(operationInfo);
-                }
-            }
-        }
-    };
-
-    private BluetoothAdapter.LeScanCallback onBleScannedListener = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-            SensorBleProtocol.SensorParameter sensorParameter = bleProtocol.analyze(device.getAddress(), scanRecord);
-            if (sensorParameter != null) {
-                dataStorage.receiveSensorInfo(sensorParameter.SensorInfos);
-            }
-        }
-    };
-
-    private byte[] generateBleOriginData(String address, byte[] scanRecord) {
-        byte[] originData = null;
-        if (address != null && scanRecord != null) {
-            String[] addresses = address.split(":");
-            if (address != null) {
-                try {
-                    originData = new byte[addresses.length + scanRecord.length];
-                    for (int i = 0;i < addresses.length;++i) {
-                        originData[i] = Byte.valueOf(addresses[i]);
-                    }
-                    System.arraycopy(scanRecord, 0, originData, addresses.length, scanRecord.length);
-                } catch (Exception e) {
-                    originData = null;
-                }
-            }
-        }
-        return originData;
     }
 
-    private SensorBleProtocol bleProtocol;
-    private Ble ble;
-    private DataStorage dataStorage;
-    private BaseStationUdpProtocol udpProtocol;
-    private Udp udp;
-    private Handler uiEventProcessor;
-    private Map<OperaType, Command> operationMap;
-    private boolean running;
-    private OperationInfo operationInfo;
+    public class ManagerBinder extends Binder {
+        public OperationInfo getOperationInfo() {
+            return operationInfo;
+        }
+    }
 }

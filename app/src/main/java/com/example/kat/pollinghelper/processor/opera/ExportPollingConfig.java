@@ -16,16 +16,31 @@ import java.util.List;
  * Created by KAT on 2016/6/13.
  */
 public class ExportPollingConfig extends Operation {
+
+    private List<PollingConfigListItemProjectEntity> projectEntities;
+    private List<PollingConfigListItemEntity> desertedEntities;
+
+    public ExportPollingConfig(OperationInfo operationInfo) {
+        super(operationInfo);
+    }
+
+//    @Override
+//    protected void onPostExecute() {
+//        uiProcessor = (Runnable)getValue(isSuccess ? ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_SUCCESS :
+//                ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_FAILED);
+//        super.onPostExecute();
+//    }
+
     @Override
-    protected boolean onPreExecute(OperationInfo operationInfo) {
-        projectEntities = (List<PollingConfigListItemProjectEntity>)operationInfo.getArgument(ArgumentTag.AT_LIST_PROJECT_ENTITY);
-        desertedEntities = (List<PollingConfigListItemEntity>)operationInfo.getArgument(ArgumentTag.AT_LIST_ENTITY_DESERTED);
-        return super.onPreExecute(operationInfo);
+    protected boolean onPreExecute() {
+        projectEntities = (List<PollingConfigListItemProjectEntity>)getValue(ArgumentTag.AT_LIST_PROJECT_ENTITY);
+        desertedEntities = (List<PollingConfigListItemEntity>)getValue(ArgumentTag.AT_LIST_ENTITY_DESERTED);
+        return projectEntities != null && desertedEntities != null;
     }
 
     @Override
-    protected void onExecute() {
-
+    protected boolean onExecute() {
+        //TODO 有时间引入执行是否成功判断
         //删除数据处理
         for (PollingConfigListItemEntity deleteEntity : desertedEntities) {
 
@@ -111,17 +126,7 @@ public class ExportPollingConfig extends Operation {
                 }
             }
         }
-        isSuccess = true;
-    }
 
-    @Override
-    protected void onPostExecute() {
-        uiProcessor = (Runnable)getValue(isSuccess ? ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_SUCCESS :
-                ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_FAILED);
-        super.onPostExecute();
+        return true;
     }
-
-    private boolean isSuccess;
-    private List<PollingConfigListItemProjectEntity> projectEntities;
-    private List<PollingConfigListItemEntity> desertedEntities;
 }

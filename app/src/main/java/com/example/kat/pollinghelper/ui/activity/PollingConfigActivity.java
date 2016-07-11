@@ -36,6 +36,135 @@ public class PollingConfigActivity extends ManagedActivity {
     private boolean pollingConfigModified;
     private boolean isRestoreProjectAndSensorConfig;
     private boolean isExitAfterExport;
+    private SlideListViewAdapter.OnTextViewClickListener labelClickListener = new SlideListViewAdapter.OnTextViewClickListener() {
+        @Override
+        public void onClick(View view, PollingConfigListItem listItem) {
+            if (listItem.isEntity()) {
+                if (listItem.getType() == PollingConfigListItemType.PCLIT_PROJECT_ENTITY) {
+                    shrinkProjectEntity((PollingConfigListItemProjectEntity)listItem);
+                    slideListViewAdapter.notifyDataSetChanged();
+                } else if (listItem.getType() == PollingConfigListItemType.PCLIT_MISSION_ENTITY) {
+                    shrinkMissionEntity((PollingConfigListItemMissionEntity)listItem);
+                    slideListViewAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+
+        private void shrinkProjectEntity(PollingConfigListItemProjectEntity projectEntity) {
+            if (projectEntity.isUnfold()) {
+                foldProjectEntity(projectEntity);
+            } else {
+                unfoldProjectEntity(projectEntity);
+            }
+            projectEntity.setUnfold(!projectEntity.isUnfold());
+        }
+
+        private void shrinkMissionEntity(PollingConfigListItemMissionEntity missionEntity) {
+            if (missionEntity.isUnfold()) {
+                foldMissionEntity(missionEntity);
+            } else {
+                unfoldMissionEntity(missionEntity);
+            }
+            missionEntity.setUnfold(!missionEntity.isUnfold());
+        }
+    };
+    private SlideListViewAdapter.OnTextViewClickListener deleteClickListener = new SlideListViewAdapter.OnTextViewClickListener() {
+        @Override
+        public void onClick(View view, PollingConfigListItem listItem) {
+            if (listItem.isEntity()) {
+                if (listItem.getType() == PollingConfigListItemType.PCLIT_PROJECT_ENTITY) {
+                    deletePollingProjectConfig((PollingConfigListItemProjectEntity)listItem);
+                } else if (listItem.getType() == PollingConfigListItemType.PCLIT_MISSION_ENTITY) {
+                    deletePollingMissionConfig((PollingConfigListItemMissionEntity) listItem);
+                } else {
+                    deletePollingItemConfig((PollingConfigListItemItemEntity) listItem);
+                }
+                slideListViewAdapter.notifyDataSetChanged();
+            }
+        }
+
+        private void deletePollingProjectConfig(PollingConfigListItemProjectEntity projectEntity) {
+            if (projectEntity.isUnfold()) {
+                foldProjectEntity(projectEntity);
+            }
+            projectConfigs.remove(projectEntity.getProjectConfig());
+            existListItems.remove(projectEntity);
+            desertListItems.add(projectEntity);
+        }
+
+        private void deletePollingMissionConfig(PollingConfigListItemMissionEntity missionEntity) {
+            if (missionEntity.isUnfold()) {
+               foldMissionEntity(missionEntity);
+            }
+            PollingConfigListItemProjectEntity father = (PollingConfigListItemProjectEntity) getImmediateBoss(missionEntity);
+            father.removeMission(missionEntity);
+            father.getProjectConfig().getMissions().remove(missionEntity.getMissionConfig());
+            existListItems.remove(missionEntity);
+            desertListItems.add(missionEntity);
+        }
+
+        private void deletePollingItemConfig(PollingConfigListItemItemEntity itemEntity) {
+            PollingConfigListItemMissionEntity father = (PollingConfigListItemMissionEntity) getImmediateBoss(itemEntity);
+            father.removeItem(itemEntity);
+            father.getMissionConfig().getItems().remove(itemEntity.getItemConfig());
+            existListItems.remove(itemEntity);
+            desertListItems.add(itemEntity);
+        }
+    };
+    private SlideListViewAdapter.OnTextViewClickListener addClickListener = new SlideListViewAdapter.OnTextViewClickListener() {
+        @Override
+        public void onClick(View view, PollingConfigListItem listItem) {
+            addOrModifyPollingConfig(listItem);
+        }
+    };
+    private SlideListViewAdapter.OnTextViewClickListener contentClickListener = new SlideListViewAdapter.OnTextViewClickListener() {
+        @Override
+        public void onClick(View view, PollingConfigListItem listItem) {
+            addOrModifyPollingConfig(listItem);
+        }
+    };
+    private Runnable success = new Runnable() {
+        @Override
+        public void run() {
+            closeLoadingDialog();
+            promptMessage(R.string.ui_prompt_export_polling_configs_success);
+            onPostExportPollingConfig();
+        }
+    };
+    private Runnable failure = new Runnable() {
+        @Override
+        public void run() {
+            closeLoadingDialog();
+            promptMessage(R.string.ui_prompt_export_polling_configs_failed);
+            onPostExportPollingConfig();
+        }
+    };
+    private DialogInterface.OnClickListener exitAlertListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                pollingConfigModified = true;
+                isRestoreProjectAndSensorConfig = false;
+                isExitAfterExport = true;
+                exportPollingConfigs();
+            } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+                isRestoreProjectAndSensorConfig = true;
+                exitPollingConfig();
+            }
+            //exitPollingConfig();
+        }
+    };
+    private DialogInterface.OnClickListener saveAlertListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if (which == DialogInterface.BUTTON_POSITIVE) {
+                isExitAfterExport = false;
+                exportPollingConfigs();
+                //updatePollingConfigs();
+                pollingConfigModified = true;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,13 +223,7 @@ public class PollingConfigActivity extends ManagedActivity {
         showLoadingDialog(R.string.ui_export_polling_configs);
         putArgument(ArgumentTag.AT_LIST_PROJECT_ENTITY, getCurrentProjectEntities());
         putArgument(ArgumentTag.AT_LIST_ENTITY_DESERTED, desertListItems);
-        notifyManager(OperaType.OT_EXPORT_POLLING_CONFIGS);
-    }
-
-    @Override
-    protected void provideMaterial() {
-        putArgument(ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_SUCCESS, success);
-        putArgument(ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_FAILED, failure);
+        notifyManager(OperaType.OT_EXPORT_POLLING_CONFIGS, success, failure);
     }
 
     @Override
@@ -152,39 +275,6 @@ public class PollingConfigActivity extends ManagedActivity {
         }
     }
 
-    private SlideListViewAdapter.OnTextViewClickListener labelClickListener = new SlideListViewAdapter.OnTextViewClickListener() {
-        @Override
-        public void onClick(View view, PollingConfigListItem listItem) {
-            if (listItem.isEntity()) {
-                if (listItem.getType() == PollingConfigListItemType.PCLIT_PROJECT_ENTITY) {
-                    shrinkProjectEntity((PollingConfigListItemProjectEntity)listItem);
-                    slideListViewAdapter.notifyDataSetChanged();
-                } else if (listItem.getType() == PollingConfigListItemType.PCLIT_MISSION_ENTITY) {
-                    shrinkMissionEntity((PollingConfigListItemMissionEntity)listItem);
-                    slideListViewAdapter.notifyDataSetChanged();
-                }
-            }
-        }
-
-        private void shrinkProjectEntity(PollingConfigListItemProjectEntity projectEntity) {
-            if (projectEntity.isUnfold()) {
-                foldProjectEntity(projectEntity);
-            } else {
-                unfoldProjectEntity(projectEntity);
-            }
-            projectEntity.setUnfold(!projectEntity.isUnfold());
-        }
-
-        private void shrinkMissionEntity(PollingConfigListItemMissionEntity missionEntity) {
-            if (missionEntity.isUnfold()) {
-                foldMissionEntity(missionEntity);
-            } else {
-                unfoldMissionEntity(missionEntity);
-            }
-            missionEntity.setUnfold(!missionEntity.isUnfold());
-        }
-    };
-
     private void foldProjectEntity(PollingConfigListItemProjectEntity projectEntity) {
         for (int unfoldIndex = 0;unfoldIndex < projectEntity.getMissionSize();++unfoldIndex) {
             PollingConfigListItem mission = projectEntity.getMission(unfoldIndex);
@@ -223,92 +313,6 @@ public class PollingConfigActivity extends ManagedActivity {
             existListItems.add(itemIndex + unfoldIndex, missionEntity.getItem(unfoldIndex));
         }
     }
-
-    private SlideListViewAdapter.OnTextViewClickListener deleteClickListener = new SlideListViewAdapter.OnTextViewClickListener() {
-        @Override
-        public void onClick(View view, PollingConfigListItem listItem) {
-            if (listItem.isEntity()) {
-                if (listItem.getType() == PollingConfigListItemType.PCLIT_PROJECT_ENTITY) {
-                    deletePollingProjectConfig((PollingConfigListItemProjectEntity)listItem);
-                } else if (listItem.getType() == PollingConfigListItemType.PCLIT_MISSION_ENTITY) {
-                    deletePollingMissionConfig((PollingConfigListItemMissionEntity) listItem);
-                } else {
-                    deletePollingItemConfig((PollingConfigListItemItemEntity) listItem);
-                }
-                slideListViewAdapter.notifyDataSetChanged();
-            }
-        }
-
-        private void deletePollingProjectConfig(PollingConfigListItemProjectEntity projectEntity) {
-            if (projectEntity.isUnfold()) {
-                foldProjectEntity(projectEntity);
-            }
-            projectConfigs.remove(projectEntity.getProjectConfig());
-            existListItems.remove(projectEntity);
-            desertListItems.add(projectEntity);
-        }
-
-        private void deletePollingMissionConfig(PollingConfigListItemMissionEntity missionEntity) {
-            if (missionEntity.isUnfold()) {
-               foldMissionEntity(missionEntity);
-            }
-            PollingConfigListItemProjectEntity father = (PollingConfigListItemProjectEntity) getImmediateBoss(missionEntity);
-            father.removeMission(missionEntity);
-            father.getProjectConfig().getMissions().remove(missionEntity.getMissionConfig());
-            existListItems.remove(missionEntity);
-            desertListItems.add(missionEntity);
-        }
-
-        private void deletePollingItemConfig(PollingConfigListItemItemEntity itemEntity) {
-            PollingConfigListItemMissionEntity father = (PollingConfigListItemMissionEntity) getImmediateBoss(itemEntity);
-            father.removeItem(itemEntity);
-            father.getMissionConfig().getItems().remove(itemEntity.getItemConfig());
-            existListItems.remove(itemEntity);
-            desertListItems.add(itemEntity);
-        }
-    };
-
-    private SlideListViewAdapter.OnTextViewClickListener addClickListener = new SlideListViewAdapter.OnTextViewClickListener() {
-        @Override
-        public void onClick(View view, PollingConfigListItem listItem) {
-            addOrModifyPollingConfig(listItem);
-        }
-    };
-
-    private SlideListViewAdapter.OnTextViewClickListener contentClickListener = new SlideListViewAdapter.OnTextViewClickListener() {
-        @Override
-        public void onClick(View view, PollingConfigListItem listItem) {
-            addOrModifyPollingConfig(listItem);
-        }
-    };
-
-    private DialogInterface.OnClickListener exitAlertListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                pollingConfigModified = true;
-                isRestoreProjectAndSensorConfig = false;
-                isExitAfterExport = true;
-                exportPollingConfigs();
-            } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                isRestoreProjectAndSensorConfig = true;
-                exitPollingConfig();
-            }
-            //exitPollingConfig();
-        }
-    };
-
-    private DialogInterface.OnClickListener saveAlertListener = new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                isExitAfterExport = false;
-                exportPollingConfigs();
-                //updatePollingConfigs();
-                pollingConfigModified = true;
-            }
-        }
-    };
 
     private PollingConfigListItemEntity getImmediateBoss(PollingConfigListItem listItem) {
         PollingConfigListItemEntity result = null;
@@ -436,24 +440,6 @@ public class PollingConfigActivity extends ManagedActivity {
         }
         return false;
     }
-
-    private Runnable success = new Runnable() {
-        @Override
-        public void run() {
-            closeLoadingDialog();
-            promptMessage(R.string.ui_prompt_export_polling_configs_success);
-            onPostExportPollingConfig();
-        }
-    };
-
-    private Runnable failure = new Runnable() {
-        @Override
-        public void run() {
-            closeLoadingDialog();
-            promptMessage(R.string.ui_prompt_export_polling_configs_failed);
-            onPostExportPollingConfig();
-        }
-    };
 
     private void onPostExportPollingConfig() {
         if (isExitAfterExport) {

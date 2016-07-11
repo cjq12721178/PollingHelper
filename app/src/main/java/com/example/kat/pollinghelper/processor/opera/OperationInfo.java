@@ -11,13 +11,25 @@ import java.util.Queue;
  */
 public class OperationInfo {
 
+    private Map<ArgumentTag, Object> arguments;
+    private Queue<OperaType> operaQueue;
+    private int continuousOperaNumber;
+
     public OperationInfo() {
         operaQueue = new LinkedList<>();
         arguments = new HashMap<>();
+        continuousOperaNumber = 0;
     }
 
-    public Queue<OperaType> getOperaQueue() {
-        return operaQueue;
+    public boolean hasOpera() {
+        return operaQueue.isEmpty();
+    }
+
+    public OperaType popOpera() {
+        if (continuousOperaNumber > 0) {
+            --continuousOperaNumber;
+        }
+        return operaQueue.poll();
     }
 
     public Object getArgument(ArgumentTag tag) {
@@ -30,8 +42,29 @@ public class OperationInfo {
     }
 
     public void notifyExecutor(OperaType type) {
+        if (type != null) {
+            synchronized (operaQueue) {
+                operaQueue.offer(type);
+                operaQueue.notify();
+            }
+        }
+    }
+
+    public void notifyExecutor(OperaType... types) {
+        if (types != null) {
+            synchronized (operaQueue) {
+                for (OperaType type :
+                        types) {
+                    operaQueue.offer(type);
+                }
+                continuousOperaNumber = types.length;
+                operaQueue.notify();
+            }
+        }
+    }
+
+    public void notifyExecutor() {
         synchronized (operaQueue) {
-            operaQueue.offer(type);
             operaQueue.notify();
         }
     }
@@ -46,6 +79,7 @@ public class OperationInfo {
         }
     }
 
-    private Map<ArgumentTag, Object> arguments;
-    private Queue<OperaType> operaQueue;
+    public boolean isRunningContinuousOpera() {
+        return continuousOperaNumber != 0;
+    }
 }

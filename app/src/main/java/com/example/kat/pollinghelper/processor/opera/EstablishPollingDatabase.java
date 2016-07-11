@@ -9,14 +9,17 @@ import com.example.kat.pollinghelper.io.sqlite.DBData;
  */
 public class EstablishPollingDatabase extends Operation {
 
-    public EstablishPollingDatabase(Context context) {
+    private final Context context;
+
+    public EstablishPollingDatabase(OperationInfo operationInfo, Context context) {
+        super(operationInfo);
         this.context = context;
     }
 
     @Override
-    protected void onExecute() {
+    protected boolean onExecute() {
+        //TODO 有时间引入执行是否成功判断
         DBData.createDatabaseEvn(context);
+        return true;
     }
-
-    private final Context context;
 }

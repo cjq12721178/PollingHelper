@@ -27,13 +27,57 @@ import com.example.kat.pollinghelper.fuction.config.PollingSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.processor.service.ManagerService;
+import com.example.kat.pollinghelper.ui.structure.QueryInfo;
 import com.example.kat.pollinghelper.ui.structure.RealTimePollingItem;
 import com.example.kat.pollinghelper.ui.toast.BeautyToast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends ManagedActivity implements AdapterView.OnItemClickListener {
+
+    private final int REQUEST_CODE_POLLING_CONFIG = 1000;
+    private final int REQUEST_CODE_SENSOR_CONFIG = 1001;
+    //private ListView lvFunction;
+    //private ArrayAdapter<String> arrayAdapter;
+    private List<FunctionListItem> functionListItems;
+    private FunctionListAdapter functionListAdapter;
+    private PollingBusiness pollingBusiness;
+    private Runnable updateFunctionListView = new Runnable() {
+        @Override
+        public void run() {
+            closeLoadingDialog();
+            List<PollingProjectConfig> projectConfigs = (List<PollingProjectConfig>)getArgument(ArgumentTag.AT_LIST_PROJECT_CONFIG);
+            List<PollingSensorConfig> sensorConfigs = (List<PollingSensorConfig>)getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG);
+            List<PollingProjectRecord> projectRecords = (List<PollingProjectRecord>)getArgument(ArgumentTag.AT_LIST_LATEST_PROJECT_RECORD);
+            if (pollingBusiness.generateProjectRecords(projectConfigs, sensorConfigs, projectRecords)) {
+                updateNotificationTime();
+                updateMainListView();
+            } else {
+                promptMessage(R.string.ui_prompt_import_project_and_sensor_configs_failed);
+            }
+        }
+    };
+    private BroadcastReceiver renewProjectRecordReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                String projectName = intent.getStringExtra(getString(R.string.tag_project_name));
+                for (int i = 0;i < functionListItems.size();++i) {
+                    FunctionListItem functionListItem = functionListItems.get(i);
+                    if (functionListItem.getType() == FunctionType.FT_REAL_TIME_POLLING) {
+                        RealTimePollingItem realTimePollingItem = (RealTimePollingItem)functionListItem;
+                        if (realTimePollingItem.getProjectRecord().getProjectConfig().getName().equals(projectName)) {
+                            realTimePollingItem.setProjectRecord(pollingBusiness.generateNewProjectRecord(realTimePollingItem.getProjectRecord().getProjectConfig()));
+                            functionListAdapter.notifyDataSetChanged();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,18 +106,15 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
     }
 
     @Override
-    protected void provideMaterial() {
-        putArgument(ArgumentTag.AT_RUNNABLE_IMPORT_PROJECT_AND_SENSOR_CONFIGS, updateFunctionListView);
-    }
-
-    @Override
     protected void onInitializeBusiness() {
         checkPollingDataBase();
         importProjectAndSensorConfigs();
     }
 
     private void importProjectAndSensorConfigs() {
-        notifyManager(OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS);
+        notifyManager(updateFunctionListView,
+                OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS,
+                OperaType.OT_QUERY_RECORD);
     }
 
     private void checkPollingDataBase() {
@@ -151,22 +192,6 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
         super.onDestroy();
     }
 
-    private Runnable updateFunctionListView = new Runnable() {
-        @Override
-        public void run() {
-            closeLoadingDialog();
-            List<PollingProjectConfig> projectConfigs = (List<PollingProjectConfig>)getArgument(ArgumentTag.AT_LIST_PROJECT_CONFIG);
-            List<PollingSensorConfig> sensorConfigs = (List<PollingSensorConfig>)getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG);
-            List<PollingProjectRecord> projectRecords = (List<PollingProjectRecord>)getArgument(ArgumentTag.AT_LIST_LATEST_PROJECT_RECORD);
-            if (pollingBusiness.generateProjectRecords(projectConfigs, sensorConfigs, projectRecords)) {
-                updateNotificationTime();
-                updateMainListView();
-            } else {
-                promptMessage(R.string.ui_prompt_import_project_and_sensor_configs_failed);
-            }
-        }
-    };
-
     private void updateNotificationTime() {
         Intent intent = new Intent(getString(R.string.ba_update_project_time));
         intent.putExtra(getString(R.string.tag_project_schedule_times), pollingBusiness.getProjectScheduleTimeInfo());
@@ -221,59 +246,25 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode >= 0 && requestCode < pollingBusiness.getProjectRecords().size()) {
-            //changeProjectRecordUIState(requestCode);
             functionListAdapter.notifyDataSetChanged();
         }else if (requestCode == REQUEST_CODE_POLLING_CONFIG && resultCode == RESULT_OK) {
             if (data.getBooleanExtra(ArgumentTag.RESTORE_PROJECT_AND_SENSOR_CONFIG, false)) {
                 showLoadingDialog(R.string.ui_import_project_and_sensor_configs);
-                notifyManager(OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS);
+                notifyManager(updateFunctionListView,
+                        OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS,
+                        OperaType.OT_QUERY_RECORD);
             } else if (data.getBooleanExtra(ArgumentTag.PROJECT_CONFIG_CHANGED, false)) {
                 updateFunctionListView.run();
             }
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SENSOR_CONFIG) {
             if (data.getBooleanExtra(ArgumentTag.RESTORE_PROJECT_AND_SENSOR_CONFIG, false)) {
                 showLoadingDialog(R.string.ui_import_project_and_sensor_configs);
-                notifyManager(OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS);
+                notifyManager(updateFunctionListView,
+                        OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS,
+                        OperaType.OT_QUERY_RECORD);
             }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    private void changeProjectRecordUIState(int projectIndex) {
-//        int listItemPos = getResources().getInteger(R.integer.main_activity_fix_item_count) + projectIndex;
-//        PollingProjectRecord currentProjectRecord = pollingBusiness.getProjectRecords().get(projectIndex);
-//        arrayAdapter.remove(arrayAdapter.getItem(listItemPos));
-//        arrayAdapter.insert(getPollingRecordLabel(currentProjectRecord.getProjectConfig().getName(), currentProjectRecord.getPollingState()), listItemPos);
-//        arrayAdapter.notifyDataSetChanged();
-        //TODO
-    }
-
-    private BroadcastReceiver renewProjectRecordReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                String projectName = intent.getStringExtra(getString(R.string.tag_project_name));
-                for (int i = 0;i < functionListItems.size();++i) {
-                    FunctionListItem functionListItem = functionListItems.get(i);
-                    if (functionListItem.getType() == FunctionType.FT_REAL_TIME_POLLING) {
-                        RealTimePollingItem realTimePollingItem = (RealTimePollingItem)functionListItem;
-                        if (realTimePollingItem.getProjectRecord().getProjectConfig().getName().equals(projectName)) {
-                            realTimePollingItem.setProjectRecord(pollingBusiness.generateNewProjectRecord(realTimePollingItem.getProjectRecord().getProjectConfig()));
-                            functionListAdapter.notifyDataSetChanged();
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    };
-
-    //private ListView lvFunction;
-    //private ArrayAdapter<String> arrayAdapter;
-    private List<FunctionListItem> functionListItems;
-    private FunctionListAdapter functionListAdapter;
-    private PollingBusiness pollingBusiness;
-    private final int REQUEST_CODE_POLLING_CONFIG = 1000;
-    private final int REQUEST_CODE_SENSOR_CONFIG = 1001;
 }
