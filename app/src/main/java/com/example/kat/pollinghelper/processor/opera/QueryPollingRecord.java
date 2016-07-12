@@ -4,6 +4,7 @@ import com.example.kat.pollinghelper.fuction.config.PollingItemConfig;
 import com.example.kat.pollinghelper.fuction.config.PollingMissionConfig;
 import com.example.kat.pollinghelper.fuction.config.PollingProjectConfig;
 import com.example.kat.pollinghelper.fuction.config.PollingState;
+import com.example.kat.pollinghelper.fuction.config.SimpleTime;
 import com.example.kat.pollinghelper.fuction.record.EvaluationType;
 import com.example.kat.pollinghelper.fuction.record.PollingItemRecord;
 import com.example.kat.pollinghelper.fuction.record.PollingMissionRecord;
@@ -31,19 +32,88 @@ public class QueryPollingRecord extends Operation {
     @Override
     protected boolean onPreExecute() {
         queryInfo = (QueryInfo)getValue(ArgumentTag.AT_QUERY_INFO);
-        return true;
+        return queryInfo != null;
     }
 
     @Override
     protected boolean onExecute() {
-        //TODO 根据queryInfo进行查询，详见该类注释
-        //注意，queryInfo可能为null，如果为null则部分查询参数通过getValue得到
-        //这个主要针对LATEST_RECORD_FOR_PER_PROJECT，具体见QueryInfo类注释
-        importProjectRecordLast7day();
+
+        List<PollingProjectRecord> result = null;
+        switch (queryInfo.getIntent()) {
+            case QueryInfo.LATEST_RECORD_FOR_PER_PROJECT: {
+                result = queryLatestProjectRecord(queryInfo.getProjectConfigs(),
+                        queryInfo.getBegScheduledTime());
+            } break;
+            case QueryInfo.WHOLE_RECORD_IN_SCHEDULED_TIME_RANGE: {
+                result = queryProjectRecordInScheduledTimeRange(queryInfo.getProjectConfigs(),
+                        queryInfo.getBegScheduledTime(), queryInfo.getEndScheduledTime());
+            } break;
+            case QueryInfo.WHOLE_RECORD_IN_FINISHED_TIME_RANGE: {
+                result = queryProjectRecordsInFinishedTimeRange(queryInfo.getProjectConfigs(),
+                        queryInfo.getBegFinishedTime(), queryInfo.getEndFinishedTime());
+            } break;
+            default:break;
+        }
+        setValue(ArgumentTag.AT_LIST_PROJECT_CONFIG, result);
+
         return true;
     }
 
+    private List<PollingProjectRecord> queryProjectRecordsInFinishedTimeRange(List<PollingProjectConfig> projectConfigs,
+                                                                              Date begFinishedTime,
+                                                                              Date endFinishedTime) {
+        if (projectConfigs == null) {
+            projectConfigs = getCurrentProjectConfigs();
+        }
 
+        List<PollingProjectRecord> result = null;
+
+        //TODO 查询projectConfigs所列项目在给出的完成时间范围内(begFinishedTime, endFinishedTime)的巡检记录
+        //注意，begFinishedTime为null意味着没有时间上限，即从最初到endFinishedTime的范围
+        //即从最初到endFinishedTime的范围为null则是从begFinishedTime到现在
+
+        return result;
+    }
+
+    private List<PollingProjectRecord> queryProjectRecordInScheduledTimeRange(List<PollingProjectConfig> projectConfigs,
+                                                                              Date begScheduledTime,
+                                                                              Date endScheduledTime) {
+        if (projectConfigs == null) {
+            projectConfigs = getCurrentProjectConfigs();
+        }
+
+        List<PollingProjectRecord> result = null;
+
+        //TODO 查询projectConfigs所列项目在给出的巡检时间范围内(begScheduledTime, endScheduledTime)的巡检记录
+        //注意，begScheduledTime为null意味着没有时间上限，即从最初到endScheduledTime的范围
+        //即从最初到endScheduledTime的范围为null则是从begScheduledTime到现在
+
+        return result;
+    }
+
+    private List<PollingProjectRecord> queryLatestProjectRecord(List<PollingProjectConfig> projectConfigs,
+                                                                Date begScheduledTime) {
+        if (projectConfigs == null) {
+            projectConfigs = getCurrentProjectConfigs();
+        }
+
+        if (begScheduledTime == null) {
+            begScheduledTime = new Date(System.currentTimeMillis() - SimpleTime.DAY_MILLISECONDS);
+        }
+
+        List<PollingProjectRecord> result = null;
+        //TODO 查询projectConfigs所列项目最近一次的巡检记录
+        //建议，可以通过巡检项目名称、任务名称和条目ID来定向搜索，这样就
+        //不用得到查询结果后还要使用getProjectConfig、getMissionConfig和getItemConfig这
+        //三个函数进行查找然后再打包了，当然这样做查询的效率可能会降低，但整体效率应该会提高
+        //个人建议，仅供参考，不喜勿喷，：）
+
+        return result;
+    }
+
+    private List<PollingProjectConfig> getCurrentProjectConfigs() {
+        return (List<PollingProjectConfig>)getValue(ArgumentTag.AT_LIST_PROJECT_CONFIG);
+    }
 
     private void importProjectRecordLast7day() {
         List<PollingProjectRecord> projectRecords = new ArrayList<>();
@@ -134,7 +204,7 @@ public class QueryPollingRecord extends Operation {
     }
 
     private PollingItemConfig getItermConfig(String name_project, String name_mission, String name_measure) {
-        List<PollingProjectConfig> projectConfigs = (List<PollingProjectConfig>)getValue(ArgumentTag.AT_LIST_PROJECT_CONFIG);
+        List<PollingProjectConfig> projectConfigs = getCurrentProjectConfigs();
 
         for (PollingProjectConfig iterm : projectConfigs){
             if (iterm.getName().equals(name_project)){
@@ -156,7 +226,7 @@ public class QueryPollingRecord extends Operation {
     }
 
     private PollingMissionConfig getMissionConfig(String name_project, String name_mission) {
-        List<PollingProjectConfig> projectConfigs = (List<PollingProjectConfig>)getValue(ArgumentTag.AT_LIST_PROJECT_CONFIG);
+        List<PollingProjectConfig> projectConfigs = getCurrentProjectConfigs();
 
         for (PollingProjectConfig iterm : projectConfigs){
             if (iterm.getName().equals(name_project)){
@@ -172,7 +242,7 @@ public class QueryPollingRecord extends Operation {
     }
 
     private PollingProjectConfig getProjectConfig(String name_project) {
-        List<PollingProjectConfig> projectConfigs = (List<PollingProjectConfig>)getValue(ArgumentTag.AT_LIST_PROJECT_CONFIG);
+        List<PollingProjectConfig> projectConfigs = getCurrentProjectConfigs();
 
         for (PollingProjectConfig iterm : projectConfigs){
             if (iterm.getName().equals(name_project))

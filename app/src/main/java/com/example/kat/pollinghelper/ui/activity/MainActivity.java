@@ -112,6 +112,7 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
     }
 
     private void importProjectAndSensorConfigs() {
+        putArgument(ArgumentTag.AT_QUERY_INFO, new QueryInfo().setIntent(QueryInfo.LATEST_RECORD_FOR_PER_PROJECT));
         notifyManager(updateFunctionListView,
                 OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS,
                 OperaType.OT_QUERY_RECORD);
@@ -250,18 +251,14 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
         }else if (requestCode == REQUEST_CODE_POLLING_CONFIG && resultCode == RESULT_OK) {
             if (data.getBooleanExtra(ArgumentTag.RESTORE_PROJECT_AND_SENSOR_CONFIG, false)) {
                 showLoadingDialog(R.string.ui_import_project_and_sensor_configs);
-                notifyManager(updateFunctionListView,
-                        OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS,
-                        OperaType.OT_QUERY_RECORD);
+                importProjectAndSensorConfigs();
             } else if (data.getBooleanExtra(ArgumentTag.PROJECT_CONFIG_CHANGED, false)) {
                 updateFunctionListView.run();
             }
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SENSOR_CONFIG) {
             if (data.getBooleanExtra(ArgumentTag.RESTORE_PROJECT_AND_SENSOR_CONFIG, false)) {
                 showLoadingDialog(R.string.ui_import_project_and_sensor_configs);
-                notifyManager(updateFunctionListView,
-                        OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS,
-                        OperaType.OT_QUERY_RECORD);
+                importProjectAndSensorConfigs();
             }
         }
 

@@ -1,5 +1,7 @@
 package com.example.kat.pollinghelper.ui.structure;
 
+import com.example.kat.pollinghelper.fuction.config.PollingProjectConfig;
+
 import java.util.Date;
 import java.util.List;
 
@@ -21,18 +23,18 @@ public class QueryInfo {
     public static final int WHOLE_RECORD_IN_FINISHED_TIME_RANGE = 2;
     //根据intent来判断做什么查询，参数为之后的常数
     private int intent;
-    private List<String> projectRecordNames;
+    private List<PollingProjectConfig> projectConfigs;
     private Date begScheduledTime;
     private Date endScheduledTime;
     private Date begFinishedTime;
     private Date endFinishedTime;
 
-    public List<String> getProjectRecordNames() {
-        return projectRecordNames;
+    public List<PollingProjectConfig> getProjectConfigs() {
+        return projectConfigs;
     }
 
-    public QueryInfo setProjectRecordNames(List<String> projectRecordNames) {
-        this.projectRecordNames = projectRecordNames;
+    public QueryInfo setProjectRecordNames(List<PollingProjectConfig> projectConfigs) {
+        this.projectConfigs = projectConfigs;
         return this;
     }
 

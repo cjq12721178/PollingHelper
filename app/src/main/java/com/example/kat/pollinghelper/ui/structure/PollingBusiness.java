@@ -10,6 +10,7 @@ import com.example.kat.pollinghelper.fuction.config.SimpleTime;
 import com.example.kat.pollinghelper.fuction.record.PollingItemRecord;
 import com.example.kat.pollinghelper.fuction.record.PollingMissionRecord;
 import com.example.kat.pollinghelper.fuction.record.PollingProjectRecord;
+import com.example.kat.pollinghelper.utility.IdentifierGenerator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,14 +72,14 @@ public class PollingBusiness {
         if (projectConfig == null)
             return null;
 
-        PollingProjectRecord projectRecord = new PollingProjectRecord(generateID(), projectConfig);
+        PollingProjectRecord projectRecord = new PollingProjectRecord(IdentifierGenerator.get64(), projectConfig);
         projectRecord.setScheduledTime(projectConfig.getCurrentScheduledTime(System.currentTimeMillis(), true));
         for (PollingMissionConfig missionConfig:
                 projectConfig.getMissions()) {
-            PollingMissionRecord missionRecord = new PollingMissionRecord(generateID(), missionConfig);
+            PollingMissionRecord missionRecord = new PollingMissionRecord(IdentifierGenerator.get64(), missionConfig);
             for (PollingItemConfig itemConfig :
                     missionConfig.getItems()) {
-                missionRecord.getItemRecords().add(new PollingItemRecord(generateID(), itemConfig));
+                missionRecord.getItemRecords().add(new PollingItemRecord(IdentifierGenerator.get64(), itemConfig));
             }
             projectRecord.getMissionRecords().add(missionRecord);
         }
@@ -97,10 +98,6 @@ public class PollingBusiness {
         }
 
         return null;
-    }
-
-    private long generateID() {
-        return new Date().getTime();
     }
 
     public List<PollingProjectRecord> getProjectRecords() {
