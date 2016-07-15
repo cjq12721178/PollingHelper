@@ -20,6 +20,7 @@ import com.example.kat.pollinghelper.fuction.record.PollingMissionRecord;
 import com.example.kat.pollinghelper.fuction.config.PollingState;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
+import com.example.kat.pollinghelper.utility.SimpleFormatter;
 
 import java.util.Date;
 import java.util.Timer;
@@ -97,7 +98,7 @@ public class PollingMissionRecordActivity extends ManagedActivity {
     }
 
     private String generateItemText(PollingItemRecord itemRecord) {
-        String itemText = itemRecord.getItemConfig().getMeasureName() + "（" + itemRecord.getItemConfig().getMeasureUnit() + "）"+ "：" + String.format("%.3f", itemRecord.getValue());
+        String itemText = itemRecord.getItemConfig().getMeasureName() + "（" + itemRecord.getItemConfig().getMeasureUnit() + "）"+ "：" + SimpleFormatter.to3Decimal(itemRecord.getValue());
         if (itemRecord.isOutOfAlarm()) {
             if (itemRecord.isOutOfDownAlarm()) {
                 itemText += generateItemOutOfAlarmInstruction(true, itemRecord.getItemConfig().getDownAlarm());

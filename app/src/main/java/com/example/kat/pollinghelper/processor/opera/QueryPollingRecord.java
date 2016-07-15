@@ -3,6 +3,7 @@ package com.example.kat.pollinghelper.processor.opera;
 import com.example.kat.pollinghelper.fuction.config.PollingItemConfig;
 import com.example.kat.pollinghelper.fuction.config.PollingMissionConfig;
 import com.example.kat.pollinghelper.fuction.config.PollingProjectConfig;
+import com.example.kat.pollinghelper.fuction.config.PollingSensorConfig;
 import com.example.kat.pollinghelper.fuction.config.PollingState;
 import com.example.kat.pollinghelper.fuction.config.SimpleTime;
 import com.example.kat.pollinghelper.fuction.record.EvaluationType;
@@ -54,7 +55,7 @@ public class QueryPollingRecord extends Operation {
             } break;
             default:break;
         }
-        setValue(ArgumentTag.AT_LIST_PROJECT_CONFIG, result);
+        setValue(ArgumentTag.AT_LIST_LATEST_PROJECT_RECORD, result);
 
         return true;
     }
@@ -88,7 +89,95 @@ public class QueryPollingRecord extends Operation {
         //注意，begScheduledTime为null意味着没有时间上限，即从最初到endScheduledTime的范围
         //即从最初到endScheduledTime的范围为null则是从begScheduledTime到现在
 
+        //debug
+        result = new ArrayList<>();
+        int id = 0;
+        int hours = 0;
+        double value = -13.2;
+        for (PollingProjectConfig projectConfig :
+                projectConfigs) {
+            for (int i = 0;i < 3;++i) {
+                PollingProjectRecord projectRecord = createProjectRecord(++id,
+                        projectConfig, getDate(++hours), getDate(++hours),
+                        EvaluationType.createFromIndex(hours % 3),
+                        getState(hours % 4), getResult(hours % 5));
+                for (PollingMissionConfig missionConfig :
+                        projectConfig.getMissions()) {
+                    PollingMissionRecord missionRecord = createMissionRecord(++id,
+                            missionConfig, getDate(++hours),
+                            EvaluationType.createFromIndex(hours % 3),
+                            getState(hours % 4), getResult(hours % 5));
+                    for (PollingItemConfig itemConfig :
+                            missionConfig.getItems()) {
+                        PollingItemRecord itemRecord = createItemRecord(++id,
+                                itemConfig, value += 1.3);
+                        missionRecord.getItemRecords().add(itemRecord);
+                    }
+                    projectRecord.getMissionRecords().add(missionRecord);
+                }
+                result.add(projectRecord);
+            }
+        }
         return result;
+    }
+
+    //debug
+    private String getResult(int index) {
+        switch (index) {
+            case 0:return "还行";
+            case 1:return "可以";
+            case 2:return "怎么可能";
+            case 3:return "就是这样的";
+            case 4:return "好吧，你赢了";
+            default:return "算你狠";
+        }
+    }
+    private PollingState getState(int index) {
+        switch (index) {
+            case 0:return PollingState.PS_UNDONE;
+            case 1:return PollingState.PS_UNKNOWN;
+            case 2:return PollingState.PS_RUNNING;
+            case 3:return PollingState.PS_COMPLETED;
+            default:return PollingState.PS_UNKNOWN;
+        }
+    }
+    private Date getDate(int hours) {
+        return new Date(System.currentTimeMillis() - hours * 60 * 60 * 1000);
+    }
+    private PollingProjectRecord createProjectRecord(long id,
+                                                     PollingProjectConfig projectConfig,
+                                                     Date finishTime,
+                                                     Date scheduleTime,
+                                                     EvaluationType type,
+                                                     PollingState state,
+                                                     String recordResult) {
+        PollingProjectRecord projectRecord = new PollingProjectRecord(id, projectConfig);
+        projectRecord.setScheduledTime(scheduleTime);
+        projectRecord.setFinishedTime(finishTime);
+        projectRecord.setEvaluationType(type);
+        projectRecord.setPollingState(state);
+        projectRecord.setRecordResult(recordResult);
+        return projectRecord;
+    }
+    private PollingMissionRecord createMissionRecord(long id,
+                                                     PollingMissionConfig missionConfig,
+                                                     Date finishTime,
+                                                     EvaluationType type,
+                                                     PollingState state,
+                                                     String recordResult) {
+        PollingMissionRecord missionRecord = new PollingMissionRecord(id, missionConfig);
+        missionRecord.setFinishedTime(finishTime);
+        missionRecord.setEvaluationType(type);
+        missionRecord.setPollingState(state);
+        missionRecord.setRecordResult(recordResult);
+        return missionRecord;
+    }
+    private PollingItemRecord createItemRecord(long id,
+                                               PollingItemConfig itemConfig,
+                                               double value) {
+        PollingItemRecord itemRecord = new PollingItemRecord(id, itemConfig);
+        itemRecord.setValue(value);
+        return itemRecord;
     }
 
     private List<PollingProjectRecord> queryLatestProjectRecord(List<PollingProjectConfig> projectConfigs,

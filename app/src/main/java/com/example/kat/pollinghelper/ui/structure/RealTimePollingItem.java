@@ -9,8 +9,7 @@ import android.widget.TextView;
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.fuction.config.PollingState;
 import com.example.kat.pollinghelper.fuction.record.PollingProjectRecord;
-
-import java.text.SimpleDateFormat;
+import com.example.kat.pollinghelper.utility.SimpleFormatter;
 
 /**
  * Created by KAT on 2016/7/5.
@@ -28,7 +27,6 @@ public class RealTimePollingItem extends FunctionListItem {
     public RealTimePollingItem(PollingProjectRecord projectRecord) {
         super(FunctionType.FT_REAL_TIME_POLLING);
         this.projectRecord = projectRecord;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     }
 
     @Override
@@ -47,8 +45,8 @@ public class RealTimePollingItem extends FunctionListItem {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         viewHolder.projectName.setText(projectRecord.getProjectConfig().getName());
-        viewHolder.scheduleTime.setText(SCHEDULE_TIME_PREFIX + dateFormat.format(projectRecord.getScheduledTime()));
-        viewHolder.finishedTime.setText(FINISH_TIME_PREFIX + (projectRecord.getFinishedTime() != null ? dateFormat.format(projectRecord.getFinishedTime()) : ""));
+        viewHolder.scheduleTime.setText(SCHEDULE_TIME_PREFIX + SimpleFormatter.format(projectRecord.getScheduledTime()));
+        viewHolder.finishedTime.setText(FINISH_TIME_PREFIX + SimpleFormatter.format(projectRecord.getFinishedTime()));
         viewHolder.finishState.setText(FINISH_STATE_PREFIX + projectRecord.getPollingState().toString());
         viewHolder.wholeItem.setBackgroundColor(getProperColor());
         return convertView;
@@ -87,6 +85,5 @@ public class RealTimePollingItem extends FunctionListItem {
     private static int COLOR_RECORD_NEW;
     private static int COLOR_RECORD_COMPLETED;
     private static int COLOR_RECORD_UNDONE;
-    private SimpleDateFormat dateFormat;
     private PollingProjectRecord projectRecord;
 }

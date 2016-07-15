@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@android:drawable/divider_horizontal_dim_dark"
+    android:showDividers="middle">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="6"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_record_project_name"
+        android:textSize="@dimen/text_size_listitem_record_project"
+        android:text="@string/ui_tv_record_project_name"
+        android:background="@color/background_record_header"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_margin="@dimen/text_margin_record"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_record_project_schedule_time"
+        android:textSize="@dimen/text_size_listitem_record_project"
+        android:text="@string/ui_tv_record_schedule_time"
+        android:background="@color/background_record_header"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_margin="@dimen/text_margin_record"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="8"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_record_project_finish_time"
+        android:textSize="@dimen/text_size_listitem_record_project"
+        android:text="@string/ui_tv_record_finish_time"
+        android:background="@color/background_record_header"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_margin="@dimen/text_margin_record"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_record_project_result"
+        android:textSize="@dimen/text_size_listitem_record_project"
+        android:text="@string/ui_tv_record_result"
+        android:background="@color/background_record_header"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_margin="@dimen/text_margin_record"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_record_project_evaluation"
+        android:textSize="@dimen/text_size_listitem_record_project"
+        android:text="@string/ui_tv_record_evaluation"
+        android:background="@color/background_record_header"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_margin="@dimen/text_margin_record"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_record_project_remark"
+        android:textSize="@dimen/text_size_listitem_record_project"
+        android:text="@string/ui_tv_record_remark"
+        android:background="@color/background_record_header"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_margin="@dimen/text_margin_record"/>
+</LinearLayout>

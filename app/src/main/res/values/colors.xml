@@ -7,4 +7,9 @@
     <color name="transparent_blue">#7F0000FF</color>
     <color name="transparent_red">#7FFF0000</color>
     <color name="transparent_green">#7F00FF00</color>
+    <color name="background_record_header">#E98B70</color>
+    <color name="background_record_project">#CF86F7</color>
+    <color name="background_record_mission">#9EDED0</color>
+    <color name="background_record_item_normal">#94F887</color>
+    <color name="background_record_item_warning">#B0F51F13</color>
 </resources>
