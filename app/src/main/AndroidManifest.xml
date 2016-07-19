@@ -42,7 +42,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".ui.activity.PollingProjectRecordActivity"
+            android:name=".ui.activity.ScoutProjectRecordActivity"
             android:label="@string/activity_title_polling_event" />
         <activity
             android:name=".ui.activity.WarningInformationActivity"
@@ -53,18 +53,18 @@
         <activity
             android:name=".ui.activity.FunctionSettingActivity"
             android:label="@string/activity_title_function_setting" />
-        <activity android:name=".ui.activity.PollingMissionRecordActivity" />
+        <activity android:name=".ui.activity.ScoutMissionRecordActivity" />
         <activity
-            android:name=".ui.activity.PollingConfigActivity"
+            android:name=".ui.activity.ScoutConfigActivity"
             android:label="@string/activity_title_polling_config" />
         <activity
-            android:name=".ui.activity.PollingProjectConfigActivity"
+            android:name=".ui.activity.ScoutProjectConfigActivity"
             android:label="@string/activity_title_polling_config_project" />
         <activity
-            android:name=".ui.activity.PollingMissionConfigActivity"
+            android:name=".ui.activity.ScoutMissionConfigActivity"
             android:label="@string/activity_title_polling_config_mission" />
         <activity
-            android:name=".ui.activity.PollingItemConfigActivity"
+            android:name=".ui.activity.ScoutItemConfigActivity"
             android:label="@string/activity_title_polling_config_item" />
         <activity
             android:name=".ui.activity.SensorConfigActivity"
@@ -86,7 +86,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.activity.PollingRecordActivity"></activity>
+        <activity
+            android:name=".ui.activity.ScoutRecordActivity"
+            android:label="@string/activity_title_polling_record"/>
     </application>
 
 </manifest>

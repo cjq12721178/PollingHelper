@@ -4,41 +4,28 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.fuction.record.EvaluationType;
-import com.example.kat.pollinghelper.fuction.config.PollingState;
+import com.example.kat.pollinghelper.structure.record.EvaluationType;
+import com.example.kat.pollinghelper.structure.record.ScoutRecordState;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.processor.opera.OperationInfo;
 import com.example.kat.pollinghelper.processor.service.ManagerService;
+import com.example.kat.pollinghelper.ui.dialog.AlternativeDialog;
 import com.example.kat.pollinghelper.ui.dialog.LoadingDialog;
 import com.example.kat.pollinghelper.ui.toast.BeautyToast;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Created by KAT on 2016/5/6.
  */
 public class ManagedActivity extends AppCompatActivity {
-
-    private Handler handler;
-    private LoadingDialog loadingDialog;
-    private boolean initial;
-    private OperationInfo operationInfo;
-    private ManagerServiceConnection managerServiceConnection;
 
     protected void onInitializeBusiness() {
     }
@@ -106,7 +93,7 @@ public class ManagedActivity extends AppCompatActivity {
         return initial;
     }
 
-    protected String getPollingRecordLabel(String eventName, PollingState state) {
+    protected String getPollingRecordLabel(String eventName, ScoutRecordState state) {
         return eventName + "（" + state.toString() + "）";
     }
 
@@ -144,43 +131,6 @@ public class ManagedActivity extends AppCompatActivity {
             }
         }
         return id;
-    }
-
-    protected Bitmap getBitmapFromByteArray(byte[] imageData) {
-        return BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-    }
-
-    public InputStream uriToInputStream(Uri uri) {
-        InputStream result = null;
-        try {
-            result = getContentResolver().openInputStream(uri);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    // 将InputStream转换成byte[]
-    public byte[] uriToByteArray(Uri uri){
-        byte[] result = null;
-        InputStream inputStream = uriToInputStream(uri);
-
-        if (inputStream != null) {
-            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-            int bufferSize = 1024;
-            byte[] buffer = new byte[bufferSize];
-            int len = 0;
-            try {
-                while ((len = inputStream.read(buffer)) != -1) {
-                    byteBuffer.write(buffer, 0, len);
-                }
-                result = byteBuffer.toByteArray();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return result;
     }
 
     protected void promptMessage(int stringID) {
@@ -226,4 +176,28 @@ public class ManagedActivity extends AppCompatActivity {
 
         }
     }
+
+    protected void showAlternativeDialog(int resId) {
+        showAlternativeDialog(resId, null, null);
+    }
+
+    protected void showAlternativeDialog(int resId, View.OnClickListener confirm) {
+        showAlternativeDialog(resId, confirm, null);
+    }
+
+    protected void showAlternativeDialog(int resId, View.OnClickListener confirm, View.OnClickListener cancel) {
+        if (alternativeDialog == null) {
+            alternativeDialog = new AlternativeDialog();
+        }
+        alternativeDialog.setOnConfirmClickListener(confirm)
+                         .setOnCancelClickListener(cancel)
+                         .show(getSupportFragmentManager(), getString(resId));
+    }
+
+    private AlternativeDialog alternativeDialog;
+    private Handler handler;
+    private LoadingDialog loadingDialog;
+    private boolean initial;
+    private OperationInfo operationInfo;
+    private ManagerServiceConnection managerServiceConnection;
 }

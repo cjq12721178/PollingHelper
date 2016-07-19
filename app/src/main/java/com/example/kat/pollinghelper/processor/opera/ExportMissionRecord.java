@@ -1,9 +1,7 @@
 package com.example.kat.pollinghelper.processor.opera;
 
-import android.util.Log;
-
-import com.example.kat.pollinghelper.fuction.record.PollingItemRecord;
-import com.example.kat.pollinghelper.fuction.record.PollingMissionRecord;
+import com.example.kat.pollinghelper.structure.record.ScoutItemRecord;
+import com.example.kat.pollinghelper.structure.record.ScoutMissionRecord;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordIterm;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordMission;
 
@@ -12,7 +10,7 @@ import com.example.kat.pollinghelper.io.sqlite.InspRecordMission;
  */
 public class ExportMissionRecord extends Operation {
 
-    private PollingMissionRecord missionRecord;
+    private ScoutMissionRecord missionRecord;
 
     public ExportMissionRecord(OperationInfo operationInfo) {
         super(operationInfo);
@@ -20,7 +18,7 @@ public class ExportMissionRecord extends Operation {
 
     @Override
     protected boolean onPreExecute() {
-        missionRecord = (PollingMissionRecord)getValue(ArgumentTag.AT_MISSION_RECORD_CURRENT);
+        missionRecord = (ScoutMissionRecord)getValue(ArgumentTag.AT_MISSION_RECORD_CURRENT);
         return true;
     }
 
@@ -54,7 +52,7 @@ public class ExportMissionRecord extends Operation {
         missionRecordDB.deleteDB(missionRecordDB.getId());
         missionRecordDB.addDB(missionRecordDB);
 
-        for (PollingItemRecord itermRecord:missionRecord.getItemRecords()){
+        for (ScoutItemRecord itermRecord:missionRecord.getItemRecords()){
             InspRecordIterm itermRecordDB = new InspRecordIterm();
             itermRecordDB.setId_mission_record(missionRecordDB.getId());
             itermRecordDB.setId(itermRecord.getId());

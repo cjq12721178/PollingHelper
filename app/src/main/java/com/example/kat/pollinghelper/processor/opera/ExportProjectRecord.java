@@ -1,10 +1,8 @@
 package com.example.kat.pollinghelper.processor.opera;
 
-import android.util.Log;
-
-import com.example.kat.pollinghelper.fuction.record.PollingItemRecord;
-import com.example.kat.pollinghelper.fuction.record.PollingMissionRecord;
-import com.example.kat.pollinghelper.fuction.record.PollingProjectRecord;
+import com.example.kat.pollinghelper.structure.record.ScoutItemRecord;
+import com.example.kat.pollinghelper.structure.record.ScoutMissionRecord;
+import com.example.kat.pollinghelper.structure.record.ScoutProjectRecord;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordIterm;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordMission;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordProject;
@@ -14,7 +12,7 @@ import com.example.kat.pollinghelper.io.sqlite.InspRecordProject;
  */
 public class ExportProjectRecord extends Operation {
 
-    private PollingProjectRecord projectRecord;
+    private ScoutProjectRecord projectRecord;
 
     public ExportProjectRecord(OperationInfo operationInfo) {
         super(operationInfo);
@@ -22,7 +20,7 @@ public class ExportProjectRecord extends Operation {
 
     @Override
     protected boolean onPreExecute() {
-        projectRecord = (PollingProjectRecord)getValue(ArgumentTag.AT_PROJECT_RECORD_CURRENT);
+        projectRecord = (ScoutProjectRecord)getValue(ArgumentTag.AT_PROJECT_RECORD_CURRENT);
         return projectRecord != null;
     }
 
@@ -53,7 +51,7 @@ public class ExportProjectRecord extends Operation {
         projectRecordDB.setDesc(projectRecord.getRecordResult());
 
         int i=0;
-        for(PollingMissionRecord missionRecord:projectRecord.getMissionRecords()){
+        for(ScoutMissionRecord missionRecord:projectRecord.getMissionRecords()){
             InspRecordMission missionRecordDB = new InspRecordMission();
 
             missionRecordDB.setId(missionRecord.getId());
@@ -67,7 +65,7 @@ public class ExportProjectRecord extends Operation {
             missionRecordDB.deleteDB(missionRecordDB.getId());
             missionRecordDB.addDB(missionRecordDB);
 
-            for (PollingItemRecord itermRecord:missionRecord.getItemRecords()){
+            for (ScoutItemRecord itermRecord:missionRecord.getItemRecords()){
                 InspRecordIterm itermRecordDB = new InspRecordIterm();
                 itermRecordDB.setId_mission_record(missionRecordDB.getId());
                 itermRecordDB.setId(itermRecord.getId());

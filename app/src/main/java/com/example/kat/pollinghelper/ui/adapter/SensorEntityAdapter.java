@@ -4,14 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.ui.structure.PollingConfigListItemSensorEntity;
+import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellSensorEntity;
 
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class SensorEntityAdapter extends BaseAdapter {
         private CheckBox choice;
     }
 
-    public SensorEntityAdapter(Context context, List<PollingConfigListItemSensorEntity> sensorEntities) {
+    public SensorEntityAdapter(Context context, List<ScoutCellSensorEntity> sensorEntities) {
         inflater = LayoutInflater.from(context);
         this.sensorEntities = sensorEntities;
         inDeleteChoiceState = false;
@@ -41,7 +39,7 @@ public class SensorEntityAdapter extends BaseAdapter {
     }
 
     @Override
-    public PollingConfigListItemSensorEntity getItem(int position) {
+    public ScoutCellSensorEntity getItem(int position) {
         return sensorEntities.get(position);
     }
 
@@ -62,7 +60,7 @@ public class SensorEntityAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
-        PollingConfigListItemSensorEntity sensorEntity = getItem(position);
+        ScoutCellSensorEntity sensorEntity = getItem(position);
         viewHolder.name.setText(sensorEntity.getSensorConfig().getName());
         viewHolder.choice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,5 +92,5 @@ public class SensorEntityAdapter extends BaseAdapter {
     private OnItemCheckClickedListener onItemCheckClickedListener;
     private boolean inDeleteChoiceState;
     private LayoutInflater inflater;
-    private List<PollingConfigListItemSensorEntity> sensorEntities;
+    private List<ScoutCellSensorEntity> sensorEntities;
 }

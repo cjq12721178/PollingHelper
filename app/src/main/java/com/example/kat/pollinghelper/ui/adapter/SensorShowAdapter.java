@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.fuction.config.PollingSensorConfig;
+import com.example.kat.pollinghelper.structure.config.ScoutSensorConfig;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class SensorShowAdapter extends BaseAdapter {
         TextView descriptionContent;
     }
 
-    public SensorShowAdapter(Context context, List<PollingSensorConfig> sensorConfigs) {
+    public SensorShowAdapter(Context context, List<ScoutSensorConfig> sensorConfigs) {
         this.sensorConfigs = sensorConfigs;
         layoutInflater = LayoutInflater.from(context);
         currentSelectedIndex = -1;
@@ -39,7 +39,7 @@ public class SensorShowAdapter extends BaseAdapter {
     }
 
     @Override
-    public PollingSensorConfig getItem(int position) {
+    public ScoutSensorConfig getItem(int position) {
         return sensorConfigs.get(position);
     }
 
@@ -64,7 +64,7 @@ public class SensorShowAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
-        PollingSensorConfig sensorConfig = getItem(position);
+        ScoutSensorConfig sensorConfig = getItem(position);
         viewHolder.nameLabel.setText(R.string.ui_tv_sensor_name_label);
         viewHolder.addressLabel.setText(R.string.ui_tv_sensor_address_label);
         viewHolder.descriptionLabel.setText(R.string.ui_tv_sensor_description_label);
@@ -105,7 +105,7 @@ public class SensorShowAdapter extends BaseAdapter {
     }
 
     public void selectItem(String sensorName) {
-        for (PollingSensorConfig sensorConfig :
+        for (ScoutSensorConfig sensorConfig :
                 sensorConfigs) {
             if (sensorName.equals(sensorConfig.getName())) {
                 lastSelectedIndex = currentSelectedIndex;
@@ -116,7 +116,7 @@ public class SensorShowAdapter extends BaseAdapter {
 
     private int lastSelectedIndex;
     private int currentSelectedIndex;
-    private List<PollingSensorConfig> sensorConfigs;
+    private List<ScoutSensorConfig> sensorConfigs;
     private AlertDialog alertDialog;
     private LayoutInflater layoutInflater;
 }

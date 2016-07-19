@@ -3,21 +3,23 @@ package com.example.kat.pollinghelper.ui.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.fuction.config.PollingSensorConfig;
+import com.example.kat.pollinghelper.structure.cell.scout.ScoutEntity;
+import com.example.kat.pollinghelper.structure.config.ScoutSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.ui.adapter.BaseConfigAdapter;
 import com.example.kat.pollinghelper.ui.dialog.EditDialog;
-import com.example.kat.pollinghelper.ui.structure.PollingConfigListItemClause;
-import com.example.kat.pollinghelper.ui.structure.PollingConfigListItemSensorEntity;
-import com.example.kat.pollinghelper.ui.structure.PollingConfigState;
+import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellClause;
+import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellSensorEntity;
+import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SensorConfigActivity extends ManagedActivity {
+public class SensorConfigActivity extends ScoutConfigBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,119 +29,97 @@ public class SensorConfigActivity extends ManagedActivity {
 
     @Override
     protected void onInitializeBusiness() {
-        initializeSensorEntity();
+        super.onInitializeBusiness();
         importSensorConfigs();
-        generateItemClauses();
-        createEditDialog();
-        initializeSensorConfigListView();
     }
 
     private void importSensorConfigs() {
-        //sensorConfigs = operationInfo.getSensorConfigs();
-        sensorConfigs = (List<PollingSensorConfig>)getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG);
-    }
-
-    private void initializeSensorConfigListView() {
-        baseConfigAdapter = new BaseConfigAdapter(this, itemClauses);
-        ListView listView = (ListView)findViewById(R.id.lv_sensor_config);
-        listView.setAdapter(baseConfigAdapter);
-        listView.setOnItemClickListener(itemConfigClickListener);
-    }
-
-    private void createEditDialog() {
-        editDialog = new EditDialog();
-        editDialog.setOnClickPositiveListener(onEditDialogPositiveClickListener);
-    }
-
-    private void generateItemClauses() {
-        itemClauses = new ArrayList<>();
-        itemClauses.add(new PollingConfigListItemClause(getString(R.string.ui_tv_sensor_name_label),
-                sensorEntity.getSensorConfig().getName()));
-        itemClauses.add(new PollingConfigListItemClause(getString(R.string.ui_tv_sensor_address_label),
-                sensorEntity.getSensorConfig().getAddress()));
-        itemClauses.add(new PollingConfigListItemClause(getString(R.string.ui_tv_sensor_description_label),
-                sensorEntity.getSensorConfig().getDescription()));
-    }
-
-    private void initializeSensorEntity() {
-        //sensorEntity = operationInfo.getCurrentSensorEntity();
-        sensorEntity = (PollingConfigListItemSensorEntity)getArgument(ArgumentTag.AT_SENSOR_ENTITY_CURRENT);
-        if (sensorEntity == null) {
-            sensorEntity = new PollingConfigListItemSensorEntity(new PollingSensorConfig());
-            sensorEntity.setState(PollingConfigState.PCS_NEW);
-        }
+        sensorConfigs = (List<ScoutSensorConfig>)getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG);
     }
 
     @Override
-    public void onBackPressed() {
-        if (sensorEntity.getState() == PollingConfigState.PCS_UNKNOWN) {
-            promptMessage(R.string.ui_prompt_sensor_config_unknown_error);
-            setResult(RESULT_CANCELED);
-        } else {
-            if (!updateSensorEntity()) {
-                return;
-            }
-            //operationInfo.setCurrentSensorEntity(sensorEntity);
-            putArgument(ArgumentTag.AT_SENSOR_ENTITY_CURRENT, sensorEntity);
-            setResult(RESULT_OK);
-        }
-        super.onBackPressed();
+    protected BaseAdapter initListView() {
+        BaseConfigAdapter baseConfigAdapter = new BaseConfigAdapter(this, getClauses());
+        ListView listView = (ListView)findViewById(R.id.lv_sensor_config);
+        listView.setAdapter(baseConfigAdapter);
+        listView.setOnItemClickListener(itemConfigClickListener);
+        return baseConfigAdapter;
     }
 
-    private boolean updateSensorEntity() {
-        PollingConfigListItemClause sensorNameClause = getContent(R.string.ui_tv_sensor_name_label);
+    @Override
+    protected ScoutCellSensorEntity getEntity() {
+        return (ScoutCellSensorEntity)super.getEntity();
+    }
+
+    @Override
+    protected List<ScoutCellClause> createClauses() {
+        List<ScoutCellClause> clauses = new ArrayList<>();
+        ScoutSensorConfig sensorConfig = getEntity().getSensorConfig();
+        clauses.add(new ScoutCellClause(getString(R.string.ui_tv_sensor_name_label),
+                sensorConfig.getName()));
+        clauses.add(new ScoutCellClause(getString(R.string.ui_tv_sensor_address_label),
+                sensorConfig.getAddress()));
+        clauses.add(new ScoutCellClause(getString(R.string.ui_tv_sensor_description_label),
+                sensorConfig.getDescription()));
+        return clauses;
+    }
+
+    @Override
+    protected ScoutEntity importEntity() {
+        ScoutCellSensorEntity sensorEntity = (ScoutCellSensorEntity)getArgument(ArgumentTag.AT_SCOUT_ENTITY_FEEDBACK);
+        if (sensorEntity == null) {
+            sensorEntity = new ScoutCellSensorEntity(new ScoutSensorConfig());
+            sensorEntity.setState(ScoutCellState.PCS_NEW);
+            setFirstEdit(true);
+        } else {
+            setFirstEdit(false);
+        }
+        return sensorEntity;
+    }
+
+    @Override
+    protected boolean updateEntity() {
+        ScoutCellClause sensorNameClause = getContent(R.string.ui_tv_sensor_name_label);
         if (sensorNameClause.getContentString().isEmpty()) {
-            promptMessage(R.string.ui_prompt_sensor_name_empty);
+            processConfigError(R.string.ui_prompt_sensor_name_empty);
             return false;
         }
 
         if (isSensorConfigNameRepeated(sensorNameClause.getContentString())) {
-            promptMessage(R.string.ui_prompt_sensor_name_repetition);
+            processConfigError(R.string.ui_prompt_sensor_name_repetition);
             return false;
         }
 
-        PollingConfigListItemClause sensorAddressClause = getContent(R.string.ui_tv_sensor_address_label);
+        ScoutCellClause sensorAddressClause = getContent(R.string.ui_tv_sensor_address_label);
         if (sensorAddressClause.getContentString().isEmpty()) {
-            promptMessage(R.string.ui_prompt_sensor_address_empty);
+            processConfigError(R.string.ui_prompt_sensor_address_empty);
             return false;
         }
 
         if (isSensorAddressRepeated(sensorAddressClause.getContentString())) {
-            promptMessage(R.string.ui_prompt_sensor_address_repetition);
+            processConfigError(R.string.ui_prompt_sensor_address_repetition);
             return false;
         }
 
-        PollingConfigListItemClause descriptionClause = getContent(R.string.ui_tv_sensor_description_label);
-        PollingSensorConfig sensorConfig = sensorEntity.getSensorConfig();
+        ScoutCellClause descriptionClause = getContent(R.string.ui_tv_sensor_description_label);
+        ScoutCellSensorEntity sensorEntity = getEntity();
+        ScoutSensorConfig sensorConfig = sensorEntity.getSensorConfig();
         sensorConfig.setName((String)sensorNameClause.getContent());
-        if (sensorEntity.getState() == PollingConfigState.PCS_NEW) {
+        if (sensorEntity.getState() == ScoutCellState.PCS_NEW) {
             sensorEntity.setName(sensorConfig.getName());
         }
         sensorConfig.setAddress((String)sensorAddressClause.getContent());
         sensorConfig.setDescription((String)descriptionClause.getContent());
 
-        if (sensorEntity.getState() == PollingConfigState.PCS_INVARIANT) {
-            if (isSensorConfigModified()) {
-                sensorEntity.setState(PollingConfigState.PCS_MODIFIED);
-            }
-        }
         return true;
     }
 
-    public boolean isSensorConfigModified() {
-        for (PollingConfigListItemClause itemClause :
-                itemClauses) {
-            if (itemClause.isModified()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean isSensorAddressRepeated(String newAddress) {
-        for (PollingSensorConfig sensorConfig :
+        ScoutSensorConfig currentSensorConfig = getEntity().getSensorConfig();
+        for (ScoutSensorConfig sensorConfig :
                 sensorConfigs) {
-            if (sensorConfig.getAddress().equals(newAddress) && sensorConfig != sensorEntity.getSensorConfig()) {
+            if (sensorConfig.getAddress().equals(newAddress) &&
+                    sensorConfig != currentSensorConfig) {
                 return true;
             }
         }
@@ -147,48 +127,24 @@ public class SensorConfigActivity extends ManagedActivity {
     }
 
     private boolean isSensorConfigNameRepeated(String newSensorName) {
-        for (PollingSensorConfig sensorConfig :
+        ScoutSensorConfig currentSensorConfig = getEntity().getSensorConfig();
+        for (ScoutSensorConfig sensorConfig :
                 sensorConfigs) {
-            if (sensorConfig.getName().equals(newSensorName) && sensorConfig != sensorEntity.getSensorConfig()) {
+            if (sensorConfig.getName().equals(newSensorName) &&
+                    sensorConfig != currentSensorConfig) {
                 return true;
             }
         }
         return false;
     }
 
-    private PollingConfigListItemClause getContent(int stringID) {
-        PollingConfigListItemClause result = null;
-        final String label = getString(stringID);
-        for (PollingConfigListItemClause itemClause :
-                itemClauses) {
-            if (itemClause.getLabel().equals(label)) {
-                result = itemClause;
-                break;
-            }
-        }
-        return result;
-    }
-
     private AdapterView.OnItemClickListener itemConfigClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            currentItemClause = itemClauses.get(position);
-            editDialog.show(getSupportFragmentManager(), currentItemClause.getLabel(), currentItemClause.getContentString());
+            ScoutCellClause currentItemClause = getCurrentClause(position);
+            showEditDialog(currentItemClause.getLabel(), currentItemClause.getContentString());
         }
     };
 
-    private EditDialog.OnClickPositiveListener onEditDialogPositiveClickListener = new EditDialog.OnClickPositiveListener() {
-        @Override
-        public void onClick(String content) {
-            currentItemClause.setContent(content);
-            baseConfigAdapter.notifyDataSetChanged();
-        }
-    };
-
-    private EditDialog editDialog;
-    private PollingConfigListItemClause currentItemClause;
-    private BaseConfigAdapter baseConfigAdapter;
-    private PollingConfigListItemSensorEntity sensorEntity;
-    private List<PollingConfigListItemClause> itemClauses;
-    private List<PollingSensorConfig> sensorConfigs;
+    private List<ScoutSensorConfig> sensorConfigs;
 }

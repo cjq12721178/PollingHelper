@@ -16,16 +16,16 @@ import com.example.kat.pollinghelper.communicator.Udp;
 import com.example.kat.pollinghelper.data.DataStorage;
 import com.example.kat.pollinghelper.io.sqlite.DBData;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
-import com.example.kat.pollinghelper.processor.opera.EstablishPollingDatabase;
+import com.example.kat.pollinghelper.processor.opera.EstablishScoutDatabase;
 import com.example.kat.pollinghelper.processor.opera.ExportMissionRecord;
-import com.example.kat.pollinghelper.processor.opera.ExportPollingConfig;
+import com.example.kat.pollinghelper.processor.opera.ExportScoutConfig;
 import com.example.kat.pollinghelper.processor.opera.ExportProjectRecord;
 import com.example.kat.pollinghelper.processor.opera.ExportSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ImportProjectAndSensorConfigs;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.processor.opera.Operation;
 import com.example.kat.pollinghelper.processor.opera.OperationInfo;
-import com.example.kat.pollinghelper.processor.opera.QueryPollingRecord;
+import com.example.kat.pollinghelper.processor.opera.QueryScoutRecord;
 import com.example.kat.pollinghelper.processor.opera.ScanBleSensor;
 import com.example.kat.pollinghelper.processor.opera.UpdateSensorData;
 import com.example.kat.pollinghelper.protocol.BaseStationUdpProtocol;
@@ -145,12 +145,12 @@ public class ManagerService extends Service {
         operationMap.put(OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS, new ImportProjectAndSensorConfigs(operationInfo, this));
         operationMap.put(OperaType.OT_EXPORT_POLLING_PROJECT_RECORD, new ExportProjectRecord(operationInfo));
         operationMap.put(OperaType.OT_UPDATE_SENSOR_DATA, new UpdateSensorData(operationInfo, dataStorage));
-        operationMap.put(OperaType.OT_EXPORT_POLLING_CONFIGS, new ExportPollingConfig(operationInfo));
+        operationMap.put(OperaType.OT_EXPORT_POLLING_CONFIGS, new ExportScoutConfig(operationInfo));
         operationMap.put(OperaType.OT_EXPORT_SENSOR_CONFIG, new ExportSensorConfig(operationInfo));
         operationMap.put(OperaType.OT_EXPORT_POLLING_MISSION_RECORD, new ExportMissionRecord(operationInfo));
-        operationMap.put(OperaType.OT_CREATE_POLLING_DATABASE, new EstablishPollingDatabase(operationInfo, this));
+        operationMap.put(OperaType.OT_CREATE_POLLING_DATABASE, new EstablishScoutDatabase(operationInfo, this));
         operationMap.put(OperaType.OT_SCAN_BLE_SENSOR, new ScanBleSensor(operationInfo, ble, getResources().getInteger(R.integer.time_duration_scan_ble)));
-        operationMap.put(OperaType.OT_QUERY_RECORD, new QueryPollingRecord(operationInfo));
+        operationMap.put(OperaType.OT_QUERY_RECORD, new QueryScoutRecord(operationInfo));
     }
 
     private void initOperationInfo() {

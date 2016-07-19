@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".ui.activity.PollingMissionRecordActivity">
+    tools:context=".ui.activity.ScoutMissionRecordActivity">
 
     <RelativeLayout
         android:id="@+id/rlv_polling_mission"

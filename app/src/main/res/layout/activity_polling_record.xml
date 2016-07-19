@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.kat.pollinghelper.ui.activity.PollingRecordActivity">
+    tools:context=".ui.activity.ScoutRecordActivity">
 
     <include layout="@layout/listitem_record_project"
         android:id="@+id/include_record_header"/>

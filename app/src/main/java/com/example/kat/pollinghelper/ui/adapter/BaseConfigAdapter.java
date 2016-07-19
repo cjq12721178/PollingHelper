@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.ui.structure.PollingConfigListItemClause;
+import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellClause;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class BaseConfigAdapter extends BaseAdapter {
         private TextView content;
     }
 
-    public BaseConfigAdapter(Context context, List<PollingConfigListItemClause> itemClauses) {
+    public BaseConfigAdapter(Context context, List<ScoutCellClause> itemClauses) {
         this.itemClauses = itemClauses;
         itemConfigInflater = LayoutInflater.from(context);
     }
@@ -32,7 +32,7 @@ public class BaseConfigAdapter extends BaseAdapter {
     }
 
     @Override
-    public PollingConfigListItemClause getItem(int position) {
+    public ScoutCellClause getItem(int position) {
         return itemClauses.get(position);
     }
 
@@ -53,7 +53,7 @@ public class BaseConfigAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
-        PollingConfigListItemClause currentItemClause = getItem(position);
+        ScoutCellClause currentItemClause = getItem(position);
         viewHolder.label.setText(currentItemClause.getLabel());
         viewHolder.content.setText(currentItemClause.getContentString());
         if (currentItemClause.isModified()) {
@@ -63,6 +63,6 @@ public class BaseConfigAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private List<PollingConfigListItemClause> itemClauses;
+    private List<ScoutCellClause> itemClauses;
     private LayoutInflater itemConfigInflater;
 }

@@ -15,24 +15,23 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.kat.pollinghelper.structure.config.ScoutProjectConfig;
 import com.example.kat.pollinghelper.processor.service.NotificationService;
 import com.example.kat.pollinghelper.ui.adapter.FunctionListAdapter;
-import com.example.kat.pollinghelper.ui.structure.ElseFunctionListItem;
-import com.example.kat.pollinghelper.ui.structure.FunctionListItem;
-import com.example.kat.pollinghelper.ui.structure.FunctionType;
-import com.example.kat.pollinghelper.ui.structure.PollingBusiness;
-import com.example.kat.pollinghelper.fuction.config.PollingProjectConfig;
-import com.example.kat.pollinghelper.fuction.record.PollingProjectRecord;
-import com.example.kat.pollinghelper.fuction.config.PollingSensorConfig;
+import com.example.kat.pollinghelper.structure.cell.function.ElseFunctionListItem;
+import com.example.kat.pollinghelper.structure.cell.function.FunctionListItem;
+import com.example.kat.pollinghelper.structure.cell.function.FunctionType;
+import com.example.kat.pollinghelper.structure.ScoutInfo;
+import com.example.kat.pollinghelper.structure.record.ScoutProjectRecord;
+import com.example.kat.pollinghelper.structure.config.ScoutSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.processor.service.ManagerService;
-import com.example.kat.pollinghelper.ui.structure.QueryInfo;
-import com.example.kat.pollinghelper.ui.structure.RealTimePollingItem;
+import com.example.kat.pollinghelper.structure.QueryInfo;
+import com.example.kat.pollinghelper.structure.cell.function.RealTimeScoutItem;
 import com.example.kat.pollinghelper.ui.toast.BeautyToast;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends ManagedActivity implements AdapterView.OnItemClickListener {
@@ -43,15 +42,15 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
     //private ArrayAdapter<String> arrayAdapter;
     private List<FunctionListItem> functionListItems;
     private FunctionListAdapter functionListAdapter;
-    private PollingBusiness pollingBusiness;
+    private ScoutInfo scoutInfo;
     private Runnable updateFunctionListView = new Runnable() {
         @Override
         public void run() {
             closeLoadingDialog();
-            List<PollingProjectConfig> projectConfigs = (List<PollingProjectConfig>)getArgument(ArgumentTag.AT_LIST_PROJECT_CONFIG);
-            List<PollingSensorConfig> sensorConfigs = (List<PollingSensorConfig>)getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG);
-            List<PollingProjectRecord> projectRecords = (List<PollingProjectRecord>)getArgument(ArgumentTag.AT_LIST_LATEST_PROJECT_RECORD);
-            if (pollingBusiness.generateProjectRecords(projectConfigs, sensorConfigs, projectRecords)) {
+            List<ScoutProjectConfig> projectConfigs = (List<ScoutProjectConfig>)getArgument(ArgumentTag.AT_LIST_PROJECT_CONFIG);
+            List<ScoutSensorConfig> sensorConfigs = (List<ScoutSensorConfig>)getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG);
+            List<ScoutProjectRecord> projectRecords = (List<ScoutProjectRecord>)getArgument(ArgumentTag.AT_LIST_LATEST_PROJECT_RECORD);
+            if (scoutInfo.generateProjectRecords(projectConfigs, sensorConfigs, projectRecords)) {
                 updateNotificationTime();
                 updateMainListView();
             } else {
@@ -67,9 +66,9 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
                 for (int i = 0;i < functionListItems.size();++i) {
                     FunctionListItem functionListItem = functionListItems.get(i);
                     if (functionListItem.getType() == FunctionType.FT_REAL_TIME_POLLING) {
-                        RealTimePollingItem realTimePollingItem = (RealTimePollingItem)functionListItem;
-                        if (realTimePollingItem.getProjectRecord().getProjectConfig().getName().equals(projectName)) {
-                            realTimePollingItem.setProjectRecord(pollingBusiness.generateNewProjectRecord(realTimePollingItem.getProjectRecord().getProjectConfig()));
+                        RealTimeScoutItem realTimeScoutItem = (RealTimeScoutItem)functionListItem;
+                        if (realTimeScoutItem.getProjectRecord().getProjectConfig().getName().equals(projectName)) {
+                            realTimeScoutItem.setProjectRecord(scoutInfo.generateNewProjectRecord(realTimeScoutItem.getProjectRecord().getProjectConfig()));
                             functionListAdapter.notifyDataSetChanged();
                             break;
                         }
@@ -98,7 +97,7 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
     }
 
     private void initPollingBusiness() {
-        pollingBusiness = new PollingBusiness();
+        scoutInfo = new ScoutInfo();
     }
 
     private void initializePrompter() {
@@ -128,7 +127,7 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
     }
 
     private void initFunctionListView() {
-        RealTimePollingItem.initContentPrefix(this);
+        RealTimeScoutItem.initContentPrefix(this);
         functionListItems = new ArrayList<>();
         functionListItems.add(new ElseFunctionListItem(getString(R.string.activity_title_data_view)));
         functionListItems.add(new ElseFunctionListItem(getString(R.string.activity_title_warning_information)));
@@ -167,17 +166,17 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
     }
 
     private void startSensorConfig() {
-        putArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG, pollingBusiness.getSensorConfigs());
+        putArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG, scoutInfo.getSensorConfigs());
         startActivityForResult(new Intent(this, SensorEntityActivity.class), REQUEST_CODE_SENSOR_CONFIG);
     }
 
     private void startPollingConfig() {
-        if (pollingBusiness.getSensorConfigs().isEmpty()) {
+        if (scoutInfo.getSensorConfigs().isEmpty()) {
             Toast.makeText(this, getString(R.string.ui_prompt_empty_sensor_config), Toast.LENGTH_SHORT).show();
         } else {
-            putArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG, pollingBusiness.getSensorConfigs());
-            putArgument(ArgumentTag.AT_LIST_PROJECT_CONFIG, pollingBusiness.getProjectConfigs());
-            startActivityForResult(new Intent(this, PollingConfigActivity.class), REQUEST_CODE_POLLING_CONFIG);
+            putArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG, scoutInfo.getSensorConfigs());
+            putArgument(ArgumentTag.AT_LIST_PROJECT_CONFIG, scoutInfo.getProjectConfigs());
+            startActivityForResult(new Intent(this, ScoutConfigActivity.class), REQUEST_CODE_POLLING_CONFIG);
         }
     }
 
@@ -195,15 +194,15 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
 
     private void updateNotificationTime() {
         Intent intent = new Intent(getString(R.string.ba_update_project_time));
-        intent.putExtra(getString(R.string.tag_project_schedule_times), pollingBusiness.getProjectScheduleTimeInfo());
+        intent.putExtra(getString(R.string.tag_project_schedule_times), scoutInfo.getProjectScheduleTimeInfo());
         sendBroadcast(intent);
     }
 
     private void updateMainListView() {
         clearCurrentProjectRecords();
-        for (PollingProjectRecord projectRecord :
-                pollingBusiness.getProjectRecords()) {
-            functionListItems.add(new RealTimePollingItem(projectRecord));
+        for (ScoutProjectRecord projectRecord :
+                scoutInfo.getProjectRecords()) {
+            functionListItems.add(new RealTimeScoutItem(projectRecord));
         }
         functionListAdapter.notifyDataSetChanged();
     }
@@ -229,7 +228,7 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
                 startFunction(WarningInformationActivity.class);
             } break;
             case 2: {
-                startFunction(PollingRecordActivity.class);
+                startFunction(ScoutRecordActivity.class);
             } break;
             default: {
                 startPolling(position - getResources().getInteger(R.integer.main_activity_fix_item_count));
@@ -238,15 +237,15 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
     }
 
     private void startPolling(int projectIndex) {
-        if (projectIndex >= 0 && projectIndex < pollingBusiness.getProjectRecords().size()) {
-            putArgument(ArgumentTag.AT_PROJECT_RECORD_CURRENT, pollingBusiness.getProjectRecords().get(projectIndex));
-            startActivityForResult(new Intent(this, PollingProjectRecordActivity.class), projectIndex);
+        if (projectIndex >= 0 && projectIndex < scoutInfo.getProjectRecords().size()) {
+            putArgument(ArgumentTag.AT_PROJECT_RECORD_CURRENT, scoutInfo.getProjectRecords().get(projectIndex));
+            startActivityForResult(new Intent(this, ScoutProjectRecordActivity.class), projectIndex);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode >= 0 && requestCode < pollingBusiness.getProjectRecords().size()) {
+        if (requestCode >= 0 && requestCode < scoutInfo.getProjectRecords().size()) {
             functionListAdapter.notifyDataSetChanged();
         }else if (requestCode == REQUEST_CODE_POLLING_CONFIG && resultCode == RESULT_OK) {
             if (data.getBooleanExtra(ArgumentTag.RESTORE_PROJECT_AND_SENSOR_CONFIG, false)) {

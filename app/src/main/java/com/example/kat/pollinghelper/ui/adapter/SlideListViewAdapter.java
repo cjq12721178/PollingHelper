@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.ui.structure.PollingConfigListItem;
-import com.example.kat.pollinghelper.ui.structure.PollingConfigListItemType;
+import com.example.kat.pollinghelper.structure.cell.scout.ScoutCell;
+import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellType;
 import com.example.kat.pollinghelper.ui.layout.SlideListItem;
 import com.example.kat.pollinghelper.ui.listview.SlideMenuListView;
 
@@ -39,10 +39,10 @@ public class SlideListViewAdapter extends BaseAdapter implements SlideMenuListVi
     }
 
     public interface OnTextViewClickListener {
-        void onClick(View view, PollingConfigListItem listItem);
+        void onClick(View view, ScoutCell listItem);
     }
 
-    public SlideListViewAdapter(Context context, List<PollingConfigListItem> datas) {
+    public SlideListViewAdapter(Context context, List<ScoutCell> datas) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         listItems = datas;
@@ -87,7 +87,7 @@ public class SlideListViewAdapter extends BaseAdapter implements SlideMenuListVi
     }
 
     @Override
-    public PollingConfigListItem getItem(int position) {
+    public ScoutCell getItem(int position) {
         return listItems.get(position);
     }
 
@@ -108,7 +108,7 @@ public class SlideListViewAdapter extends BaseAdapter implements SlideMenuListVi
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final PollingConfigListItem currentListItem = getItem(position);
+        final ScoutCell currentListItem = getItem(position);
         if (currentListItem.isEntity()) {
             convertView = getEntityConvertView(convertView);
             final ViewHolderEntity viewHolderEntity = (ViewHolderEntity) convertView.getTag();
@@ -149,11 +149,11 @@ public class SlideListViewAdapter extends BaseAdapter implements SlideMenuListVi
         return convertView;
     }
 
-    private void setVirtualTextContent(ViewHolderVirtual viewHolderVirtual, PollingConfigListItem currentListItem) {
+    private void setVirtualTextContent(ViewHolderVirtual viewHolderVirtual, ScoutCell currentListItem) {
         viewHolderVirtual.add.setText(currentListItem.getContent());
     }
 
-    private void setAddClickListener(ViewHolderVirtual viewHolderVirtual, final PollingConfigListItem currentListItem) {
+    private void setAddClickListener(ViewHolderVirtual viewHolderVirtual, final ScoutCell currentListItem) {
         viewHolderVirtual.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,7 +164,7 @@ public class SlideListViewAdapter extends BaseAdapter implements SlideMenuListVi
         });
     }
 
-    private void setDeleteClickListener(final ViewHolderEntity viewHolderEntity, final PollingConfigListItem currentListItem) {
+    private void setDeleteClickListener(final ViewHolderEntity viewHolderEntity, final ScoutCell currentListItem) {
         viewHolderEntity.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,17 +176,17 @@ public class SlideListViewAdapter extends BaseAdapter implements SlideMenuListVi
         });
     }
 
-    private void setEntityTextContent(ViewHolderEntity viewHolderEntity, PollingConfigListItem currentListItem) {
+    private void setEntityTextContent(ViewHolderEntity viewHolderEntity, ScoutCell currentListItem) {
         viewHolderEntity.lable.setText(currentListItem.getLable());
         viewHolderEntity.content.setText(currentListItem.getContent());
         viewHolderEntity.delete.setText(currentListItem.getHideMenuLable());
     }
 
-    private void setVirtualLayoutFromListItemType(ViewHolderVirtual viewHolderVirtual, PollingConfigListItem currentListItem) {
+    private void setVirtualLayoutFromListItemType(ViewHolderVirtual viewHolderVirtual, ScoutCell currentListItem) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(viewHolderVirtual.add.getLayoutParams());
-        if (currentListItem.getType() == PollingConfigListItemType.PCLIT_PROJECT_VIRTUAL) {
+        if (currentListItem.getType() == ScoutCellType.PCLIT_PROJECT_VIRTUAL) {
             params.setMargins(0, 0, 0, 0);
-        } else if (currentListItem.getType() == PollingConfigListItemType.PCLIT_MISSION_VIRTUAL) {
+        } else if (currentListItem.getType() == ScoutCellType.PCLIT_MISSION_VIRTUAL) {
             params.setMargins(missionIndent, 0, 0, 0);
         } else {
             params.setMargins(itemIndent, 0, 0, 0);
@@ -194,12 +194,12 @@ public class SlideListViewAdapter extends BaseAdapter implements SlideMenuListVi
         viewHolderVirtual.add.setLayoutParams(params);
     }
 
-    private void setEntityLayoutFromListItemType(ViewHolderEntity viewHolderEntity, PollingConfigListItem currentListItem) {
+    private void setEntityLayoutFromListItemType(ViewHolderEntity viewHolderEntity, ScoutCell currentListItem) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(viewHolderEntity.lable.getLayoutParams());
-        if (currentListItem.getType() == PollingConfigListItemType.PCLIT_PROJECT_ENTITY) {
+        if (currentListItem.getType() == ScoutCellType.PCLIT_PROJECT_ENTITY) {
             viewHolderEntity.content.setBackgroundResource(R.drawable.style_textview_content_project);
             params.setMargins(0, 0, 0, 0);
-        } else if (currentListItem.getType() == PollingConfigListItemType.PCLIT_MISSION_ENTITY) {
+        } else if (currentListItem.getType() == ScoutCellType.PCLIT_MISSION_ENTITY) {
             viewHolderEntity.content.setBackgroundResource(R.drawable.style_textview_content_mission);
             params.setMargins(missionIndent, 0, 0, 0);
         } else {
@@ -213,7 +213,7 @@ public class SlideListViewAdapter extends BaseAdapter implements SlideMenuListVi
     private final int itemIndent;
     private Context context;
     private LayoutInflater layoutInflater;
-    private List<PollingConfigListItem> listItems;
+    private List<ScoutCell> listItems;
     private OnTextViewClickListener lableClickListener;
     private OnTextViewClickListener contentClickListener;
     private OnTextViewClickListener deleteClickListener;

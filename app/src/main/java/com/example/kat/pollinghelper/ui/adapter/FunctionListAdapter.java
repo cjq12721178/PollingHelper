@@ -5,10 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
-import com.example.kat.pollinghelper.ui.structure.FunctionListItem;
-import com.example.kat.pollinghelper.ui.structure.FunctionType;
+import com.example.kat.pollinghelper.structure.cell.function.FunctionListItem;
+import com.example.kat.pollinghelper.structure.cell.function.FunctionType;
 
 import java.util.List;
 
