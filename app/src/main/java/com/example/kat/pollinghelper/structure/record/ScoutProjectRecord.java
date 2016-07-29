@@ -118,20 +118,14 @@ public class ScoutProjectRecord implements TreeNode {
             viewHolder.result = (TextView)convertView.findViewById(R.id.tv_record_project_result);
             viewHolder.evaluation = (TextView)convertView.findViewById(R.id.tv_record_project_evaluation);
             viewHolder.remark = (TextView)convertView.findViewById(R.id.tv_record_project_remark);
-            int color = context.getResources().getColor(R.color.background_record_project);
-            viewHolder.name.setBackgroundColor(color);
-            viewHolder.scheduleTime.setBackgroundColor(color);
-            viewHolder.finishTime.setBackgroundColor(color);
-            viewHolder.result.setBackgroundColor(color);
-            viewHolder.evaluation.setBackgroundColor(color);
-            viewHolder.remark.setBackgroundColor(color);
+            convertView.setBackgroundColor(context.getResources().getColor(R.color.background_record_project));
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         viewHolder.name.setText(projectConfig.getName());
-        viewHolder.scheduleTime.setText(SimpleFormatter.format(scheduledTime));
-        viewHolder.finishTime.setText(SimpleFormatter.format(finishedTime));
+        viewHolder.scheduleTime.setText(SimpleFormatter.formatYearMonthDayHourMinute(scheduledTime));
+        viewHolder.finishTime.setText(SimpleFormatter.formatYearMonthDayHourMinute(finishedTime));
         viewHolder.result.setText(state.toString());
         viewHolder.evaluation.setText(evaluationType.toString());
         viewHolder.remark.setText(recordResult);

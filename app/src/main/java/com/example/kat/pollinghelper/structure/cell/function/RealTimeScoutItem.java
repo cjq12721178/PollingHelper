@@ -45,8 +45,8 @@ public class RealTimeScoutItem extends FunctionListItem {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         viewHolder.projectName.setText(projectRecord.getProjectConfig().getName());
-        viewHolder.scheduleTime.setText(SCHEDULE_TIME_PREFIX + SimpleFormatter.format(projectRecord.getScheduledTime()));
-        viewHolder.finishedTime.setText(FINISH_TIME_PREFIX + SimpleFormatter.format(projectRecord.getFinishedTime()));
+        viewHolder.scheduleTime.setText(SCHEDULE_TIME_PREFIX + SimpleFormatter.formatYearMonthDayHourMinute(projectRecord.getScheduledTime()));
+        viewHolder.finishedTime.setText(FINISH_TIME_PREFIX + SimpleFormatter.formatYearMonthDayHourMinute(projectRecord.getFinishedTime()));
         viewHolder.finishState.setText(FINISH_STATE_PREFIX + projectRecord.getPollingState().toString());
         viewHolder.wholeItem.setBackgroundColor(getProperColor());
         return convertView;

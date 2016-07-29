@@ -128,6 +128,8 @@ public class ScoutConfigActivity extends ManagedActivity {
                     projectConfigs) {
                 ScoutCellProjectEntity projectEntity = new ScoutCellProjectEntity(this, projectConfig);
                 projectEntity.setState(ScoutCellState.PCS_INVARIANT);
+                //debug 用于代码生成巡检配置
+                //projectEntity.setState(ScoutCellState.PCS_NEW);
                 existListItems.add(projectEntity);
             }
             existListItems.add(new ScoutCellProjectVirtual(this));

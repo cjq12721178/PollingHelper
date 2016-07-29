@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
+import com.example.kat.pollinghelper.structure.config.ScoutItemConfig;
 import com.example.kat.pollinghelper.structure.record.EvaluationType;
 import com.example.kat.pollinghelper.structure.record.ScoutItemRecord;
 import com.example.kat.pollinghelper.structure.record.ScoutMissionRecord;
@@ -99,7 +100,9 @@ public class ScoutMissionRecordActivity extends ManagedActivity {
     }
 
     private String generateItemText(ScoutItemRecord itemRecord) {
-        String itemText = itemRecord.getItemConfig().getMeasureName() + "（" + itemRecord.getItemConfig().getMeasureUnit() + "）"+ "：" + SimpleFormatter.to3Decimal(itemRecord.getValue());
+        String itemText = itemRecord.getItemConfig().getMeasureName() +
+                getItemUnit(itemRecord.getItemConfig().getSensor().getType().getUnit()) + "：" +
+                itemRecord.getSignificantValue();
         if (itemRecord.isOutOfAlarm()) {
             if (itemRecord.isOutOfDownAlarm()) {
                 itemText += generateItemOutOfAlarmInstruction(true, itemRecord.getItemConfig().getDownAlarm());
@@ -108,6 +111,10 @@ public class ScoutMissionRecordActivity extends ManagedActivity {
             }
         }
         return itemText;
+    }
+
+    private String getItemUnit(String unit) {
+        return unit != null && unit.length() > 0 ? "(" + unit + ")" : "";
     }
 
     private String generateItemOutOfAlarmInstruction(boolean downOrUpAlarm, double threshold) {

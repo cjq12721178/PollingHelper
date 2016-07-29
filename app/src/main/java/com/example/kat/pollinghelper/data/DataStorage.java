@@ -1,10 +1,8 @@
 package com.example.kat.pollinghelper.data;
 
-import com.example.kat.pollinghelper.protocol.BaseStationUdpProtocol;
 import com.example.kat.pollinghelper.protocol.SensorInfo;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +11,11 @@ import java.util.Map;
  * Created by KAT on 2016/5/4.
  */
 public class DataStorage {
+
+    public interface OnDataListener {
+        void onInit(Collection<SensorValue> sensorCollection);
+        void onUpdate(SensorValue newSensor);
+    }
 
     public DataStorage() {
         sensorValues = new HashMap<>();
@@ -23,15 +26,6 @@ public class DataStorage {
         return target != null ? target.getLatestValue() : 0;
     }
 
-    public void receiveUdpData(BaseStationUdpProtocol.BaseStationInfo baseStationInfo) {
-        if (baseStationInfo != null && baseStationInfo.CommandCode == BaseStationUdpProtocol.COMMAND_CODE_REQUEST_DATA) {
-            for (SensorInfo sensorInfo :
-                    baseStationInfo.SensorInfos) {
-                addSensorValue(sensorInfo);
-            }
-        }
-    }
-
     public void receiveSensorInfo(List<SensorInfo> sensorInfos) {
         if (sensorInfos != null) {
             for (SensorInfo sensorInfo :
@@ -40,41 +34,34 @@ public class DataStorage {
             }
         }
     }
-    
-    public void receiveBleData(byte[] data) {
-        
-    }
-    
-    private void saveData(byte[] originalCommunicationData) {
-        
-    }
 
     private void addSensorValue(SensorInfo sensorInfo) {
         if (sensorInfo != null) {
             synchronized (sensorValues) {
                 String fullAddress = sensorInfo.getFullAddress();
-                if (sensorValues.containsKey(fullAddress)) {
-                    sensorValues.get(fullAddress).addValue(sensorInfo.getTimestamp(), sensorInfo.getValue());
+                SensorValue sensorValue = sensorValues.get(fullAddress);
+                if (sensorValue != null) {
+                    sensorValue.addValue(sensorInfo);
                 } else {
-                    sensorValues.put(fullAddress, new SensorValue().addValue(sensorInfo.getTimestamp(), sensorInfo.getValue()));
+                    sensorValue = SensorValue.from(sensorInfo);
+                    sensorValues.put(fullAddress, sensorValue);
+                    if (onDataListener != null) {
+                        onDataListener.onUpdate(sensorValue);
+                    }
                 }
             }
         }
     }
 
-    //先不删了，以后做研究用吧
-    private int secondaryHash(Object key) {
-        try {
-            return (int)Collections.class.getMethod("secondaryHash", Object.class).invoke(null, new Object[] {key});
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+    public void setOnDataListener(OnDataListener onDataListener) {
+        this.onDataListener = onDataListener;
+        if (onDataListener != null) {
+            synchronized (sensorValues) {
+                onDataListener.onInit(sensorValues.values());
+            }
         }
-        return -1;
     }
 
+    private OnDataListener onDataListener;
     private Map<String, SensorValue> sensorValues;
 }

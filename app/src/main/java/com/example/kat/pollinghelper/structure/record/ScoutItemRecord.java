@@ -49,6 +49,10 @@ public class ScoutItemRecord implements TreeNode {
         return value;
     }
 
+    public String getSignificantValue() {
+        return itemConfig.getSensor().getType().getSignificantValue(value);
+    }
+
     public boolean isOutOfAlarm() {
         return isOutOfDownAlarm() || isOutOfUpAlarm();
     }
@@ -98,15 +102,11 @@ public class ScoutItemRecord implements TreeNode {
             color = viewHolder.normalColor;
             warningInfo = viewHolder.noAlarm;
         }
-        viewHolder.name.setBackgroundColor(color);
-        viewHolder.device.setBackgroundColor(color);
-        viewHolder.value.setBackgroundColor(color);
-        viewHolder.unit.setBackgroundColor(color);
-        viewHolder.warning.setBackgroundColor(color);
+        convertView.setBackgroundColor(color);
         viewHolder.name.setText(itemConfig.getMeasureName());
         viewHolder.device.setText(itemConfig.getSensor().getName());
-        viewHolder.value.setText(SimpleFormatter.to3Decimal(value));
-        viewHolder.unit.setText(itemConfig.getMeasureUnit());
+        viewHolder.value.setText(itemConfig.getSensor().getType().getSignificantValue(value));
+        viewHolder.unit.setText(itemConfig.getSensor().getType().getUnit());
         viewHolder.warning.setText(warningInfo);
         return convertView;
     }

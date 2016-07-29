@@ -27,11 +27,19 @@ public class ScoutCellClause {
     }
 
     public void setContent(Object content) {
-        if ((this.content == null && content != null) ||
-                !this.content.equals(content)) {
-            this.content = content;
-            modified = true;
-        }
+        if (content == null) {
+            if (this.content == null)
+                return;
+        } else if (content.equals(this.content))
+            return;
+
+        this.content = content;
+        modified = true;
+//        if ((this.content == null && content != null) ||
+//                !this.content.equals(content)) {
+//            this.content = content;
+//            modified = true;
+//        }
     }
 
     public boolean isModified() {

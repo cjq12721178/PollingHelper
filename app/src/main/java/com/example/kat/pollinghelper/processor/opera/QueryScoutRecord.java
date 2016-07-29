@@ -89,34 +89,34 @@ public class QueryScoutRecord extends Operation {
         //即从最初到endScheduledTime的范围为null则是从begScheduledTime到现在
 
         //debug
-        result = new ArrayList<>();
-        int id = 0;
-        int hours = 0;
-        double value = -13.2;
-        for (ScoutProjectConfig projectConfig :
-                projectConfigs) {
-            for (int i = 0;i < 3;++i) {
-                ScoutProjectRecord projectRecord = createProjectRecord(++id,
-                        projectConfig, getDate(++hours), getDate(++hours),
-                        EvaluationType.createFromIndex(hours % 3),
-                        getState(hours % 4), getResult(hours % 5));
-                for (ScoutMissionConfig missionConfig :
-                        projectConfig.getMissions()) {
-                    ScoutMissionRecord missionRecord = createMissionRecord(++id,
-                            missionConfig, getDate(++hours),
-                            EvaluationType.createFromIndex(hours % 3),
-                            getState(hours % 4), getResult(hours % 5));
-                    for (ScoutItemConfig itemConfig :
-                            missionConfig.getItems()) {
-                        ScoutItemRecord itemRecord = createItemRecord(++id,
-                                itemConfig, value += 1.3);
-                        missionRecord.getItemRecords().add(itemRecord);
-                    }
-                    projectRecord.getMissionRecords().add(missionRecord);
-                }
-                result.add(projectRecord);
-            }
-        }
+//        result = new ArrayList<>();
+//        int id = 0;
+//        int hours = 0;
+//        double value = -13.2;
+//        for (ScoutProjectConfig projectConfig :
+//                projectConfigs) {
+//            for (int i = 0;i < 3;++i) {
+//                ScoutProjectRecord projectRecord = createProjectRecord(++id,
+//                        projectConfig, getDate(++hours), getDate(++hours),
+//                        EvaluationType.createFromIndex(hours % 3),
+//                        getState(hours % 4), getResult(hours % 5));
+//                for (ScoutMissionConfig missionConfig :
+//                        projectConfig.getMissions()) {
+//                    ScoutMissionRecord missionRecord = createMissionRecord(++id,
+//                            missionConfig, getDate(++hours),
+//                            EvaluationType.createFromIndex(hours % 3),
+//                            getState(hours % 4), getResult(hours % 5));
+//                    for (ScoutItemConfig itemConfig :
+//                            missionConfig.getItems()) {
+//                        ScoutItemRecord itemRecord = createItemRecord(++id,
+//                                itemConfig, value += 1.3);
+//                        missionRecord.getItemRecords().add(itemRecord);
+//                    }
+//                    projectRecord.getMissionRecords().add(missionRecord);
+//                }
+//                result.add(projectRecord);
+//            }
+//        }
         return result;
     }
 

@@ -26,56 +26,24 @@ import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.processor.opera.Operation;
 import com.example.kat.pollinghelper.processor.opera.OperationInfo;
 import com.example.kat.pollinghelper.processor.opera.QueryScoutRecord;
+import com.example.kat.pollinghelper.processor.opera.RequestSensorCollection;
 import com.example.kat.pollinghelper.processor.opera.ScanBleSensor;
 import com.example.kat.pollinghelper.processor.opera.UpdateSensorData;
 import com.example.kat.pollinghelper.protocol.BaseStationUdpProtocol;
+import com.example.kat.pollinghelper.protocol.SensorBleInfo;
 import com.example.kat.pollinghelper.protocol.SensorBleProtocol;
+import com.example.kat.pollinghelper.protocol.SensorDataType;
+import com.example.kat.pollinghelper.protocol.SensorUdpInfo;
 import com.example.kat.pollinghelper.ui.toast.BeautyToast;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ManagerService extends Service {
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
-    private SensorBleProtocol bleProtocol;
-    private Ble ble;
-    private DataStorage dataStorage;
-    private BluetoothAdapter.LeScanCallback onBleScannedListener = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-            SensorBleProtocol.SensorParameter sensorParameter = bleProtocol.analyze(device.getAddress(), scanRecord);
-            if (sensorParameter != null) {
-                dataStorage.receiveSensorInfo(sensorParameter.SensorInfos);
-            }
-        }
-    };
-    private BaseStationUdpProtocol udpProtocol;
-    private Communicator.OnDataReceivedListener onUdpDataReceivedListener = new Communicator.OnDataReceivedListener() {
-        @Override
-        public void onDataReceived(byte[] data) {
-            BaseStationUdpProtocol.BaseStationInfo baseStationInfo = udpProtocol.analyze(data);
-            if (baseStationInfo != null && baseStationInfo.CommandCode == BaseStationUdpProtocol.COMMAND_CODE_REQUEST_DATA) {
-                dataStorage.receiveSensorInfo(baseStationInfo.SensorInfos);
-            }
-        }
-    };
-    private Udp udp;
-    private Handler uiEventProcessor;
-    private Map<OperaType, Operation> operationMap;
-    private boolean running;
-    private OperationInfo operationInfo;
-    private Runnable onOperationProcess = new Runnable() {
-        @Override
-        public void run() {
-            while (running) {
-                if (operationInfo.hasOpera()) {
-                    operationInfo.waitNotifier();
-                } else {
-                    feedbackUI(operationMap.get(operationInfo.popOpera()).execute());
-                }
-            }
-        }
-    };
+public class ManagerService extends Service {
 
     @Override
     public void onCreate() {
@@ -83,11 +51,33 @@ public class ManagerService extends Service {
 
         //注意不要轻易修改调用顺序
         initProtocol();
+        importSensorDataTypeConfig();
         createDataStorage();
         launchCommunicator();
         initOperationInfo();
         createOperationMap();
         launchOperationListener();
+    }
+
+    private void importSensorDataTypeConfig() {
+        SensorUdpInfo.setDataTypeMap(getSensorDataTypeMap(getString(R.string.file_data_type_udp)));
+        SensorBleInfo.setDataTypeMap(getSensorDataTypeMap(getString(R.string.file_data_type_ble)));
+    }
+
+    private Map<Byte, SensorDataType> getSensorDataTypeMap(String configFileName) {
+        Map<Byte, SensorDataType> result;
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            InputStream is = getAssets().open(configFileName);
+            SAXParser parser = factory.newSAXParser();
+            SensorDataType.Handler dataTypeHandler = SensorDataType.getHandler();
+            parser.parse(is, dataTypeHandler);
+            result = dataTypeHandler.getDataTypeMap();
+        } catch (Exception e) {
+            result = null;
+            promptMessage(e.getMessage());
+        }
+        return result;
     }
 
     private void createDataStorage() {
@@ -113,7 +103,7 @@ public class ManagerService extends Service {
             udp.connect(udp.getParameter().setAddress(getString(R.string.base_station_ip)).setPort(getResources().getInteger(R.integer.base_station_port)), false);
             udp.startListen(true);
             udp.sendData(generateRequestDataCommand(), getResources().getInteger(R.integer.time_interval_request_data));
-            Log.d("PollingHelper", "udp launched");
+            //Log.d("PollingHelper", "udp launched");
         } else {
             promptMessage(R.string.ui_prompt_udp_launch_failed);
         }
@@ -124,7 +114,7 @@ public class ManagerService extends Service {
             ble.setOnBluetoothDeviceScannedListener(onBleScannedListener);
             ble.startScan(getResources().getInteger(R.integer.time_interval_scan_ble),
                     getResources().getInteger(R.integer.time_duration_scan_ble));
-            Log.d("PollingHelper", "ble launched");
+            //Log.d("PollingHelper", "ble launched");
         } else {
             promptMessage(R.string.ui_prompt_ble_launch_failed);
         }
@@ -132,6 +122,10 @@ public class ManagerService extends Service {
 
     private void promptMessage(int stringId) {
         BeautyToast.show(stringId);
+    }
+
+    private void promptMessage(String msg) {
+        BeautyToast.show(msg);
     }
 
     private byte[] generateRequestDataCommand() {
@@ -151,12 +145,13 @@ public class ManagerService extends Service {
         operationMap.put(OperaType.OT_CREATE_POLLING_DATABASE, new EstablishScoutDatabase(operationInfo, this));
         operationMap.put(OperaType.OT_SCAN_BLE_SENSOR, new ScanBleSensor(operationInfo, ble, getResources().getInteger(R.integer.time_duration_scan_ble)));
         operationMap.put(OperaType.OT_QUERY_RECORD, new QueryScoutRecord(operationInfo));
+        operationMap.put(OperaType.OT_REQUEST_SENSOR_COLLECTION, new RequestSensorCollection(operationInfo, dataStorage));
     }
 
     private void initOperationInfo() {
         operationInfo = new OperationInfo();
         uiEventProcessor = new Handler();
-        //operationInfo.putArgument(ArgumentTag.AT_HANDLER_UI_FEEDBACK, uiEventProcessor);
+        //operationInfo.putArgument(ArgumentTag.AT_DATA_LISTENER, dataStorage.getSensorList());
         //operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_FINISH_PROCESSOR, onFinishProcessor);
     }
 
@@ -204,4 +199,47 @@ public class ManagerService extends Service {
             return operationInfo;
         }
     }
+
+    private BluetoothAdapter.LeScanCallback onBleScannedListener = new BluetoothAdapter.LeScanCallback() {
+        @Override
+        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
+            SensorBleProtocol.SensorParameter sensorParameter = bleProtocol.analyze(device.getAddress(), scanRecord);
+            if (sensorParameter != null) {
+                dataStorage.receiveSensorInfo(sensorParameter.SensorInfos);
+            }
+        }
+    };
+
+    private Communicator.OnDataReceivedListener onUdpDataReceivedListener = new Communicator.OnDataReceivedListener() {
+        @Override
+        public void onDataReceived(byte[] data) {
+            BaseStationUdpProtocol.BaseStationInfo baseStationInfo = udpProtocol.analyze(data);
+            if (baseStationInfo != null && baseStationInfo.CommandCode == BaseStationUdpProtocol.COMMAND_CODE_REQUEST_DATA) {
+                dataStorage.receiveSensorInfo(baseStationInfo.SensorInfos);
+            }
+        }
+    };
+
+    private Runnable onOperationProcess = new Runnable() {
+        @Override
+        public void run() {
+            while (running) {
+                if (operationInfo.hasOpera()) {
+                    operationInfo.waitNotifier();
+                } else {
+                    feedbackUI(operationMap.get(operationInfo.popOpera()).execute());
+                }
+            }
+        }
+    };
+
+    private SensorBleProtocol bleProtocol;
+    private Ble ble;
+    private DataStorage dataStorage;
+    private BaseStationUdpProtocol udpProtocol;
+    private Udp udp;
+    private Handler uiEventProcessor;
+    private Map<OperaType, Operation> operationMap;
+    private boolean running;
+    private OperationInfo operationInfo;
 }

@@ -17,9 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_message"
         android:orientation="horizontal"
-        android:divider="@color/transparent_total"
-        android:dividerPadding="5dp"
-        android:showDividers="middle">
+        android:minWidth="200dp">
 
         <Button
             android:layout_width="0dp"

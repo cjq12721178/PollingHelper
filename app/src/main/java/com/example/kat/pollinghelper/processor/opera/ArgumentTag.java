@@ -4,7 +4,6 @@ package com.example.kat.pollinghelper.processor.opera;
  * Created by KAT on 2016/6/8.
  */
 public enum ArgumentTag {
-    //AT_HANDLER_UI_FEEDBACK,
     AT_PROJECT_RECORD_CURRENT,
     AT_MISSION_RECORD_CURRENT,
     AT_SENSOR_ENTITY_CURRENT,
@@ -20,6 +19,7 @@ public enum ArgumentTag {
     AT_RUNNABLE_SUCCESS,
     AT_RUNNABLE_FAILED,
     AT_QUERY_INFO,
+    AT_DATA_LISTENER
     ;
 
     public static String PROJECT_CONFIG_CHANGED = "PROJECT_CONFIG_CHANGED";

@@ -5,7 +5,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="text_size_listitem_record_project">16sp</dimen>
-    <dimen name="text_size_listitem_record_mission">16sp</dimen>
-    <dimen name="text_size_listitem_record_item">16sp</dimen>
-    <dimen name="text_margin_record">0dp</dimen>
+    <dimen name="text_size_listitem_record_mission">15sp</dimen>
+    <dimen name="text_size_listitem_record_item">14sp</dimen>
+    <dimen name="text_padding_record">3dp</dimen>
+    <dimen name="text_size_data_view_digital">18sp</dimen>
 </resources>

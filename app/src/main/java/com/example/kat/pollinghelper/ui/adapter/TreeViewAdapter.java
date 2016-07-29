@@ -1,6 +1,7 @@
 package com.example.kat.pollinghelper.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 /**
  * Created by KAT on 2016/7/8.
- * 使普通ListView产生树形结构，每一层支持多种布局
+ * 使普通ListView产生树形结构，每一层暂时只支持一种布局
  * 注意，若给在某个子层布局中的某个控件添加OnClickListener事件，则将覆盖收缩扩展事件
  * 此时，若设置了indicator，则点击相应indicator还是可以触发该事件
  */
@@ -199,9 +200,11 @@ public class TreeViewAdapter<E extends TreeNode> extends BaseAdapter {
                     (node.isExpanded() ? expandedIndicator : collapsedIndicator) :
                     null);
         } else {
-            View realView = node.getView(context, convertView, null);
+            View realView = node.getView(context, convertView, parent);
             if (convertView == null) {
-                realView.setPadding(getIndent(realView, node), 0, 0, 0);
+                Rect rect = getIndent(realView, parent, node);
+                realView.setPadding(rect.left, 0, 0, 0);
+                realView.setClipBounds(rect);
             }
             convertView = realView;
             if (hasChild(node)) {
@@ -224,20 +227,23 @@ public class TreeViewAdapter<E extends TreeNode> extends BaseAdapter {
         return viewTypes.get(node.getViewType());
     }
 
-    private int getIndent(View realView, TreeNode node) {
-        int level =  getViewLevel(node) + (isIndicatorUsed() ? 1 : 0);
+    //用于无indicator的情况
+    private Rect getIndent(View realView, View parent, TreeNode node) {
+        Rect rect = new Rect();
 
-        if (indent > 0)
-            return indent * level;
+        if (realView != null) {
+            int level =  getViewLevel(node) + (isIndicatorUsed() ? 1 : 0);
+            realView.measure(0, 0);
+            rect.top = 0;
+            rect.bottom = realView.getMeasuredHeight();
+            rect.left = (indent > 0 ? indent : rect.bottom) * level;
+            rect.right = parent.getWidth();
+        }
 
-        if (realView == null)
-            return 0;
-
-        realView.measure(0, 0);
-        return realView.getMeasuredHeight() * level;
+        return rect;
     }
 
-    //用于有indicator的情况，有时间把这个和上面那童鞋合并一下
+    //用于有indicator的情况
     private int getIndent(int indicatorWidth, TreeNode currentNode) {
         return (indent > 0 ? indent : indicatorWidth) * getViewLevel(currentNode);
     }

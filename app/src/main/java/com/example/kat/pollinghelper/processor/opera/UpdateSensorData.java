@@ -30,6 +30,14 @@ public class UpdateSensorData extends Operation {
                 missionRecord.getItemRecords()) {
             itemRecord.setValue(dataStorage.getRealTimeData(itemRecord.getItemConfig().getSensor().getAddress()));
         }
+        //debug
+//        for (ScoutItemRecord itemRecord :
+//                missionRecord.getItemRecords()) {
+//            itemRecord.setValue(1);
+//        }
+//        missionRecord.getItemRecords().get(0).setValue(55.929);
+//        missionRecord.getItemRecords().get(1).setValue(55.942);
+//        missionRecord.getItemRecords().get(2).setValue(55.969);
         return true;
     }
 }

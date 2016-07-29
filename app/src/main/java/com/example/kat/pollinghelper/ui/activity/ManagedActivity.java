@@ -52,40 +52,40 @@ public class ManagedActivity extends AppCompatActivity {
     }
 
     //提供操作类型和反馈处理，success和failed可以为null
-    protected void notifyManager(OperaType newOpera, Runnable success, Runnable failed) {
+    public void notifyManager(OperaType newOpera, Runnable success, Runnable failed) {
         operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_SUCCESS, success);
         operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_FAILED, failed);
         operationInfo.notifyExecutor(newOpera);
     }
 
-    protected void notifyManager(OperaType newOpera, Runnable success) {
+    public void notifyManager(OperaType newOpera, Runnable success) {
         notifyManager(newOpera, success, null);
     }
 
-    protected void notifyManager(OperaType newOpera) {
+    public void notifyManager(OperaType newOpera) {
         notifyManager(newOpera, null, null);
     }
 
-    protected void notifyManager(Runnable success, Runnable failed, OperaType... newOperas) {
+    public void notifyManager(Runnable success, Runnable failed, OperaType... newOperas) {
         operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_SUCCESS, success);
         operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_FAILED, failed);
         operationInfo.notifyExecutor(newOperas);
     }
 
-    protected void notifyManager(Runnable success, OperaType... newOperas) {
+    public void notifyManager(Runnable success, OperaType... newOperas) {
         notifyManager(success, null, newOperas);
     }
 
-    protected void notifyManager(OperaType... newOperas) {
+    public void notifyManager(OperaType... newOperas) {
         notifyManager(null, null, newOperas);
     }
 
-    protected ManagedActivity putArgument(ArgumentTag tag, Object arg) {
+    public ManagedActivity putArgument(ArgumentTag tag, Object arg) {
         operationInfo.putArgument(tag, arg);
         return this;
     }
 
-    protected Object getArgument(ArgumentTag tag) {
+    public Object getArgument(ArgumentTag tag) {
         return operationInfo.getArgument(tag);
     }
 

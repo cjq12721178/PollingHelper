@@ -109,18 +109,13 @@ public class ScoutMissionRecord implements TreeNode {
             viewHolder.result = (TextView)convertView.findViewById(R.id.tv_record_mission_result);
             viewHolder.evaluation = (TextView)convertView.findViewById(R.id.tv_record_mission_evaluation);
             viewHolder.remark = (TextView)convertView.findViewById(R.id.tv_record_mission_remark);
-            int color = context.getResources().getColor(R.color.background_record_mission);
-            viewHolder.name.setBackgroundColor(color);
-            viewHolder.finishTime.setBackgroundColor(color);
-            viewHolder.result.setBackgroundColor(color);
-            viewHolder.evaluation.setBackgroundColor(color);
-            viewHolder.remark.setBackgroundColor(color);
+            convertView.setBackgroundColor(context.getResources().getColor(R.color.background_record_mission));
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         viewHolder.name.setText(missionConfig.getName());
-        viewHolder.finishTime.setText(SimpleFormatter.format(finishedTime));
+        viewHolder.finishTime.setText(SimpleFormatter.formatYearMonthDayHourMinute(finishedTime));
         viewHolder.result.setText(state.toString());
         viewHolder.evaluation.setText(evaluationType.toString());
         viewHolder.remark.setText(recordResult);

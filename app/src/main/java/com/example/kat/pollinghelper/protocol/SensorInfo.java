@@ -7,11 +7,15 @@ public abstract class SensorInfo {
 
     public abstract String getFullAddress();
 
+    public String getMacAddress() {
+        return String.format("%08X", address);
+    }
+
     public long getAddress() {
         return address;
     }
 
-    public byte getDataType() {
+    public SensorDataType getDataType() {
         return dataType;
     }
 
@@ -27,7 +31,7 @@ public abstract class SensorInfo {
 
     protected static final String MANUFACTURER_TYPE = "111";
     protected long address;
-    protected byte dataType;
+    protected SensorDataType dataType;
     protected float batteryVoltage;
     protected double value;
 }

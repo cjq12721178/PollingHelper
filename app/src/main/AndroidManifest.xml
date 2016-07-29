@@ -88,7 +88,7 @@
 
         <activity
             android:name=".ui.activity.ScoutRecordActivity"
-            android:label="@string/activity_title_polling_record"/>
+            android:label="@string/activity_title_polling_record" />
     </application>
 
 </manifest>

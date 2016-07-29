@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ic_data_view_digital_background">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_data_view_digital_address"
+        android:text="@string/ui_tv_data_view_digital_address"
+        android:textSize="@dimen/text_size_data_view_digital"
+        android:ellipsize="end"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_data_view_digital_type"
+        android:text="@string/ui_tv_data_view_digital_type"
+        android:textSize="@dimen/text_size_data_view_digital"
+        android:ellipsize="end"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_data_view_digital_value"
+        android:text="@string/ui_tv_data_view_digital_value"
+        android:textSize="@dimen/text_size_data_view_digital"
+        android:ellipsize="end"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_data_view_digital_time"
+        android:text="@string/ui_tv_data_view_digital_time"
+        android:textSize="@dimen/text_size_data_view_digital"
+        android:ellipsize="end"
+        android:gravity="center"/>
+</LinearLayout>
