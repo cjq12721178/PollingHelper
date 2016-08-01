@@ -42,6 +42,10 @@ public class DigitalTableAdapter extends BaseAdapter {
         sensors = sensorList;
     }
 
+    public boolean isDataSourceEmpty() {
+        return sensors == null;
+    }
+
     @Override
     public int getCount() {
         return sensors != null ? sensors.size() : 0;
