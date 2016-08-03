@@ -3,8 +3,10 @@ package com.example.kat.pollinghelper.ui.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,30 +31,52 @@ public class DataViewActivity extends ManagedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_view);
-        refresher = new Handler();
-        initializeDataViewMode();
+        initRefresher();
+        initDataViewMode();
     }
 
-    private void initializeDataViewMode() {
+    private void initRefresher() {
+        refresher = new Handler();
+    }
+
+    private void initDataViewMode() {
         initTabStrip();
         initViewPager();
     }
 
     private void initViewPager() {
         viewPager = (ViewPager)findViewById(R.id.vp_slip_page_container);
-        slipPageAdapter = new SlipPageAdapter(getSupportFragmentManager(), getFragments());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        slipPageAdapter = new SlipPageAdapter(fragmentManager, getFragments(fragmentManager));
         viewPager.setAdapter(slipPageAdapter);
         viewPager.addOnPageChangeListener(new SlipPageChangeProcessor());
     }
 
     @NonNull
-    private List<DataViewFragment> getFragments() {
+    private List<DataViewFragment> getFragments(FragmentManager fragmentManager) {
         List<DataViewFragment> slipPages = new ArrayList<>();
-        slipPages.add(new AnalogPanelSlipPage()
-                .setLabel(getString(R.string.fragment_title_analog_dial)));
-        slipPages.add(new DigitalTableSlipPage()
-                .setLabel(getString(R.string.fragment_title_digital_table)));
+        try {
+            slipPages.add(getFragment(fragmentManager, AnalogPanelSlipPage.class,
+                    0, R.string.fragment_title_analog_dial));
+            slipPages.add(getFragment(fragmentManager, DigitalTableSlipPage.class,
+                    1, R.string.fragment_title_digital_table));
+        } catch (Exception ignored) {
+        }
         return slipPages;
+    }
+
+    private <E extends DataViewFragment> DataViewFragment getFragment(FragmentManager fragmentManager,
+                                                                      Class<E> c,
+                                                                      int position,
+                                                                      int labelResId)
+            throws IllegalAccessException, InstantiationException {
+        String name = makeFragmentName(viewPager.getId(), position);
+        E fragment = (E)fragmentManager.findFragmentByTag(name);
+        return (fragment != null ? fragment : c.newInstance()).setLabel(getString(labelResId));
+    }
+
+    private String makeFragmentName(int viewId, long id) {
+        return "android:switcher:" + viewId + ":" + id;
     }
 
     private void initTabStrip() {
@@ -71,7 +95,7 @@ public class DataViewActivity extends ManagedActivity {
         notifyManager(OperaType.OT_REQUEST_SENSOR_COLLECTION, startRefreshDataView);
     }
 
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_data_view, menu);
@@ -89,6 +113,7 @@ public class DataViewActivity extends ManagedActivity {
         isNextTimeUpdate = false;
         putArgument(ArgumentTag.AT_DATA_LISTENER, null);
         notifyManager(OperaType.OT_REQUEST_SENSOR_COLLECTION);
+        Log.d("PollingHelper", "activity onDestroy");
         super.onDestroy();
     }
 

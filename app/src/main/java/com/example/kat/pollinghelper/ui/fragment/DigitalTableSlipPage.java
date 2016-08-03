@@ -2,19 +2,20 @@ package com.example.kat.pollinghelper.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.data.SensorValue;
 import com.example.kat.pollinghelper.ui.adapter.DigitalTableAdapter;
 
-import java.util.Collection;
-
 public class DigitalTableSlipPage extends DataViewFragment {
+
+    @Override
+    public String getLabel() {
+        return "数字表格";
+    }
 
     @Nullable
     @Override
@@ -28,7 +29,10 @@ public class DigitalTableSlipPage extends DataViewFragment {
 
     @Override
     public void updateDataView() {
-        if (digitalTableAdapter.getCount() == 0) {
+        if (digitalTableAdapter == null)
+            return;
+
+        if (digitalTableAdapter.isDataSourceEmpty()) {
             digitalTableAdapter.setDataSource(getSensorList());
         }
         digitalTableAdapter.notifyDataSetChanged();

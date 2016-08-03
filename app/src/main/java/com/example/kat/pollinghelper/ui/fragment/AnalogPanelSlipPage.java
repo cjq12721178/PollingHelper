@@ -19,6 +19,11 @@ import com.example.kat.pollinghelper.ui.activity.DataViewActivity;
  */
 public class AnalogPanelSlipPage extends DataViewFragment {
 
+    @Override
+    public String getLabel() {
+        return "模拟表盘";
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

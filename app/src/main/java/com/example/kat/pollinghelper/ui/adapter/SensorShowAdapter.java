@@ -2,6 +2,7 @@ package com.example.kat.pollinghelper.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +19,13 @@ import java.util.List;
  */
 public class SensorShowAdapter extends BaseAdapter {
     private class ViewHolder {
-        TextView nameLabel;
-        TextView addressLabel;
-        TextView descriptionLabel;
-        TextView nameContent;
-        TextView addressContent;
-        TextView descriptionContent;
+        TextView name;
+        TextView address;
     }
 
     public SensorShowAdapter(Context context, List<ScoutSensorConfig> sensorConfigs) {
         this.sensorConfigs = sensorConfigs;
         layoutInflater = LayoutInflater.from(context);
-        currentSelectedIndex = -1;
-        lastSelectedIndex = -1;
     }
 
     @Override
@@ -54,57 +49,34 @@ public class SensorShowAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.listitem_sensor_show, null);
             viewHolder = new ViewHolder();
-            viewHolder.nameLabel = (TextView)convertView.findViewById(R.id.tv_sensor_show_name_lable);
-            viewHolder.addressLabel = (TextView)convertView.findViewById(R.id.tv_sensor_show_address_lable);
-            viewHolder.descriptionLabel = (TextView)convertView.findViewById(R.id.tv_sensor_show_description_lable);
-            viewHolder.nameContent = (TextView)convertView.findViewById(R.id.tv_sensor_show_name_content);
-            viewHolder.addressContent = (TextView)convertView.findViewById(R.id.tv_sensor_show_address_content);
-            viewHolder.descriptionContent = (TextView)convertView.findViewById(R.id.tv_sensor_show_description_content);
+            viewHolder.name = (TextView)convertView.findViewById(R.id.tv_sensor_show_name);
+            viewHolder.address = (TextView)convertView.findViewById(R.id.tv_sensor_show_address);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         ScoutSensorConfig sensorConfig = getItem(position);
-        viewHolder.nameLabel.setText(R.string.ui_tv_sensor_name_label);
-        viewHolder.addressLabel.setText(R.string.ui_tv_sensor_address_label);
-        viewHolder.descriptionLabel.setText(R.string.ui_tv_sensor_description_label);
-        viewHolder.nameContent.setText(sensorConfig.getName());
-        viewHolder.addressContent.setText(sensorConfig.getAddress());
-        viewHolder.descriptionContent.setText(sensorConfig.getDescription());
+        viewHolder.name.setText(sensorConfig.getName());
+        viewHolder.address.setText(sensorConfig.getAddress());
         setItemTextBold(position, viewHolder);
+        if (position == 0)
+            Log.e("PollingHelper", viewHolder.name.getPaint().isFakeBoldText() ? "true" : "false");
         return convertView;
     }
 
     public void setItemTextBold(int position, ViewHolder viewHolder) {
-        if (position == currentSelectedIndex) {
-            viewHolder.nameLabel.getPaint().setFakeBoldText(true);
-            viewHolder.addressLabel.getPaint().setFakeBoldText(true);
-            viewHolder.descriptionLabel.getPaint().setFakeBoldText(true);
-            viewHolder.nameContent.getPaint().setFakeBoldText(true);
-            viewHolder.addressContent.getPaint().setFakeBoldText(true);
-            viewHolder.descriptionContent.getPaint().setFakeBoldText(true);
-        }
         if (position == lastSelectedIndex){
-            viewHolder.nameLabel.getPaint().setFakeBoldText(false);
-            viewHolder.addressLabel.getPaint().setFakeBoldText(false);
-            viewHolder.descriptionLabel.getPaint().setFakeBoldText(false);
-            viewHolder.nameContent.getPaint().setFakeBoldText(false);
-            viewHolder.addressContent.getPaint().setFakeBoldText(false);
-            viewHolder.descriptionContent.getPaint().setFakeBoldText(false);
+            viewHolder.name.getPaint().setFakeBoldText(false);
+            viewHolder.address.getPaint().setFakeBoldText(false);
         }
-    }
-
-    public void bindAlertDialog(AlertDialog alertDialog) {
-        this.alertDialog = alertDialog;
-    }
-
-    public void closeDialog() {
-        if (alertDialog != null) {
-            alertDialog.dismiss();
+        if (position == currentSelectedIndex) {
+            viewHolder.name.getPaint().setFakeBoldText(true);
+            viewHolder.address.getPaint().setFakeBoldText(true);
         }
     }
 
     public void selectItem(String sensorName) {
+        currentSelectedIndex = 0;
         for (ScoutSensorConfig sensorConfig :
                 sensorConfigs) {
             if (sensorName.equals(sensorConfig.getName())) {
@@ -117,6 +89,5 @@ public class SensorShowAdapter extends BaseAdapter {
     private int lastSelectedIndex;
     private int currentSelectedIndex;
     private List<ScoutSensorConfig> sensorConfigs;
-    private AlertDialog alertDialog;
     private LayoutInflater layoutInflater;
 }

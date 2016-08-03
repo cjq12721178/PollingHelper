@@ -3,10 +3,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <include layout="@layout/listitem_sensor_show"
+        android:id="@+id/il_header_sensor_show"/>
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lv_item_config_dialog_content">
+        android:id="@+id/lv_item_config_dialog_content"
+        android:layout_below="@+id/il_header_sensor_show">
     </ListView>
 
 </RelativeLayout>
