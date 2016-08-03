@@ -133,7 +133,86 @@ public class InspRecordProject extends DBData  {
         return dataList;
     }
 
-    public InspRecordProject query(Integer id)
+
+    /**
+     * query all , return list
+     *
+     * @return List<InspRecordProject>
+     */
+    public List<InspRecordProject> queryByFinishTime(String name, Date begin,
+                                                     Date end)
+    {
+        Log.d(AppConstants.LOG_TAG, "DBManager --> query");
+        ArrayList<InspRecordProject> dataList = new ArrayList<InspRecordProject>();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + tableName +" WHERE name_project == ?  and finish_date > ? and finish_date < ? ORDER BY finish_date DESC",
+                new String[] {name,  String.valueOf(begin.getTime()), String.valueOf(end.getTime()) });
+
+        if (c == null)
+            return null;
+
+        while (c.moveToNext())
+        {
+            InspRecordProject data = new InspRecordProject();
+            data.setId(c.getLong(c.getColumnIndex("id")));
+            data.setName_project(c.getString(c.getColumnIndex("name_project")));
+
+            Date date = new Date(c.getLong(c.getColumnIndex("date")));
+            data.setDate(date);
+            data.setFinishDate(new Date(c.getLong(c.getColumnIndex("finish_date"))));
+
+            data.setDesc(c.getString(c.getColumnIndex("desc")));
+            data.setState(c.getInt(c.getColumnIndex("state")));
+            data.setState_process(c.getInt(c.getColumnIndex("state_progress")));
+            data.setResult(c.getString(c.getColumnIndex("result")));
+
+            dataList.add(data);
+        }
+        c.close();
+        return dataList;
+    }
+
+    /**
+     * query all , return list
+     *
+     * @return List<InspRecordProject>
+     */
+    public List<InspRecordProject> queryByTime(String name, Date begin,
+                                                     Date end)
+    {
+        Log.d(AppConstants.LOG_TAG, "DBManager --> query");
+        ArrayList<InspRecordProject> dataList = new ArrayList<InspRecordProject>();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + tableName +" WHERE name_project == ?  and date > ? and date < ? ORDER BY date DESC",
+                new String[] {name,  String.valueOf(begin.getTime()), String.valueOf(end.getTime()) });
+
+
+        if (c == null)
+            return null;
+
+        while (c.moveToNext())
+        {
+            InspRecordProject data = new InspRecordProject();
+            data.setId(c.getLong(c.getColumnIndex("id")));
+            data.setName_project(c.getString(c.getColumnIndex("name_project")));
+
+            Date date = new Date(c.getLong(c.getColumnIndex("date")));
+            data.setDate(date);
+            data.setFinishDate(new Date(c.getLong(c.getColumnIndex("finish_date"))));
+
+            data.setDesc(c.getString(c.getColumnIndex("desc")));
+            data.setState(c.getInt(c.getColumnIndex("state")));
+            data.setState_process(c.getInt(c.getColumnIndex("state_progress")));
+            data.setResult(c.getString(c.getColumnIndex("result")));
+
+            dataList.add(data);
+        }
+        c.close();
+        return dataList;
+    }
+
+
+    public InspRecordProject query(Long id)
     {
         Log.d(AppConstants.LOG_TAG, "DBManager --> query");
         Cursor c = queryTheCursor(id);
@@ -157,6 +236,76 @@ public class InspRecordProject extends DBData  {
         }
         c.close();
         return null;
+    }
+
+    public InspRecordProject queryLastTime(String name)
+    {
+        Log.d(AppConstants.LOG_TAG, "DBManager --> query");
+        try {
+            Cursor c = db.rawQuery("SELECT * FROM " + tableName +" WHERE name_project == ? ORDER BY date DESC",
+                    new String[] { name });
+            if (c == null)
+                return null;
+
+            while (c.moveToNext())
+            {
+                InspRecordProject data = new InspRecordProject();
+                data.setId(c.getLong(c.getColumnIndex("id")));
+                data.setName_project(c.getString(c.getColumnIndex("name_project")));
+
+                Date date = new Date(c.getLong(c.getColumnIndex("date")));
+                data.setDate(date);
+                data.setFinishDate(new Date(c.getLong(c.getColumnIndex("finish_date"))));
+
+                data.setDesc(c.getString(c.getColumnIndex("desc")));
+                data.setState(c.getInt(c.getColumnIndex("state")));
+                data.setState_process(c.getInt(c.getColumnIndex("state_progress")));
+                data.setResult(c.getString(c.getColumnIndex("result")));
+
+                c.close();
+                return data;
+            }
+
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+
+    }
+
+    public InspRecordProject queryByScheduledTime(Date time)
+    {
+        Log.d(AppConstants.LOG_TAG, "DBManager --> query");
+        try {
+            Cursor c = db.rawQuery("SELECT * FROM " + tableName +" WHERE date == ?",
+                    new String[] { String.valueOf(time.getTime()) });
+            if (c == null)
+                return null;
+
+            while (c.moveToNext())
+            {
+                InspRecordProject data = new InspRecordProject();
+                data.setId(c.getLong(c.getColumnIndex("id")));
+                data.setName_project(c.getString(c.getColumnIndex("name_project")));
+
+                Date date = new Date(c.getLong(c.getColumnIndex("date")));
+                data.setDate(date);
+                data.setFinishDate(new Date(c.getLong(c.getColumnIndex("finish_date"))));
+
+                data.setDesc(c.getString(c.getColumnIndex("desc")));
+                data.setState(c.getInt(c.getColumnIndex("state")));
+                data.setState_process(c.getInt(c.getColumnIndex("state_progress")));
+                data.setResult(c.getString(c.getColumnIndex("result")));
+
+                c.close();
+                return data;
+            }
+
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+
     }
 
     public List<InspRecordProject> query(Date begin, Date end)

@@ -72,6 +72,90 @@ public class QueryScoutRecord extends Operation {
         //注意，begFinishedTime为null意味着没有时间上限，即从最初到endFinishedTime的范围
         //即从最初到endFinishedTime的范围为null则是从begFinishedTime到现在
 
+        if(begFinishedTime == null){
+            begFinishedTime = new Date();
+            begFinishedTime.setTime(0);
+        }
+
+        if(endFinishedTime == null){
+            endFinishedTime = new Date();
+        }
+
+        for (ScoutProjectConfig projectConfig: projectConfigs){
+            InspRecordProject project = new  InspRecordProject();
+
+            List<InspRecordProject> listRecProj = project.queryByFinishTime(projectConfig.getName(), begFinishedTime, endFinishedTime);
+
+            if(listRecProj == null)continue;
+
+            if(result == null){
+                result = new ArrayList<>();
+            }
+
+            for (InspRecordProject itermProject: listRecProj){
+                ScoutProjectRecord projectRecord = new ScoutProjectRecord(itermProject.getId(), projectConfig);
+                projectRecord.setScheduledTime(itermProject.getDate());
+                projectRecord.setFinishedTime(itermProject.getFinishDate());
+                projectRecord.setEvaluationType(EvaluationType.createFromIndex(itermProject.getState()));
+                projectRecord.setRecordResult(itermProject.getResult());
+                result.add(projectRecord);
+
+                switch (itermProject.getState_process()){
+                    case 0:
+                        projectRecord.setPollingState(ScoutRecordState.PS_COMPLETED);
+                        break;
+                    case 1:
+                        projectRecord.setPollingState(ScoutRecordState.PS_RUNNING);
+                        break;
+                    case 2:
+                        projectRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                        break;
+
+                    default:
+                        projectRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                    }
+
+                InspRecordMission mission = new  InspRecordMission();
+                List<InspRecordMission> missionList = mission.queryByIdRecordProject(itermProject.getId());
+
+                for (InspRecordMission itermMission : missionList)
+                {
+                    ScoutMissionConfig missionConfig = getMissionConfig(itermProject.getName_project(), itermMission.getName_mission());
+                    if (missionConfig==null)continue;
+                    ScoutMissionRecord missionRecord = new ScoutMissionRecord(itermMission.getId(), missionConfig);
+                    missionRecord.setRecordResult(itermMission.getDesc());
+                    missionRecord.setEvaluationType(EvaluationType.createFromIndex(itermMission.getState()));
+                    missionRecord.setFinishedTime(itermMission.getDate());
+
+                    switch (itermMission.getState_process()){
+                        case 0:
+                            missionRecord.setPollingState(ScoutRecordState.PS_COMPLETED);
+                            break;
+                        case 1:
+                            missionRecord.setPollingState(ScoutRecordState.PS_RUNNING);
+                            break;
+                        case 2:
+                            missionRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                            break;
+                        default:
+                            projectRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                    }
+
+                    InspRecordIterm value = new  InspRecordIterm();
+                    List<InspRecordIterm> valueList = value.queryByIdRecordMission(itermMission.getId());
+
+                    for (InspRecordIterm itermValue : valueList)
+                    {
+                        ScoutItemConfig itemConfig = getItermConfig(itermProject.getName_project(), itermMission.getName_mission(), itermValue.getName_measure());
+                        ScoutItemRecord itemRecord= new ScoutItemRecord(itermValue.getId(), itemConfig);
+                        itemRecord.setValue(itermValue.getValue());
+                        missionRecord.getItemRecords().add(itemRecord);
+                    }
+                    projectRecord.getMissionRecords().add(missionRecord);
+                }
+            }
+        }
+
         return result;
     }
 
@@ -87,6 +171,91 @@ public class QueryScoutRecord extends Operation {
         //TODO 查询projectConfigs所列项目在给出的巡检时间范围内(begScheduledTime, endScheduledTime)的巡检记录
         //注意，begScheduledTime为null意味着没有时间上限，即从最初到endScheduledTime的范围
         //即从最初到endScheduledTime的范围为null则是从begScheduledTime到现在
+
+        if(begScheduledTime == null){
+            begScheduledTime = new Date();
+            begScheduledTime.setTime(0);
+        }
+
+        if(endScheduledTime == null){
+            endScheduledTime = new Date();
+        }
+
+        for (ScoutProjectConfig projectConfig: projectConfigs){
+            InspRecordProject project = new  InspRecordProject();
+
+            List<InspRecordProject> listRecProj = project.queryByTime(projectConfig.getName(), begScheduledTime, endScheduledTime);
+
+            if(listRecProj == null)continue;
+
+            if(result == null){
+                result = new ArrayList<>();
+            }
+
+            for (InspRecordProject itermProject: listRecProj){
+                ScoutProjectRecord projectRecord = new ScoutProjectRecord(itermProject.getId(), projectConfig);
+                projectRecord.setScheduledTime(itermProject.getDate());
+                projectRecord.setFinishedTime(itermProject.getFinishDate());
+                projectRecord.setEvaluationType(EvaluationType.createFromIndex(itermProject.getState()));
+                projectRecord.setRecordResult(itermProject.getResult());
+                result.add(projectRecord);
+
+                switch (itermProject.getState_process()){
+                    case 0:
+                        projectRecord.setPollingState(ScoutRecordState.PS_COMPLETED);
+                        break;
+                    case 1:
+                        projectRecord.setPollingState(ScoutRecordState.PS_RUNNING);
+                        break;
+                    case 2:
+                        projectRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                        break;
+
+                    default:
+                        projectRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                }
+
+                InspRecordMission mission = new  InspRecordMission();
+                List<InspRecordMission> missionList = mission.queryByIdRecordProject(itermProject.getId());
+
+                for (InspRecordMission itermMission : missionList)
+                {
+                    ScoutMissionConfig missionConfig = getMissionConfig(itermProject.getName_project(), itermMission.getName_mission());
+                    if (missionConfig==null)continue;
+                    ScoutMissionRecord missionRecord = new ScoutMissionRecord(itermMission.getId(), missionConfig);
+                    missionRecord.setRecordResult(itermMission.getDesc());
+                    missionRecord.setEvaluationType(EvaluationType.createFromIndex(itermMission.getState()));
+                    missionRecord.setFinishedTime(itermMission.getDate());
+
+                    switch (itermMission.getState_process()){
+                        case 0:
+                            missionRecord.setPollingState(ScoutRecordState.PS_COMPLETED);
+                            break;
+                        case 1:
+                            missionRecord.setPollingState(ScoutRecordState.PS_RUNNING);
+                            break;
+                        case 2:
+                            missionRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                            break;
+                        default:
+                            projectRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                    }
+
+                    InspRecordIterm value = new  InspRecordIterm();
+                    List<InspRecordIterm> valueList = value.queryByIdRecordMission(itermMission.getId());
+
+                    for (InspRecordIterm itermValue : valueList)
+                    {
+                        ScoutItemConfig itemConfig = getItermConfig(itermProject.getName_project(), itermMission.getName_mission(), itermValue.getName_measure());
+                        ScoutItemRecord itemRecord= new ScoutItemRecord(itermValue.getId(), itemConfig);
+                        itemRecord.setValue(itermValue.getValue());
+                        missionRecord.getItemRecords().add(itemRecord);
+                    }
+                    projectRecord.getMissionRecords().add(missionRecord);
+                }
+            }
+        }
+
 
         //debug
 //        result = new ArrayList<>();
@@ -195,6 +364,80 @@ public class QueryScoutRecord extends Operation {
         //不用得到查询结果后还要使用getProjectConfig、getMissionConfig和getItemConfig这
         //三个函数进行查找然后再打包了，当然这样做查询的效率可能会降低，但整体效率应该会提高
         //个人建议，仅供参考，不喜勿喷，：）
+        for (ScoutProjectConfig projectConfig: projectConfigs){
+            InspRecordProject project = new  InspRecordProject();
+            InspRecordProject itermProject = project.queryLastTime(projectConfig.getName());
+
+            if(itermProject == null)continue;
+
+            if(result == null){
+                result = new ArrayList<>();
+            }
+
+
+            ScoutProjectRecord projectRecord = new ScoutProjectRecord(itermProject.getId(), projectConfig);
+            projectRecord.setScheduledTime(itermProject.getDate());
+            projectRecord.setFinishedTime(itermProject.getFinishDate());
+            projectRecord.setEvaluationType(EvaluationType.createFromIndex(itermProject.getState()));
+            projectRecord.setRecordResult(itermProject.getResult());
+            result.add(projectRecord);
+
+            switch (itermProject.getState_process()){
+                case 0:
+                    projectRecord.setPollingState(ScoutRecordState.PS_COMPLETED);
+                    break;
+                case 1:
+                    projectRecord.setPollingState(ScoutRecordState.PS_RUNNING);
+                    break;
+                case 2:
+                    projectRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                    break;
+
+                default:
+                    projectRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+            }
+
+            InspRecordMission mission = new  InspRecordMission();
+            List<InspRecordMission> missionList = mission.queryByIdRecordProject(itermProject.getId());
+
+            for (InspRecordMission itermMission : missionList)
+            {
+                ScoutMissionConfig missionConfig = getMissionConfig(itermProject.getName_project(), itermMission.getName_mission());
+                if (missionConfig==null)continue;
+                ScoutMissionRecord missionRecord = new ScoutMissionRecord(itermMission.getId(), missionConfig);
+                missionRecord.setRecordResult(itermMission.getDesc());
+                missionRecord.setEvaluationType(EvaluationType.createFromIndex(itermMission.getState()));
+                missionRecord.setFinishedTime(itermMission.getDate());
+
+                switch (itermMission.getState_process()){
+                    case 0:
+                        missionRecord.setPollingState(ScoutRecordState.PS_COMPLETED);
+                        break;
+                    case 1:
+                        missionRecord.setPollingState(ScoutRecordState.PS_RUNNING);
+                        break;
+                    case 2:
+                        missionRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                        break;
+                    default:
+                        projectRecord.setPollingState(ScoutRecordState.PS_UNDONE);
+                }
+
+                InspRecordIterm value = new  InspRecordIterm();
+                List<InspRecordIterm> valueList = value.queryByIdRecordMission(itermMission.getId());
+
+                for (InspRecordIterm itermValue : valueList)
+                {
+                    ScoutItemConfig itemConfig = getItermConfig(itermProject.getName_project(), itermMission.getName_mission(), itermValue.getName_measure());
+                    ScoutItemRecord itemRecord= new ScoutItemRecord(itermValue.getId(), itemConfig);
+                    itemRecord.setValue(itermValue.getValue());
+                    missionRecord.getItemRecords().add(itemRecord);
+                }
+
+                projectRecord.getMissionRecords().add(missionRecord);
+            }
+
+        }
 
         return result;
     }
