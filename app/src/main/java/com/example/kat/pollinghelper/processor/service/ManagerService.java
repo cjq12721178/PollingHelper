@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.communicator.Ble;
@@ -112,8 +111,8 @@ public class ManagerService extends Service {
         ble = new Ble(this);
         if (ble.launch()) {
             ble.setOnBluetoothDeviceScannedListener(onBleScannedListener);
-            ble.startScan(getResources().getInteger(R.integer.time_interval_scan_ble),
-                    getResources().getInteger(R.integer.time_duration_scan_ble));
+            ble.startScan(getResources().getInteger(R.integer.time_interval_scan_ble_data_storage),
+                    getResources().getInteger(R.integer.time_duration_scan_ble_data_storage));
             //Log.d("PollingHelper", "ble launched");
         } else {
             promptMessage(R.string.ui_prompt_ble_launch_failed);
@@ -143,7 +142,7 @@ public class ManagerService extends Service {
         operationMap.put(OperaType.OT_EXPORT_SENSOR_CONFIG, new ExportSensorConfig(operationInfo));
         operationMap.put(OperaType.OT_EXPORT_POLLING_MISSION_RECORD, new ExportMissionRecord(operationInfo));
         operationMap.put(OperaType.OT_CREATE_POLLING_DATABASE, new EstablishScoutDatabase(operationInfo, this));
-        operationMap.put(OperaType.OT_SCAN_BLE_SENSOR, new ScanBleSensor(operationInfo, ble, getResources().getInteger(R.integer.time_duration_scan_ble)));
+        operationMap.put(OperaType.OT_SCAN_BLE_SENSOR, new ScanBleSensor(operationInfo, ble, getResources().getInteger(R.integer.time_duration_scan_ble_data_storage)));
         operationMap.put(OperaType.OT_QUERY_RECORD, new QueryScoutRecord(operationInfo));
         operationMap.put(OperaType.OT_REQUEST_SENSOR_COLLECTION, new RequestSensorCollection(operationInfo, dataStorage));
     }

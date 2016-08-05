@@ -20,6 +20,7 @@ import com.example.kat.pollinghelper.ui.adapter.SlipPageAdapter;
 import com.example.kat.pollinghelper.ui.fragment.AnalogPanelSlipPage;
 import com.example.kat.pollinghelper.ui.fragment.DataViewFragment;
 import com.example.kat.pollinghelper.ui.fragment.DigitalTableSlipPage;
+import com.example.kat.pollinghelper.ui.fragment.LineChartSlipPage;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,6 +61,8 @@ public class DataViewActivity extends ManagedActivity {
                     0, R.string.fragment_title_analog_dial));
             slipPages.add(getFragment(fragmentManager, DigitalTableSlipPage.class,
                     1, R.string.fragment_title_digital_table));
+            slipPages.add(getFragment(fragmentManager, LineChartSlipPage.class,
+                    2, R.string.fragment_title_line_chart));
         } catch (Exception ignored) {
         }
         return slipPages;
@@ -139,6 +142,8 @@ public class DataViewActivity extends ManagedActivity {
         public void run() {
             slipPageAdapter.setSensorList(sensorList);
             refreshTimeInterval = getResources().getInteger(R.integer.time_interval_update_data_view);
+            bleScanTimeInterval = getResources().getInteger(R.integer.time_interval_scan_ble_data_view);
+            refreshTimes = 0;
             isNextTimeUpdate = true;
             refresher.post(onUpdateDataView);
         }
@@ -149,9 +154,17 @@ public class DataViewActivity extends ManagedActivity {
         public void run() {
             onUpdateData();
             onUpdateView();
+            scanBleSensor();
             predetermineNextUpdate();
         }
     };
+
+    private void scanBleSensor() {
+        if (++refreshTimes * refreshTimeInterval >= bleScanTimeInterval) {
+            refreshTimes = 0;
+            notifyManager(OperaType.OT_SCAN_BLE_SENSOR);
+        }
+    }
 
     private void predetermineNextUpdate() {
         if (isNextTimeUpdate) {
@@ -190,6 +203,8 @@ public class DataViewActivity extends ManagedActivity {
     private List<SensorValue> sensorBuffer;
     private List<SensorValue> sensorList;
     private Handler refresher;
+    private int bleScanTimeInterval;
+    private int refreshTimes;
     private boolean isNextTimeUpdate;
     private int refreshTimeInterval;
     private SlipPageAdapter slipPageAdapter;

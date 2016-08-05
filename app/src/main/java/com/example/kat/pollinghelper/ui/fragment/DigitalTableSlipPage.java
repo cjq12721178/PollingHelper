@@ -12,16 +12,11 @@ import com.example.kat.pollinghelper.ui.adapter.DigitalTableAdapter;
 
 public class DigitalTableSlipPage extends DataViewFragment {
 
-    @Override
-    public String getLabel() {
-        return "数字表格";
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_digital_table_slip_page, container, false);
-        listView = (ListView) view.findViewById(R.id.lv_data_view_digital);
+        View view = inflater.inflate(R.layout.fragment_slip_page_digital_table, container, false);
+        ListView listView = (ListView) view.findViewById(R.id.lv_data_view_digital);
         digitalTableAdapter = new DigitalTableAdapter(getContext(), getSensorList());
         listView.setAdapter(digitalTableAdapter);
         return view;
@@ -38,6 +33,5 @@ public class DigitalTableSlipPage extends DataViewFragment {
         digitalTableAdapter.notifyDataSetChanged();
     }
 
-    private ListView listView;
     private DigitalTableAdapter digitalTableAdapter;
 }

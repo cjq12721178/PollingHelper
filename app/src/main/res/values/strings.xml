@@ -14,6 +14,7 @@
     <string name="activity_title_polling_config_item">测量参数配置</string>
     <string name="fragment_title_analog_dial">模拟表盘</string>
     <string name="fragment_title_digital_table">数字表格</string>
+    <string name="fragment_title_line_chart">拟合曲线</string>
 
     <!-- 菜单 -->
     <string name="actionbar_setting">设置</string>
@@ -173,7 +174,8 @@
     <integer name="base_station_port">5000</integer>
     <integer name="time_interval_request_data">500</integer>
     <integer name="time_interval_update_sensor_data">2000</integer>
-    <integer name="time_interval_scan_ble">300000</integer>
-    <integer name="time_duration_scan_ble">10000</integer>
+    <integer name="time_interval_scan_ble_data_storage">300000</integer>
+    <integer name="time_duration_scan_ble_data_storage">10000</integer>
     <integer name="time_interval_update_data_view">1000</integer>
+    <integer name="time_interval_scan_ble_data_view">60000</integer>
 </resources>

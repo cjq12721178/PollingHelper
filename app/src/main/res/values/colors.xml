@@ -14,4 +14,10 @@
     <color name="background_record_item_warning">#B0F51F13</color>
     <color name="dialog_alternative_message">#B97A57</color>
     <color name="transparent_total">#00000000</color>
+    <color name="bar_status_true">#FFF78C</color>
+    <color name="bar_status_false">#8CEAFF</color>
+    <integer-array name="bar_status">
+        <item>@color/bar_status_true</item>
+        <item>@color/bar_status_false</item>
+    </integer-array>
 </resources>
