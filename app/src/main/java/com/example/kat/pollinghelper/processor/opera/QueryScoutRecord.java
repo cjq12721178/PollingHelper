@@ -366,7 +366,7 @@ public class QueryScoutRecord extends Operation {
         //个人建议，仅供参考，不喜勿喷，：）
         for (ScoutProjectConfig projectConfig: projectConfigs){
             InspRecordProject project = new  InspRecordProject();
-            InspRecordProject itermProject = project.queryLastTime(projectConfig.getName());
+            InspRecordProject itermProject = project.queryLastTime(projectConfig.getName(), begScheduledTime);
 
             if(itermProject == null)continue;
 

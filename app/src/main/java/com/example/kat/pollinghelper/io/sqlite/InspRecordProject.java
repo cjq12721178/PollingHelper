@@ -238,12 +238,12 @@ public class InspRecordProject extends DBData  {
         return null;
     }
 
-    public InspRecordProject queryLastTime(String name)
+    public InspRecordProject queryLastTime(String name, Date begin)
     {
         Log.d(AppConstants.LOG_TAG, "DBManager --> query");
         try {
-            Cursor c = db.rawQuery("SELECT * FROM " + tableName +" WHERE name_project == ? ORDER BY date DESC",
-                    new String[] { name });
+            Cursor c = db.rawQuery("SELECT * FROM " + tableName +" WHERE name_project == ? and date > ? ORDER BY date DESC",
+                    new String[] {name,  String.valueOf(begin.getTime()) });
             if (c == null)
                 return null;
 
