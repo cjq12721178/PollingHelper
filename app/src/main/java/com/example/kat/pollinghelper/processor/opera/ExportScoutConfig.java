@@ -40,7 +40,6 @@ public class ExportScoutConfig extends Operation {
 
     @Override
     protected boolean onExecute() {
-        //TODO 有时间引入执行是否成功判断
         //删除数据处理
         for (ScoutCellEntity deleteEntity : desertedEntities) {
 

@@ -8,11 +8,11 @@ import com.example.kat.pollinghelper.communicator.Ble;
 import com.example.kat.pollinghelper.utility.Converter;
 
 /**
- * Created by KAT on 2016/6/28.
+ * Created by KAT on 2016/8/11.
  */
-public class ScanBleSensor extends Operation {
+public class ModifyScanBleCycleOrDuration extends Operation {
 
-    public ScanBleSensor(OperationInfo operationInfo, Ble ble, Context context) {
+    public ModifyScanBleCycleOrDuration(OperationInfo operationInfo, Ble ble, Context context) {
         super(operationInfo);
         this.ble = ble;
         this.context = context;
@@ -21,9 +21,11 @@ public class ScanBleSensor extends Operation {
     @Override
     protected boolean onExecute() {
         SharedPreferences configs = context.getSharedPreferences(context.getString(R.string.file_function_setting), context.MODE_PRIVATE);
+        int scanBleCycle = Converter.minuteToMillisecond(Converter.stringToInt(configs.getString(context.getString(R.string.key_scan_cycle), null),
+                context.getResources().getInteger(R.integer.time_interval_scan_ble_communicator)));
         int scanBleDuration = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(context.getString(R.string.key_scan_duration), null),
                 context.getResources().getInteger(R.integer.time_duration_scan_ble_communicator)));
-        ble.startScan(0, scanBleDuration);
+        ble.startScan(scanBleCycle, scanBleDuration);
         return true;
     }
 

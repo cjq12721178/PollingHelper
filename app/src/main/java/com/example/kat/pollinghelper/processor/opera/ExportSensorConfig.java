@@ -17,13 +17,6 @@ public class ExportSensorConfig extends Operation {
         super(operationInfo);
     }
 
-//    @Override
-//    protected void onPostExecute() {
-//        uiProcessor = (Runnable)getValue(isSuccess ? ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_SUCCESS :
-//                ArgumentTag.AT_RUNNABLE_EXPORT_POLLING_CONFIGS_FAILED);
-//        super.onPostExecute();
-//    }
-
     @Override
     protected boolean onPreExecute() {
         existSensorEntities = (List<ScoutCellSensorEntity>)getValue(ArgumentTag.AT_LIST_SENSOR_ENTITY_EXIST);
@@ -33,7 +26,6 @@ public class ExportSensorConfig extends Operation {
 
     @Override
     protected boolean onExecute() {
-        //TODO 有时间引入执行是否成功判断
 
         Integer i=0;
         for(ScoutCellSensorEntity iterm:existSensorEntities){

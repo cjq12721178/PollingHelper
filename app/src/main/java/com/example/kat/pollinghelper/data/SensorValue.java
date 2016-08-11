@@ -37,6 +37,7 @@ public class SensorValue {
         SensorValue result = new SensorValue();
         result.dataType = sensorInfo.getDataType();
         result.address = sensorInfo.getMacAddress();
+        result.measureName = sensorInfo.getMeasureName();
         return result.addValue(sensorInfo);
     }
 
@@ -104,40 +105,13 @@ public class SensorValue {
         return receiver;
     }
 
-//    public synchronized <E extends Entry> List<E> getChartValues(Class<E> c)
-//            throws IllegalAccessException, InstantiationException {
-//        List<E> result = new ArrayList<>(values.size());
-//        float x = -0.5f;
-//        for (Map.Entry<Long, Double> element :
-//                values.entrySet()) {
-//            E e = c.newInstance();
-//            e.setX();
-//            result.add();
-//        }
-//        return result;
-//    }
-//
-//    public synchronized List<Entry> getLineValues() {
-//        List<Entry> result = new ArrayList<>(values.size());
-//        for (Map.Entry<Long, Double> element :
-//                values.entrySet()) {
-//            result.add(new Entry(element.getKey(), element.getValue().floatValue()));
-//        }
-//        return result;
-//    }
-//
-//    public synchronized List<BarEntry> getBarValues() {
-//        List<BarEntry> result = new ArrayList<>(values.size());
-//        float x = -0.5f;
-//        for (Map.Entry<Long, Double> element :
-//                values.entrySet()) {
-//            result.add(new BarEntry(++x, element.getValue().floatValue() + 1, element.getKey()));
-//        }
-//        return result;
-//    }
+    public String getMeasureName() {
+        return measureName;
+    }
 
     private SensorDataType dataType;
     private String address;
+    private String measureName;
     //用于控制数据规模
     private static final int MAX_ELEMENT_COUNT = 10;
     private TreeMap<Long, Double> values;

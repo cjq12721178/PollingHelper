@@ -24,15 +24,8 @@ public class ExportMissionRecord extends Operation {
 
     @Override
     protected boolean onExecute() {
-        boolean result = false;
-        try {
-            //执行处理
-            exportConfig();
-            result = true;
-        } catch (Exception e) {
-            errorMessage = e.getMessage();
-        }
-        return result;
+        exportConfig();
+        return true;
     }
 
     private void exportConfig() {

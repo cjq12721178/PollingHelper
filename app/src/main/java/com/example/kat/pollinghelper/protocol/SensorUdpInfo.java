@@ -10,6 +10,9 @@ import java.util.Map;
  */
 public class SensorUdpInfo extends SensorInfo {
 
+    private SensorUdpInfo() {
+    }
+
     public static SensorUdpInfo from(byte[] sensorData) {
         return from(sensorData, 0);
     }
@@ -40,7 +43,9 @@ public class SensorUdpInfo extends SensorInfo {
             case DT_STATUS:return d5 == 0x10 || d5 == 1 ? 1 : 0;
             case DT_COUNT:return NumericConverter.toUInt16(d5);
             case DT_ANALOG:
-            default:return NumericConverter.toUInt16(d4, d5) * dataType.getCoefficient();
+            default:return (dataType.isSigned() ?
+                    NumericConverter.toInt32(d4, d5) :
+                    NumericConverter.toUInt16(d4, d5)) * dataType.getCoefficient();
         }
     }
 
@@ -67,6 +72,11 @@ public class SensorUdpInfo extends SensorInfo {
     @Override
     public long getTimestamp() {
         return timestamp.getTimeInMillis();
+    }
+
+    @Override
+    public String getMeasureName() {
+        return dataType.getName();
     }
 
     //用于判断在Set<SensorValue>中是否存在相同FullAddress的SensorValue

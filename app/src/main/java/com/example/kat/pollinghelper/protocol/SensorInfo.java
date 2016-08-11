@@ -8,7 +8,7 @@ public abstract class SensorInfo {
     public abstract String getFullAddress();
 
     public String getMacAddress() {
-        return String.format("%08X", address);
+        return String.format("%06X", address);
     }
 
     public long getAddress() {
@@ -24,6 +24,8 @@ public abstract class SensorInfo {
     }
 
     public abstract long getTimestamp();
+
+    public abstract String getMeasureName();
 
     public double getValue() {
         return value;

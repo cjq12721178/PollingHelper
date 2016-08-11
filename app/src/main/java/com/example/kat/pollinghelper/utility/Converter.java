@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -44,11 +45,28 @@ public class Converter {
                     byteBuffer.write(buffer, 0, len);
                 }
                 result = byteBuffer.toByteArray();
-            } catch (IOException e) {
-                e.printStackTrace();
+                byteBuffer.close();
+            } catch (Exception e) {
+                Log.d("PollingHelper", e.getMessage());
             }
         }
 
         return result;
     }
+
+    //不处理异常
+    public static int stringToInt(String src, int defValue) {
+        return src != null ? Integer.parseInt(src) : defValue;
+    }
+
+    public static int minuteToMillisecond(int minutes) {
+        return minutes * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
+    }
+
+    public static int secondToMillisecond(int seconds) {
+        return seconds * MILLISECONDS_PER_SECOND;
+    }
+
+    private static final int MILLISECONDS_PER_SECOND = 1000;
+    private static final int SECONDS_PER_MINUTE = 60;
 }

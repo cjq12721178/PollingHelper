@@ -4,9 +4,11 @@ import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.communicator.Ble;
@@ -21,6 +23,9 @@ import com.example.kat.pollinghelper.processor.opera.ExportScoutConfig;
 import com.example.kat.pollinghelper.processor.opera.ExportProjectRecord;
 import com.example.kat.pollinghelper.processor.opera.ExportSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ImportProjectAndSensorConfigs;
+import com.example.kat.pollinghelper.processor.opera.ModifyBaseStationIpOrPort;
+import com.example.kat.pollinghelper.processor.opera.ModifyScanBleCycleOrDuration;
+import com.example.kat.pollinghelper.processor.opera.ModifyUdpDataRequestCycle;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.processor.opera.Operation;
 import com.example.kat.pollinghelper.processor.opera.OperationInfo;
@@ -34,6 +39,7 @@ import com.example.kat.pollinghelper.protocol.SensorBleProtocol;
 import com.example.kat.pollinghelper.protocol.SensorDataType;
 import com.example.kat.pollinghelper.protocol.SensorUdpInfo;
 import com.example.kat.pollinghelper.ui.toast.BeautyToast;
+import com.example.kat.pollinghelper.utility.Converter;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -59,24 +65,26 @@ public class ManagerService extends Service {
     }
 
     private void importSensorDataTypeConfig() {
-        SensorUdpInfo.setDataTypeMap(getSensorDataTypeMap(getString(R.string.file_data_type_udp)));
-        SensorBleInfo.setDataTypeMap(getSensorDataTypeMap(getString(R.string.file_data_type_ble)));
+        setSensorDataTypeMap(getString(R.string.file_data_type_udp), true);
+        setSensorDataTypeMap(getString(R.string.file_data_type_ble), false);
     }
 
-    private Map<Byte, SensorDataType> getSensorDataTypeMap(String configFileName) {
-        Map<Byte, SensorDataType> result;
+    private void setSensorDataTypeMap(String configFileName, boolean udpOrBle) {
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             InputStream is = getAssets().open(configFileName);
             SAXParser parser = factory.newSAXParser();
             SensorDataType.Handler dataTypeHandler = SensorDataType.getHandler();
             parser.parse(is, dataTypeHandler);
-            result = dataTypeHandler.getDataTypeMap();
+            if (udpOrBle) {
+                SensorUdpInfo.setDataTypeMap(dataTypeHandler.getDataTypeMap());
+            } else {
+                SensorBleInfo.setDataTypeMap(dataTypeHandler.getDataTypeMap(),
+                        dataTypeHandler.getMeasureNameMap());
+            }
         } catch (Exception e) {
-            result = null;
             promptMessage(e.getMessage());
         }
-        return result;
     }
 
     private void createDataStorage() {
@@ -95,13 +103,30 @@ public class ManagerService extends Service {
     }
 
     private void launchCommunicator() {
+        //从配置文件获取参数
+        SharedPreferences configs = getSharedPreferences(getString(R.string.file_function_setting), MODE_PRIVATE);
+        String ip = configs.getString(getString(R.string.key_ip), getString(R.string.base_station_ip));
+        int port = Converter.stringToInt(configs.getString(getString(R.string.key_port), null),
+                getResources().getInteger(R.integer.base_station_port));
+        int requestDataCycle = Converter.stringToInt(configs.getString(getString(R.string.key_data_request_cycle), null),
+                getResources().getInteger(R.integer.time_interval_request_data));
+        int scanBleCycle = Converter.minuteToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_scan_cycle), null),
+                getResources().getInteger(R.integer.time_interval_scan_ble_communicator)));
+        int scanBleDuration = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_scan_duration), null),
+                getResources().getInteger(R.integer.time_duration_scan_ble_communicator)));
+
+        Log.d("PollingHelper", "ip = " + ip);
+        Log.d("PollingHelper", "port = " + port);
+        Log.d("PollingHelper", "requestDataCycle = " + requestDataCycle);
+        Log.d("PollingHelper", "scanBleCycle = " + scanBleCycle);
+        Log.d("PollingHelper", "scanBleDuration = " + scanBleDuration);
         //wifi
         udp = new Udp();
         udp.setDataReceivedListener(onUdpDataReceivedListener);
         if (udp.launch()) {
-            udp.connect(udp.getParameter().setAddress(getString(R.string.base_station_ip)).setPort(getResources().getInteger(R.integer.base_station_port)), false);
+            udp.connect(udp.getParameter().setAddress(ip).setPort(port), false);
             udp.startListen(true);
-            udp.sendData(generateRequestDataCommand(), getResources().getInteger(R.integer.time_interval_request_data));
+            udp.sendData(generateRequestDataCommand(), requestDataCycle);
             //Log.d("PollingHelper", "udp launched");
         } else {
             promptMessage(R.string.ui_prompt_udp_launch_failed);
@@ -111,8 +136,7 @@ public class ManagerService extends Service {
         ble = new Ble(this);
         if (ble.launch()) {
             ble.setOnBluetoothDeviceScannedListener(onBleScannedListener);
-            ble.startScan(getResources().getInteger(R.integer.time_interval_scan_ble_data_storage),
-                    getResources().getInteger(R.integer.time_duration_scan_ble_data_storage));
+            ble.startScan(scanBleCycle, scanBleDuration);
             //Log.d("PollingHelper", "ble launched");
         } else {
             promptMessage(R.string.ui_prompt_ble_launch_failed);
@@ -142,9 +166,16 @@ public class ManagerService extends Service {
         operationMap.put(OperaType.OT_EXPORT_SENSOR_CONFIG, new ExportSensorConfig(operationInfo));
         operationMap.put(OperaType.OT_EXPORT_POLLING_MISSION_RECORD, new ExportMissionRecord(operationInfo));
         operationMap.put(OperaType.OT_CREATE_POLLING_DATABASE, new EstablishScoutDatabase(operationInfo, this));
-        operationMap.put(OperaType.OT_SCAN_BLE_SENSOR, new ScanBleSensor(operationInfo, ble, getResources().getInteger(R.integer.time_duration_scan_ble_data_storage)));
+        operationMap.put(OperaType.OT_SCAN_BLE_SENSOR, new ScanBleSensor(operationInfo, ble, this));
         operationMap.put(OperaType.OT_QUERY_RECORD, new QueryScoutRecord(operationInfo));
         operationMap.put(OperaType.OT_REQUEST_SENSOR_COLLECTION, new RequestSensorCollection(operationInfo, dataStorage));
+        ModifyBaseStationIpOrPort modifyBaseStationIpOrPort = new ModifyBaseStationIpOrPort(operationInfo, udp, this);
+        operationMap.put(OperaType.OT_MODIFY_BASE_STATION_IP, modifyBaseStationIpOrPort);
+        operationMap.put(OperaType.OT_MODIFY_BASE_STATION_PORT, modifyBaseStationIpOrPort);
+        operationMap.put(OperaType.OT_MODIFY_DATA_REQUEST_CYCLE, new ModifyUdpDataRequestCycle(operationInfo, udp, this));
+        ModifyScanBleCycleOrDuration modifyScanBleCycleOrDuration = new ModifyScanBleCycleOrDuration(operationInfo, ble, this);
+        operationMap.put(OperaType.OT_MODIFY_SCAN_BLE_CYCLE, modifyScanBleCycleOrDuration);
+        operationMap.put(OperaType.OT_MODIFY_SCAN_BLE_DURATION, modifyScanBleCycleOrDuration);
     }
 
     private void initOperationInfo() {
@@ -184,6 +215,25 @@ public class ManagerService extends Service {
     private void closeOperationListener() {
         running = false;
         operationInfo.notifyExecutor();
+    }
+
+    private void execute(Operation operation) {
+        //执行命令
+        boolean result = operation.execute();
+        //处理意外错误信息
+        if (!result) {
+            String accidentErrorInfo = operation.getErrorMessageForOnce();
+            if (accidentErrorInfo != null) {
+                promptMessage(accidentErrorInfo);
+            }
+        }
+        //处理执行结果
+        if (!operationInfo.isRunningContinuousOpera()) {
+            Runnable processor = (Runnable)operationInfo.getArgument(result ? ArgumentTag.AT_RUNNABLE_SUCCESS : ArgumentTag.AT_RUNNABLE_FAILED);
+            if (processor != null) {
+                uiEventProcessor.post(processor);
+            }
+        }
     }
 
     private void feedbackUI(boolean executeResult) {
@@ -226,7 +276,7 @@ public class ManagerService extends Service {
                 if (operationInfo.hasOpera()) {
                     operationInfo.waitNotifier();
                 } else {
-                    feedbackUI(operationMap.get(operationInfo.popOpera()).execute());
+                    execute(operationMap.get(operationInfo.popOpera()));
                 }
             }
         }

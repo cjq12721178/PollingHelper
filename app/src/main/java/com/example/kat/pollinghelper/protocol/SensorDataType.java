@@ -20,9 +20,14 @@ public class SensorDataType {
             return dataTypeMap;
         }
 
+        public Map<SensorDataType, Map<Byte, String>> getMeasureNameMap() {
+            return measureNameMap;
+        }
+
         @Override
         public void startDocument() throws SAXException {
             dataTypeMap = new HashMap<>();
+            measureNameMap = new HashMap<>();
             builder = new StringBuilder();
         }
 
@@ -30,6 +35,8 @@ public class SensorDataType {
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             if (localName.equals(DATA_TYPE)) {
                 dataType = new SensorDataType();
+            } else if (localName.equals(DIRECTIONS)) {
+                directionMap = new HashMap<>();
             }
             builder.setLength(0);
         }
@@ -45,25 +52,44 @@ public class SensorDataType {
                 case VALUE:dataType.value = Integer.decode(builder.toString()).byteValue();break;
                 case NAME:dataType.name = builder.toString();break;
                 case PATTERN:dataType.pattern = Pattern.from(Integer.parseInt(builder.toString()));break;
+                case SIGNED:dataType.signed = Boolean.parseBoolean(builder.toString());break;
                 case DECIMAL:dataType.decimal = Integer.parseInt(builder.toString());break;
                 case UNIT:dataType.unit = builder.toString();break;
                 case COEFFICIENT:dataType.coefficient = Double.parseDouble(builder.toString());break;
                 case TRUE:dataType.labelOn = builder.toString();break;
                 case FALSE:dataType.labelOff = builder.toString();break;
-                case DATA_TYPE:dataTypeMap.put(dataType.getValue(), dataType);break;
+                case DATA_TYPE: {
+                    dataTypeMap.put(dataType.getValue(), dataType);
+                    if (directionMap != null) {
+                        measureNameMap.put(dataType, directionMap);
+                        directionMap = null;
+                    }
+                }break;
+                case INDEX:index = Byte.valueOf(builder.toString());break;
+                case INTRODUCTION:introduction = builder.toString();break;
+                case DIRECTION:directionMap.put(index, introduction);break;
             }
         }
 
         private static final String VALUE = "value";
         private static final String NAME = "name";
         private static final String PATTERN = "type";
+        private static final String SIGNED = "signed";
         private static final String DECIMAL = "decimal";
         private static final String UNIT = "unit";
         private static final String COEFFICIENT = "coefficient";
+        private static final String DIRECTION = "direction";
+        private static final String DIRECTIONS = "directions";
+        private static final String INDEX = "index";
+        private static final String INTRODUCTION = "introduction";
         private static final String TRUE = "true";
         private static final String FALSE = "false";
         private static final String DATA_TYPE = "DataType";
         private Map<Byte, SensorDataType> dataTypeMap;
+        private Map<SensorDataType, Map<Byte, String>> measureNameMap;
+        private Map<Byte, String> directionMap;
+        private Byte index;
+        private String introduction;
         private SensorDataType dataType;
         private StringBuilder builder;
     }
@@ -128,6 +154,10 @@ public class SensorDataType {
         return coefficient;
     }
 
+    public boolean isSigned() {
+        return signed;
+    }
+
     public String getSignificantValue(double rawValue) {
         switch (pattern) {
             case DT_ANALOG:
@@ -145,6 +175,7 @@ public class SensorDataType {
     private byte value;
     private String name;
     private Pattern pattern;
+    private boolean signed;
     private int decimal;
     private String unit = "";
     private double coefficient;

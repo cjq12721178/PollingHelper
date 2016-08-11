@@ -5,15 +5,19 @@ package com.example.kat.pollinghelper.processor.opera;
  */
 public abstract class Operation  {
 
-    protected String errorMessage = "";
-    private OperationInfo operationInfo;
-
     public Operation(OperationInfo operationInfo) {
         this.operationInfo = operationInfo;
     }
 
     public boolean execute() {
-        return onPreExecute() && onExecute() && onPostExecute();
+        boolean result;
+        try {
+            result = onPreExecute() && onExecute() && onPostExecute();
+        } catch (Exception e) {
+            result = false;
+            onProcessError(e);
+        }
+        return result;
     }
 
     protected boolean onPreExecute() {
@@ -26,6 +30,10 @@ public abstract class Operation  {
 
     protected abstract boolean onExecute();
 
+    protected void onProcessError(Exception e) {
+        errorMessage = e.getMessage();
+    }
+
     protected void setValue(ArgumentTag tag, Object arg) {
         operationInfo.putArgument(tag, arg);
     }
@@ -37,4 +45,13 @@ public abstract class Operation  {
     public String getErrorMessage() {
         return errorMessage;
     }
+
+    public String getErrorMessageForOnce() {
+        String realErrorMessage = errorMessage;
+        errorMessage = null;
+        return realErrorMessage;
+    }
+
+    private String errorMessage;
+    private OperationInfo operationInfo;
 }

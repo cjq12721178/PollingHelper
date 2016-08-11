@@ -20,7 +20,6 @@ public class UpdateSensorData extends Operation {
     @Override
     protected boolean onPreExecute() {
         missionRecord = (ScoutMissionRecord)getValue(ArgumentTag.AT_MISSION_RECORD_CURRENT);
-        //uiProcessor = (Runnable)operationInfo.getArgument(ArgumentTag.AT_RUNNABLE_UPDATE_SENSOR_DATA);
         return missionRecord != null;
     }
 

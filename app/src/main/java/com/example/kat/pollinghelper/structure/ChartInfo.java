@@ -107,7 +107,7 @@ public class ChartInfo {
 
     private String getSensorLabel(SensorValue sensor) {
         StringBuilder builder = new StringBuilder();
-        builder.append(sensor.getDataType().getName());
+        builder.append(sensor.getMeasureName());
         if (sensor.getDataType().getUnit().length() > 0) {
             builder.append("(");
             builder.append(sensor.getDataType().getUnit());

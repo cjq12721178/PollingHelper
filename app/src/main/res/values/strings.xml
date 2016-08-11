@@ -76,6 +76,13 @@
         <item>开始</item>
     </string-array>
     <string name="ui_prompt_new_polling_project">新的巡检项目</string>
+    <string name="ui_prompt_exit_app">再按一次退出巡检助手</string>
+    <string name="ui_prompt_ip_format_error">IP格式不正确，设置失败</string>
+    <string name="ui_prompt_port_format_error">端口数值输入有误</string>
+    <string name="ui_prompt_data_request_cycle_down_limit">数据申请周期不得小于500毫秒</string>
+    <string name="ui_prompt_scan_ble_cycle_up_limit">BLE设备搜索周期不得大于35791分钟</string>
+    <string name="ui_prompt_scan_ble_duration_down_limit">BLE设备搜索持续时间不得小于5秒</string>
+    <string name="ui_prompt_data_refresh_cycle">数据刷新周期不得为0</string>
 
     <!-- 加载提示用语 -->
     <string name="ui_import_project_and_sensor_configs">正在加载巡检配置和传感器配置</string>
@@ -147,6 +154,23 @@
     <string name="ui_tv_data_view_digital_type">类型</string>
     <string name="ui_tv_data_view_digital_value">数值</string>
     <string name="ui_tv_data_view_digital_time">时间</string>
+    <string name="ui_pc_title_wifi">无线网络(WIFI)设置</string>
+    <string name="ui_ip_title">基站IP地址</string>
+    <string name="ui_ip_summary">一般为192.168.1.XXX</string>
+    <string name="ui_port_title">基站端口</string>
+    <string name="ui_port_summary">一般为1000-65535</string>
+    <string name="ui_ep_data_request_title">数据申请周期(毫秒)</string>
+    <string name="ui_ep_data_request_summary">最好不小于500</string>
+    <string name="ui_pc_title_ble">低功耗蓝牙(BLE)设置</string>
+    <string name="ui_ep_title_scan_cycle">设备搜索周期(分钟)</string>
+    <string name="ui_ep_summary_scan_cycle">建议时间不应太短，不少于5分钟</string>
+    <string name="ui_ep_title_scan_duration">搜索持续时间(秒)</string>
+    <string name="ui_ep_summary_scan_duration">建议时间不应太长，不多于10秒</string>
+    <string name="ui_pc_title_data_update">数据刷新周期设置</string>
+    <string name="ui_ep_title_data_view">数据浏览界面(秒)</string>
+    <string name="ui_ep_summary_data_view">控制数据浏览界面的数据更新周期</string>
+    <string name="ui_ep_title_scout_real_time">巡检任务界面(秒)</string>
+    <string name="ui_ep_summary_scout_real_time">控制巡检任务界面的数据更新周期</string>
 
     <!-- 广播地址(broadcast address = ba)  -->
     <string name="ba_update_project_time">android.intent.action.UPDATE_PROJECT_TIME</string>
@@ -156,10 +180,18 @@
     <!-- 配置文件名 -->
     <string name="file_data_type_udp">SensorDataTypeConfigUdp.xml</string>
     <string name="file_data_type_ble">SensorDataTypeConfigBle.xml</string>
+    <string name="file_function_setting">function_setting</string>
 
     <!-- 标记(tag) -->
     <string name="tag_project_schedule_times">times</string>
     <string name="tag_project_name">project name</string>
+    <string name="key_ip">ip</string>
+    <string name="key_port">port</string>
+    <string name="key_data_request_cycle">data request</string>
+    <string name="key_scan_cycle">scan cycle</string>
+    <string name="key_scan_duration">scan duration</string>
+    <string name="key_data_view">data view</string>
+    <string name="key_scout_real_time">scout real time</string>
 
     <!-- 其他 -->
     <string name="analog_dialplate">模拟表盘</string>
@@ -173,9 +205,10 @@
     <integer name="polling_config_listitem_indent">50</integer>
     <integer name="base_station_port">5000</integer>
     <integer name="time_interval_request_data">500</integer>
-    <integer name="time_interval_update_sensor_data">2000</integer>
-    <integer name="time_interval_scan_ble_data_storage">300000</integer>
-    <integer name="time_duration_scan_ble_data_storage">10000</integer>
-    <integer name="time_interval_update_data_view">1000</integer>
+    <integer name="time_interval_update_sensor_data">2</integer>
+    <integer name="time_interval_scan_ble_communicator">5</integer>
+    <integer name="time_duration_scan_ble_communicator">10</integer>
+    <integer name="time_duration_scan_ble_down_limit">5</integer>
+    <integer name="time_interval_update_data_view">1</integer>
     <integer name="time_interval_scan_ble_data_view">60000</integer>
 </resources>

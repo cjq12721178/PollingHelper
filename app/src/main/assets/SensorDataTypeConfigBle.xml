@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2013 (http://www.altova.com) by  (cjq) -->
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
 <!-- 本文件适用于ble -->
 <!-- type=0为模拟量，1为状态量，2为计数量 -->
 <!-- decimal为保留几位小数，当type为1时不存在decimal，type为2时decimal必为0 -->
@@ -284,10 +284,10 @@
 	</DataType>
 	<DataType>
 		<value>0x50</value>
-		<name>水浸</name>
-		<decimal>0</decimal>
-		<type>2</type>
-		<unit>次</unit>
+		<name>水浸状态</name>
+		<type>1</type>
+		<true>浸水</true>
+		<false>未浸水</false>
 	</DataType>
 	<DataType>
 		<value>0x52</value>
@@ -352,20 +352,48 @@
 		<name>重力加速度</name>
 		<type>0</type>
 		<decimal>3</decimal>
-		<unit>G</unit>
+		<unit>mg</unit>
 		<coefficient>1.0</coefficient>
+		<directions>
+			<direction>
+				<index>1</index>
+				<introduction>(X轴)</introduction>
+			</direction>
+			<direction>
+				<index>2</index>
+				<introduction>(Y轴)</introduction>
+			</direction>
+			<direction>
+				<index>3</index>
+				<introduction>(Z轴)</introduction>
+			</direction>
+		</directions>
 	</DataType>
 	<DataType>
 		<value>0x66</value>
-		<name>振动加速度(</name>
+		<name>振动加速度</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>G</unit>
 		<coefficient>1.0</coefficient>
+		<directions>
+			<direction>
+				<index>1</index>
+				<introduction>(X轴)</introduction>
+			</direction>
+			<direction>
+				<index>2</index>
+				<introduction>(Y轴)</introduction>
+			</direction>
+			<direction>
+				<index>3</index>
+				<introduction>(Z轴)</introduction>
+			</direction>
+		</directions>
 	</DataType>
 	<DataType>
 		<value>0x67</value>
-		<name>振动速率(</name>
+		<name>振动速率</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m/s</unit>
@@ -373,7 +401,7 @@
 	</DataType>
 	<DataType>
 		<value>0x68</value>
-		<name>振动位移(</name>
+		<name>振动位移</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m</unit>
@@ -381,7 +409,7 @@
 	</DataType>
 	<DataType>
 		<value>0x69</value>
-		<name>振动频率(</name>
+		<name>振动频率</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>Hz</unit>
@@ -389,7 +417,7 @@
 	</DataType>
 	<DataType>
 		<value>0x6B</value>
-		<name>距离(</name>
+		<name>距离</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m</unit>

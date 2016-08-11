@@ -164,6 +164,14 @@ public abstract class Communicator {
 
     protected abstract void onSendData(byte[] data, CommunicationParameter remotePara) throws Exception;
 
+    public synchronized boolean setCirculateTime(int newTime) {
+        if (newTime >= 0 && tmpSendData == null)
+            return false;
+
+        circulateTime = newTime;
+        return true;
+    }
+
     public void startListen(boolean isAsynchronous) {
         if (connected && !listening) {
             listening = true;

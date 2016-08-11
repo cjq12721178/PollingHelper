@@ -108,6 +108,8 @@ public class LineChartAdapter extends SensorValueAdapter {
                     xAxis.setDrawGridLines(false);
                     xAxis.setLabelCount(MAX_SHOW_SIZE);
                     xAxis.setCenterAxisLabels(true);
+                    xAxis.setAxisMinValue(0);
+                    xAxis.setAxisMaxValue(MAX_SHOW_SIZE);
                     YAxis leftAxis = viewHolder.barChart.getAxisLeft();
                     leftAxis.setAxisMinValue(0);
                     leftAxis.setDrawGridLines(false);

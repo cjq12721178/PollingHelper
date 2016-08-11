@@ -32,6 +32,14 @@ public class NumericConverter {
         return (toUInt16(high) << 8) | toUInt16(low);
     }
 
+    public static short toInt16(byte h, byte l) {
+        return (short) ((((short)h) << 8) | toUInt8(l));
+    }
+
+    public static int toInt32(byte h, byte l) {
+        return (((int)h) << 8) | toUInt16(l);
+    }
+
     //高位在前，低位在后
     public static long toUInt32(byte b1, byte b2, byte b3, byte b4) {
         return (toUInt32(b1) << 24) |

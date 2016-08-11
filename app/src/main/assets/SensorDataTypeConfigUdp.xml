@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2013 (http://www.altova.com) by  (cjq) -->
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
 <!-- 本文件适用于udp -->
 <!-- type=0为模拟量，1为状态量，2为计数量 -->
 <!-- decimal为保留几位小数，当type为1时不存在decimal，type为2时decimal必为0 -->
@@ -8,6 +8,7 @@
 		<value>0x01</value>
 		<name>最高温度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>℃</unit>
 		<coefficient>0.0078125</coefficient>
@@ -16,6 +17,7 @@
 		<value>0x02</value>
 		<name>最低温度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>℃</unit>
 		<coefficient>0.0078125</coefficient>
@@ -24,6 +26,7 @@
 		<value>0x03</value>
 		<name>平均温度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>℃</unit>
 		<coefficient>0.0078125</coefficient>
@@ -32,6 +35,7 @@
 		<value>0x04</value>
 		<name>点阵温度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>℃</unit>
 		<coefficient>0.0078125</coefficient>
@@ -40,6 +44,7 @@
 		<value>0x05</value>
 		<name>温度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>℃</unit>
 		<coefficient>0.0078125</coefficient>
@@ -48,6 +53,7 @@
 		<value>0x06</value>
 		<name>背景温度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>℃</unit>
 		<coefficient>0.0078125</coefficient>
@@ -56,14 +62,16 @@
 		<value>0x07</value>
 		<name>宽温</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>℃</unit>
-		<coefficient>0.0078125</coefficient>
+		<coefficient>0.0625</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x08</value>
 		<name>空气露点温度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>℃</unit>
 		<coefficient>0.0078125</coefficient>
@@ -72,6 +80,7 @@
 		<value>0x10</value>
 		<name>避雷器泄露电流</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>μA</unit>
 		<coefficient>1.0</coefficient>
@@ -80,6 +89,7 @@
 		<value>0x11</value>
 		<name>避雷器动作次数</name>
 		<type>2</type>
+		<signed>false</signed>
 		<decimal>0</decimal>
 		<unit>次</unit>
 	</DataType>
@@ -87,6 +97,7 @@
 		<value>0x12</value>
 		<name>基波</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>μA</unit>
 		<coefficient>1.0</coefficient>
@@ -95,6 +106,7 @@
 		<value>0x13</value>
 		<name>基波电流</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>μA</unit>
 		<coefficient>1.0</coefficient>
@@ -103,6 +115,7 @@
 		<value>0x14</value>
 		<name>三次谐波电流</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>μA</unit>
 		<coefficient>1.0</coefficient>
@@ -111,6 +124,7 @@
 		<value>0x15</value>
 		<name>阻性电流</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>μA</unit>
 		<coefficient>0.1</coefficient>
@@ -119,6 +133,7 @@
 		<value>0x16</value>
 		<name>阻性电流相角</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>°</unit>
 		<coefficient>1.0</coefficient>
@@ -127,6 +142,7 @@
 		<value>0x1A</value>
 		<name>避雷器泄露电流</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>μA</unit>
 		<coefficient>1.0</coefficient>
@@ -135,6 +151,7 @@
 		<value>0x1D</value>
 		<name>适时宽动态电流</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>mA</unit>
 		<coefficient>0.05</coefficient>
@@ -143,6 +160,7 @@
 		<value>0x1E</value>
 		<name>适时大电流</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>A</unit>
 		<coefficient>0.05</coefficient>
@@ -151,6 +169,7 @@
 		<value>0x1F</value>
 		<name>零序电流</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>A</unit>
 		<coefficient>0.01</coefficient>
@@ -159,6 +178,7 @@
 		<value>0x20</value>
 		<name>相位总电压</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>mV</unit>
 		<coefficient>0.1</coefficient>
@@ -167,6 +187,7 @@
 		<value>0x21</value>
 		<name>相位基波</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>mV</unit>
 		<coefficient>1.0</coefficient>
@@ -175,6 +196,7 @@
 		<value>0x22</value>
 		<name>相位三次谐波</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>mV</unit>
 		<coefficient>1.0</coefficient>
@@ -183,6 +205,7 @@
 		<value>0x28</value>
 		<name>分流器电压</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>mV</unit>
 		<coefficient>0.01</coefficient>
@@ -191,6 +214,7 @@
 		<value>0x29</value>
 		<name>直流电压</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>V</unit>
 		<coefficient>0.05</coefficient>
@@ -199,6 +223,7 @@
 		<value>0x30</value>
 		<name>变压器防盗</name>
 		<type>1</type>
+		<signed/>
 		<true>异常</true>
 		<false>正常</false>
 	</DataType>
@@ -206,6 +231,7 @@
 		<value>0x40</value>
 		<name>湿度</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>%RH</unit>
 		<coefficient>0.5</coefficient>
@@ -214,21 +240,24 @@
 		<value>0x42</value>
 		<name>水位</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>m</unit>
 		<coefficient>0.001</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x43</value>
-		<name>水浸</name>
-		<decimal>0</decimal>
+		<name>水浸次数</name>
 		<type>2</type>
+		<signed>false</signed>
+		<decimal>0</decimal>
 		<unit>次</unit>
 	</DataType>
 	<DataType>
 		<value>0x44</value>
 		<name>雨量</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>m</unit>
 		<coefficient>0.05</coefficient>
@@ -258,6 +287,7 @@
 		<value>0x49</value>
 		<name>光照(低)</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>Lux</unit>
 		<coefficient>5</coefficient>
@@ -266,6 +296,7 @@
 		<value>0x4A</value>
 		<name>光照(高)</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>Lux</unit>
 		<coefficient>0.1</coefficient>
@@ -274,6 +305,7 @@
 		<value>0x4D</value>
 		<name>Z轴形变</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>με</unit>
 		<coefficient>1.0</coefficient>
@@ -282,6 +314,7 @@
 		<value>0x4E</value>
 		<name>Y轴形变</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>με</unit>
 		<coefficient>1.0</coefficient>
@@ -290,6 +323,7 @@
 		<value>0x4F</value>
 		<name>X轴形变</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>με</unit>
 		<coefficient>1.0</coefficient>
@@ -305,6 +339,7 @@
 		<value>0x54</value>
 		<name>无功功率</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>Var</unit>
 		<coefficient>0.1</coefficient>
@@ -313,6 +348,7 @@
 		<value>0x55</value>
 		<name>有功功率</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>W</unit>
 		<coefficient>0.1</coefficient>
@@ -321,6 +357,7 @@
 		<value>0x56</value>
 		<name>视在功率</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>VA</unit>
 		<coefficient>0.1</coefficient>
@@ -329,6 +366,7 @@
 		<value>0x57</value>
 		<name>电量</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>kwh</unit>
 		<coefficient>0.01</coefficient>
@@ -337,6 +375,7 @@
 		<value>0x58</value>
 		<name>功率因素</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>°</unit>
 		<coefficient>0.0001</coefficient>
@@ -345,6 +384,7 @@
 		<value>0x59</value>
 		<name>频率</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>Hz</unit>
 		<coefficient>0.01</coefficient>
@@ -353,6 +393,7 @@
 		<value>0x60</value>
 		<name>气压</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>Pa</unit>
 		<coefficient>2</coefficient>
@@ -361,6 +402,7 @@
 		<value>0x61</value>
 		<name>风速</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>m/s</unit>
 		<coefficient>0.1</coefficient>
@@ -369,6 +411,7 @@
 		<value>0x62</value>
 		<name>风向</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>°</unit>
 		<coefficient>0.1</coefficient>
@@ -377,6 +420,7 @@
 		<value>0x63</value>
 		<name>导线拉力</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>kg</unit>
 		<coefficient>1.0</coefficient>
@@ -385,6 +429,7 @@
 		<value>0x64</value>
 		<name>气压(绝对)</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>kPa</unit>
 		<coefficient>0.05</coefficient>
@@ -393,30 +438,34 @@
 		<value>0x65</value>
 		<name>重力加速度X轴(高)</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>mg</unit>
-		<coefficient>1.0</coefficient>
+		<coefficient>0.25</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x66</value>
 		<name>重力加速度Y轴(高)</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>mg</unit>
-		<coefficient>1.0</coefficient>
+		<coefficient>0.25</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x67</value>
 		<name>重力加速度Z轴(高)</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>mg</unit>
-		<coefficient>1.0</coefficient>
+		<coefficient>0.25</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x6A</value>
 		<name>土壤容积含水率</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>%RH</unit>
 		<coefficient>10.5</coefficient>
@@ -425,6 +474,7 @@
 		<value>0x6B</value>
 		<name>声音强度</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>dB</unit>
 		<coefficient>0.1</coefficient>
@@ -433,6 +483,7 @@
 		<value>0x6C</value>
 		<name>X轴角度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>°</unit>
 		<coefficient>0.1</coefficient>
@@ -441,6 +492,7 @@
 		<value>0x6D</value>
 		<name>Y轴角度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>°</unit>
 		<coefficient>0.1</coefficient>
@@ -449,6 +501,7 @@
 		<value>0x6E</value>
 		<name>Z轴角度</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>°</unit>
 		<coefficient>0.1</coefficient>
@@ -457,6 +510,7 @@
 		<value>0x70</value>
 		<name>距离</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>mm</unit>
 		<coefficient>1.0</coefficient>
@@ -465,6 +519,7 @@
 		<value>0x71</value>
 		<name>重力加速度X轴(低)</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>mg</unit>
 		<coefficient>2.0</coefficient>
@@ -473,6 +528,7 @@
 		<value>0x72</value>
 		<name>重力加速度Y轴(低)</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>mg</unit>
 		<coefficient>2.0</coefficient>
@@ -481,6 +537,7 @@
 		<value>0x73</value>
 		<name>重力加速度Z轴(低)</name>
 		<type>0</type>
+		<signed>true</signed>
 		<decimal>2</decimal>
 		<unit>mg</unit>
 		<coefficient>2.0</coefficient>
@@ -489,6 +546,7 @@
 		<value>0x75</value>
 		<name>氧气体积</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>%VOL</unit>
 		<coefficient>0.1</coefficient>
@@ -497,6 +555,7 @@
 		<value>0x77</value>
 		<name>一氧化碳体积</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>ppm</unit>
 		<coefficient>1.0</coefficient>
@@ -505,6 +564,7 @@
 		<value>0x78</value>
 		<name>二氧化碳体积</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>ppm</unit>
 		<coefficient>1.0</coefficient>
@@ -513,6 +573,7 @@
 		<value>0x79</value>
 		<name>甲烷体积</name>
 		<type>0</type>
+		<signed>false</signed>
 		<decimal>2</decimal>
 		<unit>%VOL</unit>
 		<coefficient>0.1</coefficient>

@@ -1,5 +1,6 @@
 package com.example.kat.pollinghelper.ui.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.example.kat.pollinghelper.ui.fragment.AnalogPanelSlipPage;
 import com.example.kat.pollinghelper.ui.fragment.DataViewFragment;
 import com.example.kat.pollinghelper.ui.fragment.DigitalTableSlipPage;
 import com.example.kat.pollinghelper.ui.fragment.LineChartSlipPage;
+import com.example.kat.pollinghelper.utility.Converter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -116,7 +118,7 @@ public class DataViewActivity extends ManagedActivity {
         isNextTimeUpdate = false;
         putArgument(ArgumentTag.AT_DATA_LISTENER, null);
         notifyManager(OperaType.OT_REQUEST_SENSOR_COLLECTION);
-        Log.d("PollingHelper", "activity onDestroy");
+        //Log.d("PollingHelper", "activity onDestroy");
         super.onDestroy();
     }
 
@@ -141,7 +143,9 @@ public class DataViewActivity extends ManagedActivity {
         @Override
         public void run() {
             slipPageAdapter.setSensorList(sensorList);
-            refreshTimeInterval = getResources().getInteger(R.integer.time_interval_update_data_view);
+            SharedPreferences configs = getSharedPreferences(getString(R.string.file_function_setting), MODE_PRIVATE);
+            refreshTimeInterval = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_data_view), null),
+                    getResources().getInteger(R.integer.time_interval_update_data_view)));
             bleScanTimeInterval = getResources().getInteger(R.integer.time_interval_scan_ble_data_view);
             refreshTimes = 0;
             isNextTimeUpdate = true;

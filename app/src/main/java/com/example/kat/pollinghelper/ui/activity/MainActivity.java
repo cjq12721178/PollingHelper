@@ -36,48 +36,6 @@ import java.util.List;
 
 public class MainActivity extends ManagedActivity implements AdapterView.OnItemClickListener {
 
-    private final int REQUEST_CODE_POLLING_CONFIG = 1000;
-    private final int REQUEST_CODE_SENSOR_CONFIG = 1001;
-    //private ListView lvFunction;
-    //private ArrayAdapter<String> arrayAdapter;
-    private List<FunctionListItem> functionListItems;
-    private FunctionListAdapter functionListAdapter;
-    private ScoutInfo scoutInfo;
-    private Runnable updateFunctionListView = new Runnable() {
-        @Override
-        public void run() {
-            closeLoadingDialog();
-            List<ScoutProjectConfig> projectConfigs = (List<ScoutProjectConfig>)getArgument(ArgumentTag.AT_LIST_PROJECT_CONFIG);
-            List<ScoutSensorConfig> sensorConfigs = (List<ScoutSensorConfig>)getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG);
-            List<ScoutProjectRecord> projectRecords = (List<ScoutProjectRecord>)getArgument(ArgumentTag.AT_LIST_LATEST_PROJECT_RECORD);
-            if (scoutInfo.generateProjectRecords(projectConfigs, sensorConfigs, projectRecords)) {
-                updateNotificationTime();
-                updateMainListView();
-            } else {
-                promptMessage(R.string.ui_prompt_import_project_and_sensor_configs_failed);
-            }
-        }
-    };
-    private BroadcastReceiver renewProjectRecordReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                String projectName = intent.getStringExtra(getString(R.string.tag_project_name));
-                for (int i = 0;i < functionListItems.size();++i) {
-                    FunctionListItem functionListItem = functionListItems.get(i);
-                    if (functionListItem.getType() == FunctionType.FT_REAL_TIME_POLLING) {
-                        RealTimeScoutItem realTimeScoutItem = (RealTimeScoutItem)functionListItem;
-                        if (realTimeScoutItem.getProjectRecord().getProjectConfig().getName().equals(projectName)) {
-                            realTimeScoutItem.setProjectRecord(scoutInfo.generateNewProjectRecord(realTimeScoutItem.getProjectRecord().getProjectConfig()));
-                            functionListAdapter.notifyDataSetChanged();
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +150,17 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - exitTime > 2000) {
+            promptMessage(R.string.ui_prompt_exit_app);
+            exitTime = currentTime;
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void updateNotificationTime() {
         Intent intent = new Intent(getString(R.string.ba_update_project_time));
         intent.putExtra(getString(R.string.tag_project_schedule_times), scoutInfo.getProjectScheduleTimeInfo());
@@ -263,4 +232,47 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private Runnable updateFunctionListView = new Runnable() {
+        @Override
+        public void run() {
+            closeLoadingDialog();
+            List<ScoutProjectConfig> projectConfigs = (List<ScoutProjectConfig>)getArgument(ArgumentTag.AT_LIST_PROJECT_CONFIG);
+            List<ScoutSensorConfig> sensorConfigs = (List<ScoutSensorConfig>)getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG);
+            List<ScoutProjectRecord> projectRecords = (List<ScoutProjectRecord>)getArgument(ArgumentTag.AT_LIST_LATEST_PROJECT_RECORD);
+            if (scoutInfo.generateProjectRecords(projectConfigs, sensorConfigs, projectRecords)) {
+                updateNotificationTime();
+                updateMainListView();
+            } else {
+                promptMessage(R.string.ui_prompt_import_project_and_sensor_configs_failed);
+            }
+        }
+    };
+
+    private BroadcastReceiver renewProjectRecordReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                String projectName = intent.getStringExtra(getString(R.string.tag_project_name));
+                for (int i = 0;i < functionListItems.size();++i) {
+                    FunctionListItem functionListItem = functionListItems.get(i);
+                    if (functionListItem.getType() == FunctionType.FT_REAL_TIME_POLLING) {
+                        RealTimeScoutItem realTimeScoutItem = (RealTimeScoutItem)functionListItem;
+                        if (realTimeScoutItem.getProjectRecord().getProjectConfig().getName().equals(projectName)) {
+                            realTimeScoutItem.setProjectRecord(scoutInfo.generateNewProjectRecord(realTimeScoutItem.getProjectRecord().getProjectConfig()));
+                            functionListAdapter.notifyDataSetChanged();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    private final int REQUEST_CODE_POLLING_CONFIG = 1000;
+    private final int REQUEST_CODE_SENSOR_CONFIG = 1001;
+    private List<FunctionListItem> functionListItems;
+    private FunctionListAdapter functionListAdapter;
+    private ScoutInfo scoutInfo;
+    private long exitTime;
 }

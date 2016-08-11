@@ -1,5 +1,6 @@
 package com.example.kat.pollinghelper.ui.activity;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -76,8 +77,11 @@ public class ScoutMissionRecordActivity extends ManagedActivity {
     }
 
     private void startUpdateSensorData() {
+        SharedPreferences configs = getSharedPreferences(getString(R.string.file_function_setting), MODE_PRIVATE);
+        int updateSensorDataCycle = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_scout_real_time), null),
+                getResources().getInteger(R.integer.time_interval_update_sensor_data)));
         timer = new Timer();
-        timer.schedule(updateSensorData, 0, getResources().getInteger(R.integer.time_interval_update_sensor_data));
+        timer.schedule(updateSensorData, 0, updateSensorDataCycle);
     }
 
     private void initializeLayout() {

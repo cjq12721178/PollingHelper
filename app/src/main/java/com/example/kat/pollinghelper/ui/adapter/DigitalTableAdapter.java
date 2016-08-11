@@ -59,7 +59,7 @@ public class DigitalTableAdapter extends SensorValueAdapter {
             //Log.d("PollingHelper", "set data position = " + position);
             viewHolder.timeStamp = timeStamp;
             viewHolder.address.setText(sensorValue.getAddress());
-            viewHolder.type.setText(sensorValue.getDataType().getName());
+            viewHolder.type.setText(sensorValue.getMeasureName());
             viewHolder.value.setText(sensorValue.getLatestSignificantValueWithUnit());
             viewHolder.time.setText(SimpleFormatter.formatHourMinuteSecond(timeStamp));
         }
