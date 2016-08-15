@@ -38,7 +38,13 @@ public class SensorBleInfo extends SensorInfo {
 
     public static SensorDataType getDataType(byte value) {
         SensorDataType tmp = dataTypeMap.get(value);
-        return tmp != null ? tmp : SensorDataType.getNullType(value);
+        if (tmp == null) {
+            tmp = SensorDataType.getNullType(value);
+            synchronized (dataTypeMap) {
+                dataTypeMap.put(value, tmp);
+            }
+        }
+        return tmp;
     }
 
     @Override
@@ -51,7 +57,8 @@ public class SensorBleInfo extends SensorInfo {
         if (arrayAddress == 0)
             return dataType.getName();
 
-        String extraIntroduction = measureNameMap.get(dataType).get(arrayAddress);
+        Map<Byte, String> introductionMap = measureNameMap.get(dataType);
+        String extraIntroduction = introductionMap != null ? introductionMap.get(arrayAddress) : null;
         return extraIntroduction != null ? dataType.getName() + extraIntroduction : dataType.getName();
     }
 

@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
@@ -76,8 +77,9 @@ public class DataViewActivity extends ManagedActivity {
                                                                       int labelResId)
             throws IllegalAccessException, InstantiationException {
         String name = makeFragmentName(viewPager.getId(), position);
-        E fragment = (E)fragmentManager.findFragmentByTag(name);
-        return (fragment != null ? fragment : c.newInstance()).setLabel(getString(labelResId));
+        Fragment fragment = fragmentManager.findFragmentByTag(name);
+        E dataViewFragment = fragment != null && fragment.getClass() == c ? (E)fragment : null;
+        return (dataViewFragment != null ? dataViewFragment : c.newInstance()).setLabel(getString(labelResId));
     }
 
     private String makeFragmentName(int viewId, long id) {
@@ -89,7 +91,7 @@ public class DataViewActivity extends ManagedActivity {
         //取消tab下面的长横线
         tabStrip.setDrawFullUnderline(false);
         //设置tab的背景色
-        tabStrip.setBackgroundColor(this.getResources().getColor(R.color.transparent_green));
+        tabStrip.setBackgroundColor(getResources().getColor(R.color.transparent_green));
         //设置当前tab页签的下划线颜色
         tabStrip.setTabIndicatorColor(getResources().getColor(R.color.transparent_red));
     }
@@ -109,7 +111,6 @@ public class DataViewActivity extends ManagedActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //TODO 切换数据类型
         return super.onOptionsItemSelected(item);
     }
 
@@ -177,6 +178,9 @@ public class DataViewActivity extends ManagedActivity {
     }
 
     private void onUpdateView() {
+        if (viewPager.getCurrentItem() > 2) {
+            Log.d("PollingHelper", "viewPager == null");
+        }
         slipPageAdapter.getItem(viewPager.getCurrentItem()).updateDataView();
     }
 
@@ -193,7 +197,8 @@ public class DataViewActivity extends ManagedActivity {
         @Override
         public void onInit(Collection<SensorValue> sensorCollection) {
             sensorList = new ArrayList<>(sensorCollection);
-            sensorBuffer = new ArrayList<>();
+            //sensorBuffer = new ArrayList<>();
+            sensorBuffer.clear();
         }
 
         @Override
@@ -204,7 +209,7 @@ public class DataViewActivity extends ManagedActivity {
         }
     };
 
-    private List<SensorValue> sensorBuffer;
+    private final List<SensorValue> sensorBuffer = new ArrayList<>();
     private List<SensorValue> sensorList;
     private Handler refresher;
     private int bleScanTimeInterval;

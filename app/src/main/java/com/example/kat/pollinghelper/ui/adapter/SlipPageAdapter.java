@@ -2,12 +2,10 @@ package com.example.kat.pollinghelper.ui.adapter;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import com.example.kat.pollinghelper.data.SensorValue;
 import com.example.kat.pollinghelper.ui.fragment.DataViewFragment;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,7 +39,7 @@ public class SlipPageAdapter extends FragmentPagerAdapter {
 
         for (DataViewFragment fragment :
                 slipPages) {
-            fragment.onBindDataSource(sensorList);
+            fragment.bindDataSource(sensorList);
         }
     }
 

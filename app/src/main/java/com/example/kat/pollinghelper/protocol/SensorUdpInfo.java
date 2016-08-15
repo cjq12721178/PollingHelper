@@ -66,7 +66,13 @@ public class SensorUdpInfo extends SensorInfo {
 
     public static SensorDataType getDataType(byte value) {
         SensorDataType tmp = dataTypeMap.get(value);
-        return tmp != null ? tmp : SensorDataType.getNullType(value);
+        if (tmp == null) {
+            tmp = SensorDataType.getNullType(value);
+            synchronized (dataTypeMap) {
+                dataTypeMap.put(value, tmp);
+            }
+        }
+        return tmp;
     }
 
     @Override

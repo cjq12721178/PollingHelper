@@ -5,7 +5,6 @@ import android.widget.BaseAdapter;
 
 import com.example.kat.pollinghelper.data.SensorValue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,13 +13,13 @@ import java.util.List;
 public abstract class SensorValueAdapter extends BaseAdapter {
 
     public SensorValueAdapter(Context context) {
-        this.context = context;
-        onInit();
+        this(context, null);
     }
 
     public SensorValueAdapter(Context context, List<SensorValue> sensorList) {
-        this(context);
+        this.context = context;
         setDataSource(sensorList);
+        onInit();
     }
 
     protected void onInit() {
@@ -55,5 +54,4 @@ public abstract class SensorValueAdapter extends BaseAdapter {
 
     private Context context;
     private List<SensorValue> sensors;
-    //protected List<Long> timeStamps;
 }

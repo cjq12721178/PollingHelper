@@ -20,7 +20,7 @@ public class DataViewFragment extends Fragment {
         //setRetainInstance(true);
     }
 
-    public void onBindDataSource(List<SensorValue> sensorList) {
+    public void bindDataSource(List<SensorValue> sensorList) {
         this.sensorList = sensorList;
     }
 

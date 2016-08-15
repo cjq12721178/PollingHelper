@@ -115,11 +115,6 @@ public class ManagerService extends Service {
         int scanBleDuration = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_scan_duration), null),
                 getResources().getInteger(R.integer.time_duration_scan_ble_communicator)));
 
-        Log.d("PollingHelper", "ip = " + ip);
-        Log.d("PollingHelper", "port = " + port);
-        Log.d("PollingHelper", "requestDataCycle = " + requestDataCycle);
-        Log.d("PollingHelper", "scanBleCycle = " + scanBleCycle);
-        Log.d("PollingHelper", "scanBleDuration = " + scanBleDuration);
         //wifi
         udp = new Udp();
         udp.setDataReceivedListener(onUdpDataReceivedListener);

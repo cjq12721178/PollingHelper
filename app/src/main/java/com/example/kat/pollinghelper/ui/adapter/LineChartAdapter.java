@@ -19,8 +19,9 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by KAT on 2016/8/2.
@@ -43,7 +44,7 @@ public class LineChartAdapter extends SensorValueAdapter {
 
     @Override
     protected void onInit() {
-        chartInfoList = new ArrayList<>();
+        chartInfoMap = new HashMap<>();
     }
 
     @Override
@@ -124,15 +125,13 @@ public class LineChartAdapter extends SensorValueAdapter {
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
-        //设置数据
-        //初始化数据
-        //Log.d("PollingHelper", "pre init data");
-        if (chartInfoList.size() == position) {
-            chartInfoList.add(ChartInfo.from(sensorValue));
+        //获取或者初始化数据
+        ChartInfo chartInfo = chartInfoMap.get(sensorValue);
+        if (chartInfo == null) {
+            chartInfo = ChartInfo.from(sensorValue);
+            chartInfoMap.put(sensorValue, chartInfo);
         }
         //更新数据
-        //Log.d("PollingHelper", "pre update data");
-        ChartInfo chartInfo = chartInfoList.get(position);
         long timeStamp = sensorValue.getLatestTimestamp();
         if (viewHolder.timeStamp != timeStamp) {
             viewHolder.timeStamp = timeStamp;
@@ -159,11 +158,9 @@ public class LineChartAdapter extends SensorValueAdapter {
                 } break;
             }
         }
-
-        //Log.d("PollingHelper", "post update data");
         return convertView;
     }
 
     private static final int MAX_SHOW_SIZE = 10;
-    private List<ChartInfo> chartInfoList;
+    private Map<SensorValue, ChartInfo> chartInfoMap;
 }

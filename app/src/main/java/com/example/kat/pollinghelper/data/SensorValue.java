@@ -4,16 +4,8 @@ import android.util.Log;
 
 import com.example.kat.pollinghelper.protocol.SensorDataType;
 import com.example.kat.pollinghelper.protocol.SensorInfo;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
@@ -46,9 +38,11 @@ public class SensorValue {
     }
 
     private SensorValue addValue(long timestamp, double value) {
-        values.put(timestamp, value);
-        if (values.size() > MAX_ELEMENT_COUNT) {
-            values.remove(values.firstKey());
+        synchronized (values) {
+            values.put(timestamp, value);
+            if (values.size() > MAX_ELEMENT_COUNT) {
+                values.remove(values.firstKey());
+            }
         }
         return this;
     }
@@ -96,12 +90,14 @@ public class SensorValue {
             return null;
 
         T receiver = valueReceiver.start(values.size());
+        if (receiver == null) {
+            Log.d("PollingHelper", "receiver == null");
+        }
         for (Map.Entry<Long, Double> element :
                 values.entrySet()) {
             valueReceiver.receive(element.getKey(), element.getValue(), receiver);
         }
 
-        //Log.d("PollingHelper", "post get value");
         return receiver;
     }
 

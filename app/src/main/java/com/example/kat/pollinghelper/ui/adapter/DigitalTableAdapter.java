@@ -5,15 +5,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.data.SensorValue;
 import com.example.kat.pollinghelper.utility.SimpleFormatter;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -52,11 +49,9 @@ public class DigitalTableAdapter extends SensorValueAdapter {
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
-        //Log.d("PollingHelper", "create view position = " + position);
         SensorValue sensorValue = getItem(position);
         long timeStamp = sensorValue.getLatestTimestamp();
         if (viewHolder.timeStamp != timeStamp) {
-            //Log.d("PollingHelper", "set data position = " + position);
             viewHolder.timeStamp = timeStamp;
             viewHolder.address.setText(sensorValue.getAddress());
             viewHolder.type.setText(sensorValue.getMeasureName());

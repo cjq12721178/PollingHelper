@@ -107,6 +107,9 @@ public class ChartInfo {
 
     private String getSensorLabel(SensorValue sensor) {
         StringBuilder builder = new StringBuilder();
+        if (sensor.getMeasureName() == null) {
+            Log.d("PollingHelper", "measure name == null");
+        }
         builder.append(sensor.getMeasureName());
         if (sensor.getDataType().getUnit().length() > 0) {
             builder.append("(");
@@ -122,6 +125,9 @@ public class ChartInfo {
         xFormatter = new AxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
+                if (values == null) {
+                    Log.d("PollingHelper", "xFormatter values == null");
+                }
                 if (value < 0 || value >= values.size())
                     return "";
                 return (String)values.get((int)value).getData();
@@ -158,7 +164,13 @@ public class ChartInfo {
 
     public  <E extends Entry> void updateData(Class<E> c, SensorValue sensor) {
         DataSet<E> dataSet = (DataSet<E>) data.getDataSetByIndex(0);
+        if (dataSet == null) {
+            Log.d("PollingHelper", "data set == null");
+        }
         List realValues = getValues(c, sensor);
+        if (realValues == null) {
+            Log.d("PollingHelper", "realValue == null");
+        }
         generateXFormatter(realValues);
         dataSet.setValues(realValues);
     }
