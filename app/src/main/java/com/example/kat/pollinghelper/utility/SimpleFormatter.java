@@ -2,7 +2,9 @@ package com.example.kat.pollinghelper.utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -38,10 +40,12 @@ public class SimpleFormatter {
             formats.put(n, format);
         }
 
+        //return stringFormatter.format(format, src).toString();
         return String.format(format, src);
     }
 
     private static Date timeReceiver = new Date();
+    //private static Formatter stringFormatter = new Formatter(new StringBuilder(10), Locale.getDefault());
     private static Map<Integer, String> formats = new HashMap<>();
     private static SimpleDateFormat dateFormatHourMinuteSecond = new SimpleDateFormat("HH:mm:ss");
     private static SimpleDateFormat dateFormatYearMonthDayHourMinute = new SimpleDateFormat("yyyy-MM-dd HH:mm");

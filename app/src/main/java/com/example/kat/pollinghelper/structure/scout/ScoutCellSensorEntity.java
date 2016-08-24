@@ -1,4 +1,4 @@
-package com.example.kat.pollinghelper.structure.cell.scout;
+package com.example.kat.pollinghelper.structure.scout;
 
 import com.example.kat.pollinghelper.structure.config.ScoutSensorConfig;
 

@@ -12,13 +12,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.data.DataStorage;
 import com.example.kat.pollinghelper.data.SensorValue;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
+import com.example.kat.pollinghelper.structure.view.SensorValueProcessor;
 import com.example.kat.pollinghelper.ui.adapter.SlipPageAdapter;
+import com.example.kat.pollinghelper.ui.dialog.FilterDialog;
+import com.example.kat.pollinghelper.ui.dialog.SearchDialog;
+import com.example.kat.pollinghelper.ui.dialog.SortDialog;
 import com.example.kat.pollinghelper.ui.fragment.AnalogPanelSlipPage;
 import com.example.kat.pollinghelper.ui.fragment.DataViewFragment;
 import com.example.kat.pollinghelper.ui.fragment.DigitalTableSlipPage;
@@ -35,8 +40,27 @@ public class DataViewActivity extends ManagedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_view);
+        initFunctionPanel();
         initRefresher();
         initDataViewMode();
+    }
+
+    private void initFunctionPanel() {
+        //初始化排序功能
+        sortDialog = new SortDialog();
+        sortDialog.setOnSortFactorChangedListener(onSortFactorChangedListener);
+        findViewById(R.id.tv_sort).setOnClickListener(onSortClickListener);
+
+        //初始化筛选功能
+        filterDialog = new FilterDialog();
+        filterDialog.setOnFilterChangedListener(onFilterChangedListener);
+        findViewById(R.id.tv_filter).setOnClickListener(onFilterClickListener);
+
+        //初始化搜索功能
+        searchDialog = new SearchDialog();
+        searchDialog.setSummary(getString(R.string.et_hint_search_data_view));
+        searchDialog.setOnSearchListener(onSearchListener);
+        findViewById(R.id.tv_search).setOnClickListener(onSearchClickListener);
     }
 
     private void initRefresher() {
@@ -98,7 +122,9 @@ public class DataViewActivity extends ManagedActivity {
 
     @Override
     protected void onInitializeBusiness() {
-        putArgument(ArgumentTag.AT_DATA_LISTENER, onDataListener);
+        sensorValueProcessor = new SensorValueProcessor();
+        sensorValueProcessor.setSensorComparator(true, SensorValueProcessor.SortEntry.SE_TIME);
+        putArgument(ArgumentTag.AT_DATA_LISTENER, sensorValueProcessor.getOnDataListener());
         notifyManager(OperaType.OT_REQUEST_SENSOR_COLLECTION, startRefreshDataView);
     }
 
@@ -119,7 +145,6 @@ public class DataViewActivity extends ManagedActivity {
         isNextTimeUpdate = false;
         putArgument(ArgumentTag.AT_DATA_LISTENER, null);
         notifyManager(OperaType.OT_REQUEST_SENSOR_COLLECTION);
-        //Log.d("PollingHelper", "activity onDestroy");
         super.onDestroy();
     }
 
@@ -143,7 +168,7 @@ public class DataViewActivity extends ManagedActivity {
     private Runnable startRefreshDataView = new Runnable() {
         @Override
         public void run() {
-            slipPageAdapter.setSensorList(sensorList);
+            slipPageAdapter.setSensorList(sensorValueProcessor.getFinalSensors());
             SharedPreferences configs = getSharedPreferences(getString(R.string.file_function_setting), MODE_PRIVATE);
             refreshTimeInterval = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_data_view), null),
                     getResources().getInteger(R.integer.time_interval_update_data_view)));
@@ -157,8 +182,7 @@ public class DataViewActivity extends ManagedActivity {
     private Runnable onUpdateDataView = new Runnable() {
         @Override
         public void run() {
-            onUpdateData();
-            onUpdateView();
+            onUpdateView(onUpdateData());
             scanBleSensor();
             predetermineNextUpdate();
         }
@@ -177,40 +201,87 @@ public class DataViewActivity extends ManagedActivity {
         }
     }
 
-    private void onUpdateView() {
-        if (viewPager.getCurrentItem() > 2) {
-            Log.d("PollingHelper", "viewPager == null");
-        }
-        slipPageAdapter.getItem(viewPager.getCurrentItem()).updateDataView();
-    }
-
-    private void onUpdateData() {
-        synchronized (sensorBuffer) {
-            if (!sensorBuffer.isEmpty()) {
-                sensorList.addAll(sensorBuffer);
-                sensorBuffer.clear();
+    private void onUpdateView(boolean isOnlyNotifyCurrentItem) {
+        int pos = viewPager.getCurrentItem();
+        if (isOnlyNotifyCurrentItem) {
+            slipPageAdapter.getItem(pos).updateDataView();
+        } else {
+            for (int i = Math.max(pos - 1, 0),
+                 end = Math.min(pos + 1, slipPageAdapter.getCount() - 1);
+                 i < end;++i) {
+                slipPageAdapter.getItem(i).updateDataView();
             }
         }
     }
 
-    private DataStorage.OnDataListener onDataListener = new DataStorage.OnDataListener() {
-        @Override
-        public void onInit(Collection<SensorValue> sensorCollection) {
-            sensorList = new ArrayList<>(sensorCollection);
-            //sensorBuffer = new ArrayList<>();
-            sensorBuffer.clear();
-        }
+    private boolean onUpdateData() {
+        return sensorValueProcessor.updateSensor();
+    }
 
+    private SortDialog.OnSortFactorChangedListener onSortFactorChangedListener = new SortDialog.OnSortFactorChangedListener() {
         @Override
-        public void onUpdate(SensorValue newSensor) {
-            synchronized (sensorBuffer) {
-                sensorBuffer.add(newSensor);
+        public void onChanged(boolean isAscending, int checkedRadioButtonId) {
+            sensorValueProcessor.setSensorComparator(isAscending, getSortEntryById(checkedRadioButtonId));
+            sensorValueProcessor.sort();
+            onUpdateView(false);
+        }
+    };
+
+    private SensorValueProcessor.SortEntry getSortEntryById(int radioButtonId) {
+        switch (radioButtonId) {
+            case R.id.rdo_sort_entry_address:return SensorValueProcessor.SortEntry.SE_ADDRESS;
+            case R.id.rdo_sort_entry_type:return SensorValueProcessor.SortEntry.SE_TYPE;
+            case R.id.rdo_sort_entry_unit:return SensorValueProcessor.SortEntry.SE_UNIT;
+            case R.id.rdo_sort_entry_time:
+            default:return SensorValueProcessor.SortEntry.SE_TIME;
+        }
+    }
+
+    private View.OnClickListener onSortClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            sortDialog.show(getSupportFragmentManager());
+        }
+    };
+
+    private View.OnClickListener onFilterClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            filterDialog.show(getSupportFragmentManager());
+        }
+    };
+
+    private FilterDialog.OnFilterChangedListener onFilterChangedListener = new FilterDialog.OnFilterChangedListener() {
+        @Override
+        public void onChanged(boolean isRealChanged, int fromFilterConditionValue, int patternFilterConditionValue) {
+            if (isRealChanged) {
+                sensorValueProcessor.setFilterCondition(fromFilterConditionValue, patternFilterConditionValue);
+                onUpdateView(false);
             }
         }
     };
 
-    private final List<SensorValue> sensorBuffer = new ArrayList<>();
-    private List<SensorValue> sensorList;
+    private SearchDialog.OnSearchListener onSearchListener = new SearchDialog.OnSearchListener() {
+        @Override
+        public void onSearch(boolean isSearchConditionChanged, String[] searchContents) {
+            if (isSearchConditionChanged) {
+                sensorValueProcessor.setSearchContents(searchContents);
+                onUpdateView(false);
+            }
+        }
+    };
+
+    private View.OnClickListener onSearchClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            searchDialog.show(getSupportFragmentManager());
+        }
+    };
+
+    private SensorValueProcessor sensorValueProcessor;
+    private SearchDialog searchDialog;
+    private FilterDialog filterDialog;
+    private SortDialog sortDialog;
     private Handler refresher;
     private int bleScanTimeInterval;
     private int refreshTimes;

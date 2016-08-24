@@ -4,11 +4,11 @@ import com.example.kat.pollinghelper.io.sqlite.InspItermCfg;
 import com.example.kat.pollinghelper.io.sqlite.InspMissionCfg;
 import com.example.kat.pollinghelper.io.sqlite.InspProjectCfg;
 import com.example.kat.pollinghelper.structure.config.SimpleTime;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellItemEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellMissionEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellProjectEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellType;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellItemEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellMissionEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellProjectEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellType;
 
 import java.util.List;
 

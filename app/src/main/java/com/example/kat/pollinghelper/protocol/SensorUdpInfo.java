@@ -92,6 +92,7 @@ public class SensorUdpInfo extends SensorInfo {
 //        return fullAddress == null ? 0 : fullAddress.hashCode();
 //    }
 
+    public static final int ADDRESS_LEN = 4;
     public static final int SENSOR_DATA_LEN = 16;
     private static final int YEAR_ADJUST = GregorianCalendar.getInstance().get(Calendar.YEAR);
     private static final float VOLTAGE_UP_CONVERSION_VALUE = 307.2f;

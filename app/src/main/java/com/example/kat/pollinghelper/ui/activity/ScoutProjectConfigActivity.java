@@ -13,11 +13,11 @@ import com.example.kat.pollinghelper.structure.config.ScoutProjectConfig;
 import com.example.kat.pollinghelper.structure.config.SimpleTime;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.ui.adapter.ProjectConfigAdapter;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCell;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellClause;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellProjectEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellState;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCell;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellClause;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellProjectEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellState;
+import com.example.kat.pollinghelper.structure.scout.ScoutEntity;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -17,7 +17,7 @@ public class SensorBleInfo extends SensorInfo {
             sensorBleInfo = new SensorBleInfo();
             sensorBleInfo.dataType = getDataType(data[pos]);
             sensorBleInfo.address = address >> 8;
-            sensorBleInfo.arrayAddress = addressLow[sensorBleInfo.dataType.getValue()]++;
+            sensorBleInfo.arrayAddress = (byte)((address & 0xff) + addressLow[sensorBleInfo.dataType.getValue()]++);
             sensorBleInfo.batteryVoltage = voltage;
             sensorBleInfo.value = Float.intBitsToFloat((int)NumericConverter.toUInt32(data[++pos], data[++pos], data[++pos], data[++pos]));
             sensorBleInfo.time = System.currentTimeMillis();
@@ -62,6 +62,7 @@ public class SensorBleInfo extends SensorInfo {
         return extraIntroduction != null ? dataType.getName() + extraIntroduction : dataType.getName();
     }
 
+    public static final int ADDRESS_LEN = 6;
     public static final int SENSOR_DATA_LEN = 5;
     private static Map<Byte, SensorDataType> dataTypeMap;
     private static Map<SensorDataType, Map<Byte, String>> measureNameMap;

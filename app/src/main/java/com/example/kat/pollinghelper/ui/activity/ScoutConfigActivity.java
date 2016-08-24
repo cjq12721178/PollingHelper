@@ -1,9 +1,7 @@
 package com.example.kat.pollinghelper.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,14 +13,14 @@ import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.ui.adapter.SlideListViewAdapter;
 import com.example.kat.pollinghelper.ui.listview.SlideMenuListView;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCell;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellItemEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellMissionEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellProjectEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellProjectVirtual;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellType;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellState;
+import com.example.kat.pollinghelper.structure.scout.ScoutCell;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellItemEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellMissionEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellProjectEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellProjectVirtual;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellType;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellState;
 
 import java.util.ArrayList;
 import java.util.List;

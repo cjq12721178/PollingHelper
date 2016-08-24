@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellClause;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellClause;
 
 import java.util.List;
 

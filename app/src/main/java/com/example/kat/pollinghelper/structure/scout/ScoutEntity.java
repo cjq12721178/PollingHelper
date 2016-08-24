@@ -1,7 +1,5 @@
-package com.example.kat.pollinghelper.structure.cell.scout;
+package com.example.kat.pollinghelper.structure.scout;
 
-
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellState;
 
 /**
  * Created by KAT on 2016/7/18.

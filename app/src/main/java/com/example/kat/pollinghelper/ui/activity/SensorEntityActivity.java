@@ -1,9 +1,7 @@
 package com.example.kat.pollinghelper.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,8 +13,8 @@ import com.example.kat.pollinghelper.structure.config.ScoutSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.ui.adapter.SensorEntityAdapter;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellSensorEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellState;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellSensorEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellState;
 
 import java.util.ArrayList;
 import java.util.List;

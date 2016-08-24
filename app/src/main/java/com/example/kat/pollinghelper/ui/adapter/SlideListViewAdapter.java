@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCell;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellType;
+import com.example.kat.pollinghelper.structure.scout.ScoutCell;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellType;
 import com.example.kat.pollinghelper.ui.layout.SlideListItem;
 import com.example.kat.pollinghelper.ui.listview.SlideMenuListView;
 

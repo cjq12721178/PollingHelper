@@ -1,4 +1,4 @@
-package com.example.kat.pollinghelper.structure;
+package com.example.kat.pollinghelper.structure.view;
 
 import android.util.Log;
 
@@ -15,7 +15,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.AxisValueFormatter;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -192,7 +191,6 @@ public class ChartInfo {
     }
 
     private static ChartValueReceiver chartValueReceiver;
-    //private static ChartValueReceiver barChartValueReceiver;
     private ChartData data;
     private AxisValueFormatter xFormatter;
     private AxisValueFormatter yFormatter;

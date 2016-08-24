@@ -1,4 +1,4 @@
-package com.example.kat.pollinghelper.structure.cell.function;
+package com.example.kat.pollinghelper.structure.main_interface;
 
 import android.content.Context;
 import android.view.LayoutInflater;

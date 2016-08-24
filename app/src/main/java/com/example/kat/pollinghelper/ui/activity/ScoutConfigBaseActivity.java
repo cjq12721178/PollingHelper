@@ -7,9 +7,9 @@ import android.widget.BaseAdapter;
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.ui.dialog.EditDialog;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellClause;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutEntity;
-import com.example.kat.pollinghelper.structure.cell.scout.ScoutCellState;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellClause;
+import com.example.kat.pollinghelper.structure.scout.ScoutEntity;
+import com.example.kat.pollinghelper.structure.scout.ScoutCellState;
 
 import java.util.List;
 

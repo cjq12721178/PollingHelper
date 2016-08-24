@@ -83,6 +83,7 @@
     <string name="ui_prompt_scan_ble_cycle_up_limit">BLE设备搜索周期不得大于35791分钟</string>
     <string name="ui_prompt_scan_ble_duration_down_limit">BLE设备搜索持续时间不得小于5秒</string>
     <string name="ui_prompt_data_refresh_cycle">数据刷新周期不得为0</string>
+    <string name="ui_prompt_search_content_empty">搜索内容不得为空</string>
 
     <!-- 加载提示用语 -->
     <string name="ui_import_project_and_sensor_configs">正在加载巡检配置和传感器配置</string>
@@ -171,6 +172,24 @@
     <string name="ui_ep_summary_data_view">控制数据浏览界面的数据更新周期</string>
     <string name="ui_ep_title_scout_real_time">巡检任务界面(秒)</string>
     <string name="ui_ep_summary_scout_real_time">控制巡检任务界面的数据更新周期</string>
+    <string name="tv_sort">排序</string>
+    <string name="tv_filter">筛选</string>
+    <string name="tv_search">搜索</string>
+    <string name="rdo_sort_entry_address">地址</string>
+    <string name="rdo_sort_entry_type">类型</string>
+    <string name="rdo_sort_entry_time">时间</string>
+    <string name="rdo_sort_entry_unit">单位</string>
+    <string name="btn_sort_order_ascend">递增</string>
+    <string name="btn_sort_order_descend">递减</string>
+    <string name="tv_filter_data_source">数据来源</string>
+    <string name="btn_filter_all">全部</string>
+    <string name="btn_filter_wifi">WIFI</string>
+    <string name="btn_filter_ble">BLE</string>
+    <string name="btn_filter_data_type">数据类型</string>
+    <string name="btn_filter_analog">模拟量</string>
+    <string name="btn_filter_status">状态量</string>
+    <string name="btn_filter_count">计数量</string>
+    <string name="et_hint_search_data_view">输入目标地址、类型中所含全部或部分字符，关键字以空格分开</string>
 
     <!-- 广播地址(broadcast address = ba)  -->
     <string name="ba_update_project_time">android.intent.action.UPDATE_PROJECT_TIME</string>

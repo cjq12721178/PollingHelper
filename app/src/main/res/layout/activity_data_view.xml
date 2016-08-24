@@ -5,10 +5,45 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.DataViewActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/li_function_panel"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/background_function_panel">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_sort"
+            android:drawableTop="@drawable/ic_sort"
+            android:text="@string/tv_sort"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_filter"
+            android:drawableTop="@drawable/ic_filter"
+            android:text="@string/tv_filter"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_search"
+            android:drawableTop="@drawable/ic_search"
+            android:text="@string/tv_search"
+            android:gravity="center"/>
+    </LinearLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_slip_page_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/li_function_panel">
         <android.support.v4.view.PagerTabStrip
             android:id="@+id/ts_data_view"
             android:layout_width="wrap_content"

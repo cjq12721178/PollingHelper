@@ -21,8 +21,9 @@ public class SensorValue {
         void receive(long timeStamp, double value, T receiver);
     }
 
-    public SensorValue() {
+    private SensorValue() {
         values = new TreeMap<>();
+        createTime = System.currentTimeMillis();
     }
 
     public static SensorValue from(SensorInfo sensorInfo) {
@@ -105,6 +106,11 @@ public class SensorValue {
         return measureName;
     }
 
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    private final long createTime;
     private SensorDataType dataType;
     private String address;
     private String measureName;

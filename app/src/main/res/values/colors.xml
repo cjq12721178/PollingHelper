@@ -20,4 +20,7 @@
         <item>@color/bar_status_true</item>
         <item>@color/bar_status_false</item>
     </integer-array>
+    <color name="background_function_panel">#F0F0F0</color>
+    <color name="background_filter_normal">#C0C0C0</color>
+    <color name="background_filter_selected">#8080FF</color>
 </resources>
