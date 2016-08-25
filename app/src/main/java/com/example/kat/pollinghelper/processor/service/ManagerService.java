@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.communicator.Ble;
@@ -106,13 +105,13 @@ public class ManagerService extends Service {
         //从配置文件获取参数
         SharedPreferences configs = getSharedPreferences(getString(R.string.file_function_setting), MODE_PRIVATE);
         String ip = configs.getString(getString(R.string.key_ip), getString(R.string.base_station_ip));
-        int port = Converter.stringToInt(configs.getString(getString(R.string.key_port), null),
+        int port = Converter.string2Int(configs.getString(getString(R.string.key_port), null),
                 getResources().getInteger(R.integer.base_station_port));
-        int requestDataCycle = Converter.stringToInt(configs.getString(getString(R.string.key_data_request_cycle), null),
+        int requestDataCycle = Converter.string2Int(configs.getString(getString(R.string.key_data_request_cycle), null),
                 getResources().getInteger(R.integer.time_interval_request_data));
-        int scanBleCycle = Converter.minuteToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_scan_cycle), null),
+        int scanBleCycle = Converter.minute2Millisecond(Converter.string2Int(configs.getString(getString(R.string.key_scan_cycle), null),
                 getResources().getInteger(R.integer.time_interval_scan_ble_communicator)));
-        int scanBleDuration = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_scan_duration), null),
+        int scanBleDuration = Converter.second2Millisecond(Converter.string2Int(configs.getString(getString(R.string.key_scan_duration), null),
                 getResources().getInteger(R.integer.time_duration_scan_ble_communicator)));
 
         //wifi

@@ -8,15 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.data.DataStorage;
-import com.example.kat.pollinghelper.data.SensorValue;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.structure.view.SensorValueProcessor;
@@ -31,7 +28,6 @@ import com.example.kat.pollinghelper.ui.fragment.LineChartSlipPage;
 import com.example.kat.pollinghelper.utility.Converter;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class DataViewActivity extends ManagedActivity {
@@ -170,7 +166,7 @@ public class DataViewActivity extends ManagedActivity {
         public void run() {
             slipPageAdapter.setSensorList(sensorValueProcessor.getFinalSensors());
             SharedPreferences configs = getSharedPreferences(getString(R.string.file_function_setting), MODE_PRIVATE);
-            refreshTimeInterval = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_data_view), null),
+            refreshTimeInterval = Converter.second2Millisecond(Converter.string2Int(configs.getString(getString(R.string.key_data_view), null),
                     getResources().getInteger(R.integer.time_interval_update_data_view)));
             bleScanTimeInterval = getResources().getInteger(R.integer.time_interval_scan_ble_data_view);
             refreshTimes = 0;

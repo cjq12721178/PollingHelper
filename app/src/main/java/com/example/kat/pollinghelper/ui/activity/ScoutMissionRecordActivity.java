@@ -15,7 +15,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.config.ScoutItemConfig;
 import com.example.kat.pollinghelper.structure.record.EvaluationType;
 import com.example.kat.pollinghelper.structure.record.ScoutItemRecord;
 import com.example.kat.pollinghelper.structure.record.ScoutMissionRecord;
@@ -23,7 +22,6 @@ import com.example.kat.pollinghelper.structure.record.ScoutRecordState;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.utility.Converter;
-import com.example.kat.pollinghelper.utility.SimpleFormatter;
 
 import java.util.Date;
 import java.util.Timer;
@@ -78,7 +76,7 @@ public class ScoutMissionRecordActivity extends ManagedActivity {
 
     private void startUpdateSensorData() {
         SharedPreferences configs = getSharedPreferences(getString(R.string.file_function_setting), MODE_PRIVATE);
-        int updateSensorDataCycle = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(getString(R.string.key_scout_real_time), null),
+        int updateSensorDataCycle = Converter.second2Millisecond(Converter.string2Int(configs.getString(getString(R.string.key_scout_real_time), null),
                 getResources().getInteger(R.integer.time_interval_update_sensor_data)));
         timer = new Timer();
         timer.schedule(updateSensorData, 0, updateSensorDataCycle);
@@ -129,7 +127,7 @@ public class ScoutMissionRecordActivity extends ManagedActivity {
 
     private void initializeDeviceImageView() {
         ImageView imageView = (ImageView)findViewById(R.id.iv_polling_mission);
-        imageView.setImageBitmap(Converter.getBitmapFromByteArray(missionRecord.getMissionConfig().getDeviceImageData()));
+        imageView.setImageBitmap(Converter.byteArray2Bitmap(missionRecord.getMissionConfig().getDeviceImageData()));
     }
 
     private void changeTitle() {

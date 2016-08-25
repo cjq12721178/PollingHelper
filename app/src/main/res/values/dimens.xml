@@ -9,4 +9,5 @@
     <dimen name="text_size_listitem_record_item">14sp</dimen>
     <dimen name="text_padding_record">3dp</dimen>
     <dimen name="text_size_data_view_digital">18sp</dimen>
+    <dimen name="image_side_size_device">200dp</dimen>
 </resources>

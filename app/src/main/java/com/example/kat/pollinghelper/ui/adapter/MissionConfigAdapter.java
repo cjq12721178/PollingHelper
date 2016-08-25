@@ -99,7 +99,7 @@ public class MissionConfigAdapter extends BaseAdapter {
             }
             imageViewHolder.lable.setText(currentItemClause.getLabel());
             if (currentItemClause.getContent() != null) {
-                imageViewHolder.content.setImageBitmap(Converter.getBitmapFromByteArray((byte[])currentItemClause.getContent()));
+                imageViewHolder.content.setImageBitmap(Converter.byteArray2Bitmap((byte[])currentItemClause.getContent()));
             } else {
                 imageViewHolder.content.setImageResource(R.drawable.ic_device_empty);
             }

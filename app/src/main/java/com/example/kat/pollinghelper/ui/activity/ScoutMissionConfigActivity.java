@@ -1,6 +1,7 @@
 package com.example.kat.pollinghelper.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -95,13 +96,46 @@ public class ScoutMissionConfigActivity extends ScoutConfigBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK) {
-            Uri selectedDeviceImage = data.getData();
-            if (selectedDeviceImage != null) {
-                getCurrentClause().setContent(Converter.uriToByteArray(this, selectedDeviceImage));
+            byte[] newDeviceImage = getEffectivePicture(data.getData());
+            if (newDeviceImage != null) {
+                getCurrentClause().setContent(newDeviceImage);
                 getBaseAdapter().notifyDataSetChanged();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private byte[] getEffectivePicture(Uri src) {
+        if (src == null) {
+            promptMessage(R.string.ui_prompt_device_image_set_error);
+            return null;
+        }
+
+        byte[] selectedDeviceImage = Converter.uri2ByteArray(this, src);
+        if (selectedDeviceImage == null) {
+            promptMessage(R.string.ui_prompt_device_image_set_error);
+            return null;
+        }
+
+        if (selectedDeviceImage.length <= MAX_DEVICE_IMAGE_SIZE)
+            return selectedDeviceImage;
+
+        int targetSideSize = Converter.dp2px(this, getResources().getDimension(R.dimen.image_side_size_device));
+        Bitmap ratioCompressedImage = Converter.ratioCompress(selectedDeviceImage, targetSideSize, targetSideSize);
+        if (ratioCompressedImage == null) {
+            promptMessage(R.string.ui_prompt_device_image_too_big);
+            return null;
+        }
+        if (ratioCompressedImage.getByteCount() <= MAX_DEVICE_IMAGE_SIZE)
+            return Converter.bitmap2ByteArray(ratioCompressedImage);
+
+        byte[] qualityCompressedImage = Converter.qualityCompress(ratioCompressedImage, 60);
+        if (qualityCompressedImage == null) {
+            promptMessage(R.string.ui_prompt_device_image_too_big);
+            return null;
+        }
+
+        return qualityCompressedImage;
     }
 
     @Override
@@ -154,4 +188,5 @@ public class ScoutMissionConfigActivity extends ScoutConfigBaseActivity {
 
     private List<ScoutCellProjectEntity> currentProjectEntities;
     private static final int REQUEST_CODE_PICK_IMAGE = 1;
+    private static final int MAX_DEVICE_IMAGE_SIZE = 1024 * 1024;
 }

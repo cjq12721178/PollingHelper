@@ -84,6 +84,8 @@
     <string name="ui_prompt_scan_ble_duration_down_limit">BLE设备搜索持续时间不得小于5秒</string>
     <string name="ui_prompt_data_refresh_cycle">数据刷新周期不得为0</string>
     <string name="ui_prompt_search_content_empty">搜索内容不得为空</string>
+    <string name="ui_prompt_device_image_set_error">设备图片设置失败</string>
+    <string name="ui_prompt_device_image_too_big">所选设备图片过大，建议保持在1M以下</string>
 
     <!-- 加载提示用语 -->
     <string name="ui_import_project_and_sensor_configs">正在加载巡检配置和传感器配置</string>

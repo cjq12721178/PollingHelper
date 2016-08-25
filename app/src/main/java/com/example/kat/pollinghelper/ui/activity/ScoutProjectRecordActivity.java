@@ -93,7 +93,7 @@ public class ScoutProjectRecordActivity extends ManagedActivity implements Adapt
                     if (view instanceof ImageView && data instanceof byte[]) {
                         ImageView imageView = (ImageView)view;
                         //imageView.setImageBitmap(BitmapFactory.decodeByteArray((byte[]) data, 0, ((byte[]) data).length));
-                        imageView.setImageBitmap(Converter.getBitmapFromByteArray((byte[])data));
+                        imageView.setImageBitmap(Converter.byteArray2Bitmap((byte[])data));
                         return true;
                     }
                     return false;

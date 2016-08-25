@@ -21,7 +21,7 @@ public class ScanBleSensor extends Operation {
     @Override
     protected boolean onExecute() {
         SharedPreferences configs = context.getSharedPreferences(context.getString(R.string.file_function_setting), context.MODE_PRIVATE);
-        int scanBleDuration = Converter.secondToMillisecond(Converter.stringToInt(configs.getString(context.getString(R.string.key_scan_duration), null),
+        int scanBleDuration = Converter.second2Millisecond(Converter.string2Int(configs.getString(context.getString(R.string.key_scan_duration), null),
                 context.getResources().getInteger(R.integer.time_duration_scan_ble_communicator)));
         ble.startScan(0, scanBleDuration);
         return true;

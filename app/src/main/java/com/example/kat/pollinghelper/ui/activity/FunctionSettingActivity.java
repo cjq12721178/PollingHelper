@@ -42,7 +42,7 @@ public class FunctionSettingActivity extends ManagedActivity
             } break;
             case R.string.ui_ep_title_scan_cycle: {
                 int setValue = Integer.parseInt((String) newValue);
-                if (Converter.minuteToMillisecond(setValue) < 0) {
+                if (Converter.minute2Millisecond(setValue) < 0) {
                     promptMessage(R.string.ui_prompt_scan_ble_cycle_up_limit);
                     return false;
                 }
