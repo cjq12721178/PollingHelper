@@ -1,8 +1,8 @@
 package com.example.kat.pollinghelper.processor.opera;
 
-import com.example.kat.pollinghelper.structure.record.ScoutItemRecord;
-import com.example.kat.pollinghelper.structure.record.ScoutMissionRecord;
-import com.example.kat.pollinghelper.structure.record.ScoutProjectRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutItemRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutMissionRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutProjectRecord;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordIterm;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordMission;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordProject;

@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.example.kat.pollinghelper.structure.main_interface.FunctionListItem;
-import com.example.kat.pollinghelper.structure.main_interface.FunctionType;
+import com.example.kat.pollinghelper.bean.main_interface.FunctionListItem;
+import com.example.kat.pollinghelper.bean.main_interface.FunctionType;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellClause;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellClause;
 
 import java.util.List;
 

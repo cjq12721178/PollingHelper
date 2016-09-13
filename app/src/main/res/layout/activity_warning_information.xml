@@ -9,4 +9,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ui.activity.WarningInformationActivity">
 
+    <include layout="@layout/list_item_item_warn"
+        android:id="@+id/il_header_item_warn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/rv_mission_warn_height"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/rv_mission_warn" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lv_item_warn"
+        android:layout_above="@id/rv_mission_warn"
+        android:layout_below="@id/il_header_item_warn" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tv_item_warn_empty"
+        android:text="@string/tv_warn_empty"
+        android:gravity="center"
+        android:layout_above="@id/rv_mission_warn"
+        android:layout_below="@id/il_header_item_warn"/>
+
 </RelativeLayout>

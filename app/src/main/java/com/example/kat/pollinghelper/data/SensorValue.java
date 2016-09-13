@@ -21,6 +21,10 @@ public class SensorValue {
         void receive(long timeStamp, double value, T receiver);
     }
 
+    public interface OnValueChangedListener {
+        void onValueChanged(long timeStamp, double value);
+    }
+
     private SensorValue() {
         values = new TreeMap<>();
         createTime = System.currentTimeMillis();
@@ -44,6 +48,9 @@ public class SensorValue {
             if (values.size() > MAX_ELEMENT_COUNT) {
                 values.remove(values.firstKey());
             }
+        }
+        if (onValueChangedListener != null) {
+            onValueChangedListener.onValueChanged(timestamp, value);
         }
         return this;
     }
@@ -86,19 +93,17 @@ public class SensorValue {
     }
 
     public <T> T getValues(ValueReceiver<T> valueReceiver) {
-
         if (valueReceiver == null)
             return null;
 
-        T receiver = valueReceiver.start(values.size());
-        if (receiver == null) {
-            Log.d("PollingHelper", "receiver == null");
+        T receiver;
+        synchronized (values) {
+            receiver = valueReceiver.start(values.size());
+            for (Map.Entry<Long, Double> element :
+                    values.entrySet()) {
+                valueReceiver.receive(element.getKey(), element.getValue(), receiver);
+            }
         }
-        for (Map.Entry<Long, Double> element :
-                values.entrySet()) {
-            valueReceiver.receive(element.getKey(), element.getValue(), receiver);
-        }
-
         return receiver;
     }
 
@@ -110,6 +115,10 @@ public class SensorValue {
         return createTime;
     }
 
+    public void setOnValueChangedListener(OnValueChangedListener l) {
+        onValueChangedListener = l;
+    }
+
     private final long createTime;
     private SensorDataType dataType;
     private String address;
@@ -117,4 +126,5 @@ public class SensorValue {
     //用于控制数据规模
     private static final int MAX_ELEMENT_COUNT = 10;
     private TreeMap<Long, Double> values;
+    private OnValueChangedListener onValueChangedListener;
 }

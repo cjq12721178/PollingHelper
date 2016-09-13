@@ -21,6 +21,25 @@ public class DataStorage {
         sensorValues = new HashMap<>();
     }
 
+    public boolean setSensorValueListener(String sensorFullAddress, SensorValue.OnValueChangedListener l) {
+        if (l == null)
+            return false;
+        SensorValue target = sensorValues.get(sensorFullAddress);
+        if (target == null)
+            return false;
+        target.setOnValueChangedListener(l);
+        return true;
+    }
+
+    public void clearAllSensorValueListener() {
+        synchronized (sensorValues) {
+            for (SensorValue sensor :
+                    sensorValues.values()) {
+                sensor.setOnValueChangedListener(null);
+            }
+        }
+    }
+
     public double getRealTimeData(String sensorFullAddress) {
         SensorValue target = sensorValues.get(sensorFullAddress);
         return target != null ? target.getLatestValue() : 0;

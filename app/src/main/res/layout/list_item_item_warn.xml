@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_warn_item_name"
+        android:textSize="@dimen/text_size_list_item_mission_warn"
+        android:text="@string/tv_warn_measure_name"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingTop="@dimen/text_padding_warn"
+        android:paddingBottom="@dimen/text_padding_warn"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_warn_item_time"
+        android:textSize="@dimen/text_size_list_item_mission_warn"
+        android:text="@string/tv_warn_time"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingTop="@dimen/text_padding_warn"
+        android:paddingBottom="@dimen/text_padding_warn"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_warn_item_value"
+        android:textSize="@dimen/text_size_list_item_mission_warn"
+        android:text="@string/tv_warn_real_value"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingTop="@dimen/text_padding_warn"
+        android:paddingBottom="@dimen/text_padding_warn"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_warn_item_alarm"
+        android:textSize="@dimen/text_size_list_item_mission_warn"
+        android:text="@string/tv_warn_alarm_value"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingTop="@dimen/text_padding_warn"
+        android:paddingBottom="@dimen/text_padding_warn"/>
+</LinearLayout>

@@ -1,7 +1,6 @@
 package com.example.kat.pollinghelper.ui.adapter;
 
 import android.content.Context;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.config.ScoutSensorConfig;
+import com.example.kat.pollinghelper.bean.config.ScoutSensorConfig;
 
 import java.util.List;
 

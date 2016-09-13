@@ -16,7 +16,7 @@ import android.view.View;
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
-import com.example.kat.pollinghelper.structure.view.SensorValueProcessor;
+import com.example.kat.pollinghelper.bean.view.SensorValueProcessor;
 import com.example.kat.pollinghelper.ui.adapter.SlipPageAdapter;
 import com.example.kat.pollinghelper.ui.dialog.FilterDialog;
 import com.example.kat.pollinghelper.ui.dialog.SearchDialog;

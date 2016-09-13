@@ -12,8 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.record.EvaluationType;
-import com.example.kat.pollinghelper.structure.record.ScoutRecordState;
+import com.example.kat.pollinghelper.bean.record.EvaluationType;
+import com.example.kat.pollinghelper.bean.record.ScoutRecordState;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.processor.opera.OperationInfo;

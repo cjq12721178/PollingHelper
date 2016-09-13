@@ -7,13 +7,13 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.scout.ScoutEntity;
-import com.example.kat.pollinghelper.structure.config.ScoutSensorConfig;
+import com.example.kat.pollinghelper.bean.scout.ScoutEntity;
+import com.example.kat.pollinghelper.bean.config.ScoutSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.ui.adapter.BaseConfigAdapter;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellClause;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellSensorEntity;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellState;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellClause;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellSensorEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellState;
 
 import java.util.ArrayList;
 import java.util.List;

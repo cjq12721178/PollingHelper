@@ -9,12 +9,12 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.config.ScoutSensorConfig;
+import com.example.kat.pollinghelper.bean.config.ScoutSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.ui.adapter.SensorEntityAdapter;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellSensorEntity;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellState;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellSensorEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellState;
 
 import java.util.ArrayList;
 import java.util.List;

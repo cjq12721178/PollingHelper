@@ -5,12 +5,12 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.config.SimpleTime;
-import com.example.kat.pollinghelper.structure.record.ScoutProjectRecord;
+import com.example.kat.pollinghelper.bean.config.SimpleTime;
+import com.example.kat.pollinghelper.bean.record.ScoutProjectRecord;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.ui.adapter.TreeViewAdapter;
-import com.example.kat.pollinghelper.structure.QueryInfo;
+import com.example.kat.pollinghelper.bean.QueryInfo;
 
 import java.util.Date;
 import java.util.List;

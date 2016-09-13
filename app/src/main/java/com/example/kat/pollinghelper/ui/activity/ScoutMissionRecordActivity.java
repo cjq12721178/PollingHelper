@@ -15,10 +15,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.record.EvaluationType;
-import com.example.kat.pollinghelper.structure.record.ScoutItemRecord;
-import com.example.kat.pollinghelper.structure.record.ScoutMissionRecord;
-import com.example.kat.pollinghelper.structure.record.ScoutRecordState;
+import com.example.kat.pollinghelper.bean.record.EvaluationType;
+import com.example.kat.pollinghelper.bean.record.ScoutItemRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutMissionRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutRecordState;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.utility.Converter;

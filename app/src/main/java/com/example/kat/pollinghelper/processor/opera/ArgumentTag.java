@@ -19,7 +19,8 @@ public enum ArgumentTag {
     AT_RUNNABLE_SUCCESS,
     AT_RUNNABLE_FAILED,
     AT_QUERY_INFO,
-    AT_DATA_LISTENER
+    AT_DATA_LISTENER,
+    AT_WARN_INFO
     ;
 
     public static String PROJECT_CONFIG_CHANGED = "PROJECT_CONFIG_CHANGED";

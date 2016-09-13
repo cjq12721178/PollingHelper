@@ -3,12 +3,12 @@ package com.example.kat.pollinghelper.processor.opera;
 import com.example.kat.pollinghelper.io.sqlite.InspItermCfg;
 import com.example.kat.pollinghelper.io.sqlite.InspMissionCfg;
 import com.example.kat.pollinghelper.io.sqlite.InspProjectCfg;
-import com.example.kat.pollinghelper.structure.config.SimpleTime;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellEntity;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellItemEntity;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellMissionEntity;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellProjectEntity;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellType;
+import com.example.kat.pollinghelper.bean.config.SimpleTime;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellItemEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellMissionEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellProjectEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellType;
 
 import java.util.List;
 

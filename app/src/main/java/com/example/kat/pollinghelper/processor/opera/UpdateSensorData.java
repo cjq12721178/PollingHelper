@@ -1,8 +1,8 @@
 package com.example.kat.pollinghelper.processor.opera;
 
 import com.example.kat.pollinghelper.data.DataStorage;
-import com.example.kat.pollinghelper.structure.record.ScoutItemRecord;
-import com.example.kat.pollinghelper.structure.record.ScoutMissionRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutItemRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutMissionRecord;
 
 /**
  * Created by KAT on 2016/6/13.

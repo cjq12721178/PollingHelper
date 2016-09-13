@@ -1,7 +1,6 @@
 package com.example.kat.pollinghelper.ui.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +8,7 @@ import android.view.ViewGroup;
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.data.SensorValue;
 import com.example.kat.pollinghelper.protocol.SensorDataType;
-import com.example.kat.pollinghelper.structure.view.ChartInfo;
-import com.example.kat.pollinghelper.utility.Printer;
+import com.example.kat.pollinghelper.bean.view.ChartInfo;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -64,18 +62,11 @@ public class LineChartAdapter extends SensorValueAdapter {
         //初始化图表
         final SensorValue sensorValue = getItem(position);
         SensorDataType.Pattern realPattern = sensorValue.getDataType().getPattern();
-        //final ViewHolder viewHolder;
         ViewHolder viewHolder = null;
         if (convertView != null) {
             viewHolder = (ViewHolder)convertView.getTag();
-            //Log.d("PollingHelper", "position = " + position + "; view != null");
         }
-//        Log.d("PollingHelper", "start init chart; position = " + position +
-//                "; type = " + sensorValue.getMeasureName() +
-//                "; real pattern = " + realPattern +
-//                "; view pattern = " + (viewHolder != null ? viewHolder.pattern : "null"));
         if (convertView == null || viewHolder.pattern != realPattern) {
-        //if (convertView == null) {
             viewHolder = new ViewHolder();
             viewHolder.pattern = realPattern;
             switch (realPattern) {
@@ -136,38 +127,25 @@ public class LineChartAdapter extends SensorValueAdapter {
                 } break;
             }
             convertView.setTag(viewHolder);
-            //Log.d("PollingHelper", "position = " + position + "; inflate view");
         }
-//        else {
-//            viewHolder = (ViewHolder)convertView.getTag();
-//        }
         //获取或者初始化数据
-        //Log.d("PollingHelper", "start init data");
-        Printer.checkNull(chartInfoMap, "chartInfoMap");
         ChartInfo chartInfo = chartInfoMap.get(sensorValue);
         if (chartInfo == null) {
             chartInfo = ChartInfo.from(sensorValue);
             chartInfoMap.put(sensorValue, chartInfo);
         }
-//        Log.d("PollingHelper", "sensor value type = " + sensorValue.getDataType().getPattern() +
-//                "; line chart == null is " + (viewHolder.lineChart == null) +
-//                "; bar chart == null is " + (viewHolder.barChart == null));
         //更新数据
-        //Log.d("PollingHelper", "start update data");
-        Printer.checkNull(viewHolder, "viewHolder");
         long timeStamp = sensorValue.getLatestTimestamp();
         if (viewHolder.timeStamp != timeStamp) {
             viewHolder.timeStamp = timeStamp;
             switch (realPattern) {
                 case DT_ANALOG: {
-                    Printer.checkNull(viewHolder.lineChart, "lineChart");
                     chartInfo.updateData(Entry.class, sensorValue);
                     viewHolder.lineChart.getXAxis().setValueFormatter(chartInfo.getXFormatter());
                     viewHolder.lineChart.setData((LineData) chartInfo.getData());
                     viewHolder.lineChart.animateX(750);
                 } break;
                 case DT_STATUS: {
-                    Printer.checkNull(viewHolder.barChart, "barChart");
                     chartInfo.updateData(BarEntry.class, sensorValue);
                     viewHolder.barChart.getXAxis().setValueFormatter(chartInfo.getXFormatter());
                     viewHolder.barChart.getAxisLeft().setValueFormatter(chartInfo.getYFormatter());
@@ -176,7 +154,6 @@ public class LineChartAdapter extends SensorValueAdapter {
                     viewHolder.barChart.animateY(750);
                 } break;
                 case DT_COUNT: {
-                    Printer.checkNull(viewHolder.barChart, "barChart");
                     chartInfo.updateData(BarEntry.class, sensorValue);
                     viewHolder.barChart.getXAxis().setValueFormatter(chartInfo.getXFormatter());
                     viewHolder.barChart.setData((BarData) chartInfo.getData());
@@ -184,7 +161,6 @@ public class LineChartAdapter extends SensorValueAdapter {
                 } break;
             }
         }
-        //Log.d("PollingHelper", "finish update data");
         return convertView;
     }
 

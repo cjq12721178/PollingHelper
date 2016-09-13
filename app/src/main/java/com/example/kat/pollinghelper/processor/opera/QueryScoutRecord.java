@@ -1,18 +1,18 @@
 package com.example.kat.pollinghelper.processor.opera;
 
-import com.example.kat.pollinghelper.structure.config.ScoutItemConfig;
-import com.example.kat.pollinghelper.structure.config.ScoutMissionConfig;
-import com.example.kat.pollinghelper.structure.config.ScoutProjectConfig;
-import com.example.kat.pollinghelper.structure.record.ScoutRecordState;
-import com.example.kat.pollinghelper.structure.config.SimpleTime;
-import com.example.kat.pollinghelper.structure.record.EvaluationType;
-import com.example.kat.pollinghelper.structure.record.ScoutItemRecord;
-import com.example.kat.pollinghelper.structure.record.ScoutMissionRecord;
-import com.example.kat.pollinghelper.structure.record.ScoutProjectRecord;
+import com.example.kat.pollinghelper.bean.config.ScoutItemConfig;
+import com.example.kat.pollinghelper.bean.config.ScoutMissionConfig;
+import com.example.kat.pollinghelper.bean.config.ScoutProjectConfig;
+import com.example.kat.pollinghelper.bean.record.ScoutRecordState;
+import com.example.kat.pollinghelper.bean.config.SimpleTime;
+import com.example.kat.pollinghelper.bean.record.EvaluationType;
+import com.example.kat.pollinghelper.bean.record.ScoutItemRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutMissionRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutProjectRecord;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordIterm;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordMission;
 import com.example.kat.pollinghelper.io.sqlite.InspRecordProject;
-import com.example.kat.pollinghelper.structure.QueryInfo;
+import com.example.kat.pollinghelper.bean.QueryInfo;
 
 import java.util.ArrayList;
 import java.util.Date;

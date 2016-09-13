@@ -10,6 +10,9 @@ import android.os.Handler;
 import android.os.IBinder;
 
 import com.example.kat.pollinghelper.R;
+import com.example.kat.pollinghelper.bean.config.ScoutItemConfig;
+import com.example.kat.pollinghelper.bean.warn.ItemWarnInfo;
+import com.example.kat.pollinghelper.bean.warn.MissionWarnInfo;
 import com.example.kat.pollinghelper.communicator.Ble;
 import com.example.kat.pollinghelper.communicator.Communicator;
 import com.example.kat.pollinghelper.communicator.Udp;
@@ -22,6 +25,7 @@ import com.example.kat.pollinghelper.processor.opera.ExportScoutConfig;
 import com.example.kat.pollinghelper.processor.opera.ExportProjectRecord;
 import com.example.kat.pollinghelper.processor.opera.ExportSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ImportProjectAndSensorConfigs;
+import com.example.kat.pollinghelper.processor.opera.InstallWarnListener;
 import com.example.kat.pollinghelper.processor.opera.ModifyBaseStationIpOrPort;
 import com.example.kat.pollinghelper.processor.opera.ModifyScanBleCycleOrDuration;
 import com.example.kat.pollinghelper.processor.opera.ModifyUdpDataRequestCycle;
@@ -41,8 +45,12 @@ import com.example.kat.pollinghelper.ui.toast.BeautyToast;
 import com.example.kat.pollinghelper.utility.Converter;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -57,10 +65,15 @@ public class ManagerService extends Service {
         initProtocol();
         importSensorDataTypeConfig();
         createDataStorage();
+        launchWarnGather();
         launchCommunicator();
         initOperationInfo();
         createOperationMap();
         launchOperationListener();
+    }
+
+    private void launchWarnGather() {
+        warnInfo = new ArrayList<>();
     }
 
     private void importSensorDataTypeConfig() {
@@ -170,6 +183,7 @@ public class ManagerService extends Service {
         ModifyScanBleCycleOrDuration modifyScanBleCycleOrDuration = new ModifyScanBleCycleOrDuration(operationInfo, ble, this);
         operationMap.put(OperaType.OT_MODIFY_SCAN_BLE_CYCLE, modifyScanBleCycleOrDuration);
         operationMap.put(OperaType.OT_MODIFY_SCAN_BLE_DURATION, modifyScanBleCycleOrDuration);
+        operationMap.put(OperaType.OT_INSTALL_WARN_LISTENER, new InstallWarnListener(operationInfo, warnInfo, dataStorage));
     }
 
     private void initOperationInfo() {
@@ -276,6 +290,7 @@ public class ManagerService extends Service {
         }
     };
 
+    private List<MissionWarnInfo> warnInfo;
     private SensorBleProtocol bleProtocol;
     private Ble ble;
     private DataStorage dataStorage;

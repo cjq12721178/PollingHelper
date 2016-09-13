@@ -15,20 +15,20 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.kat.pollinghelper.structure.config.ScoutProjectConfig;
+import com.example.kat.pollinghelper.bean.config.ScoutProjectConfig;
 import com.example.kat.pollinghelper.processor.service.NotificationService;
 import com.example.kat.pollinghelper.ui.adapter.FunctionListAdapter;
-import com.example.kat.pollinghelper.structure.main_interface.ElseFunctionListItem;
-import com.example.kat.pollinghelper.structure.main_interface.FunctionListItem;
-import com.example.kat.pollinghelper.structure.main_interface.FunctionType;
-import com.example.kat.pollinghelper.structure.ScoutInfo;
-import com.example.kat.pollinghelper.structure.record.ScoutProjectRecord;
-import com.example.kat.pollinghelper.structure.config.ScoutSensorConfig;
+import com.example.kat.pollinghelper.bean.main_interface.ElseFunctionListItem;
+import com.example.kat.pollinghelper.bean.main_interface.FunctionListItem;
+import com.example.kat.pollinghelper.bean.main_interface.FunctionType;
+import com.example.kat.pollinghelper.bean.ScoutInfo;
+import com.example.kat.pollinghelper.bean.record.ScoutProjectRecord;
+import com.example.kat.pollinghelper.bean.config.ScoutSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.processor.service.ManagerService;
-import com.example.kat.pollinghelper.structure.QueryInfo;
-import com.example.kat.pollinghelper.structure.main_interface.RealTimeScoutItem;
+import com.example.kat.pollinghelper.bean.QueryInfo;
+import com.example.kat.pollinghelper.bean.main_interface.RealTimeScoutItem;
 import com.example.kat.pollinghelper.ui.toast.BeautyToast;
 
 import java.util.ArrayList;
@@ -72,7 +72,8 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
         putArgument(ArgumentTag.AT_QUERY_INFO, new QueryInfo().setIntent(QueryInfo.LATEST_RECORD_FOR_PER_PROJECT));
         notifyManager(updateFunctionListView,
                 OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS,
-                OperaType.OT_QUERY_RECORD);
+                OperaType.OT_QUERY_RECORD,
+                OperaType.OT_INSTALL_WARN_LISTENER);
     }
 
     private void checkPollingDataBase() {
@@ -222,6 +223,7 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
                 importProjectAndSensorConfigs();
             } else if (data.getBooleanExtra(ArgumentTag.PROJECT_CONFIG_CHANGED, false)) {
                 updateFunctionListView.run();
+                notifyManager(OperaType.OT_INSTALL_WARN_LISTENER);
             }
         } else if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SENSOR_CONFIG) {
             if (data.getBooleanExtra(ArgumentTag.RESTORE_PROJECT_AND_SENSOR_CONFIG, false)) {

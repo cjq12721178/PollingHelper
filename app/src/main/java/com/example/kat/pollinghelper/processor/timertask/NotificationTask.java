@@ -10,8 +10,8 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.config.SimpleTime;
-import com.example.kat.pollinghelper.structure.ProjectTimeInfo;
+import com.example.kat.pollinghelper.bean.config.SimpleTime;
+import com.example.kat.pollinghelper.bean.ProjectTimeInfo;
 
 import java.util.Date;
 import java.util.TimerTask;

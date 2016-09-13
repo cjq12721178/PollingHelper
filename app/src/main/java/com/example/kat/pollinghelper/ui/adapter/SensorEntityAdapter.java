@@ -9,7 +9,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellSensorEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellSensorEntity;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import android.os.IBinder;
 
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.processor.timertask.NotificationTask;
-import com.example.kat.pollinghelper.structure.ProjectTimeInfo;
+import com.example.kat.pollinghelper.bean.ProjectTimeInfo;
 
 import java.util.ArrayList;
 import java.util.HashSet;

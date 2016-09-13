@@ -10,4 +10,10 @@
     <dimen name="text_padding_record">3dp</dimen>
     <dimen name="text_size_data_view_digital">18sp</dimen>
     <dimen name="image_side_size_device">200dp</dimen>
+    <dimen name="iv_mission_warn_indent">5dp</dimen>
+    <dimen name="iv_mission_warn_interval">20dp</dimen>
+    <dimen name="iv_mission_warn_device_layout_size">100dp</dimen>
+    <dimen name="rv_mission_warn_height">120dp</dimen>
+    <dimen name="text_size_list_item_mission_warn">16sp</dimen>
+    <dimen name="text_padding_warn">5dp</dimen>
 </resources>

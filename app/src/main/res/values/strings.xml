@@ -192,6 +192,11 @@
     <string name="btn_filter_status">状态量</string>
     <string name="btn_filter_count">计数量</string>
     <string name="et_hint_search_data_view">输入目标地址、类型中所含全部或部分字符，关键字以空格分开</string>
+    <string name="tv_warn_measure_name">测量参数</string>
+    <string name="tv_warn_time">时间</string>
+    <string name="tv_warn_real_value">实际值</string>
+    <string name="tv_warn_alarm_value">告警上/下限值</string>
+    <string name="tv_warn_empty">该巡检任务目前没有告警信息</string>
 
     <!-- 广播地址(broadcast address = ba)  -->
     <string name="ba_update_project_time">android.intent.action.UPDATE_PROJECT_TIME</string>

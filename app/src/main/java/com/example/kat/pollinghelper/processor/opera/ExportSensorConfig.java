@@ -1,7 +1,7 @@
 package com.example.kat.pollinghelper.processor.opera;
 
 import com.example.kat.pollinghelper.io.sqlite.SensorCfg;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellSensorEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellSensorEntity;
 
 import java.util.List;
 

@@ -14,10 +14,10 @@ import android.widget.RadioGroup;
 import android.widget.SimpleAdapter;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.record.EvaluationType;
-import com.example.kat.pollinghelper.structure.record.ScoutMissionRecord;
-import com.example.kat.pollinghelper.structure.record.ScoutProjectRecord;
-import com.example.kat.pollinghelper.structure.record.ScoutRecordState;
+import com.example.kat.pollinghelper.bean.record.EvaluationType;
+import com.example.kat.pollinghelper.bean.record.ScoutMissionRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutProjectRecord;
+import com.example.kat.pollinghelper.bean.record.ScoutRecordState;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
 import com.example.kat.pollinghelper.utility.Converter;
@@ -34,7 +34,7 @@ public class ScoutProjectRecordActivity extends ManagedActivity implements Adapt
     private List<Map<String, Object>> listDatas;
     private RadioGroup rdogrpEvaluation;
     private EditText edttxtEvaluation;
-    private final String deviceImage = "img";
+    private final String deviceImage = "deviceImage";
     private final String missionName = "lbl";
     private final String recordResult = "res";
     private Date originTime;

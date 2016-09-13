@@ -9,15 +9,15 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.structure.config.ScoutProjectConfig;
-import com.example.kat.pollinghelper.structure.config.SimpleTime;
+import com.example.kat.pollinghelper.bean.config.ScoutProjectConfig;
+import com.example.kat.pollinghelper.bean.config.SimpleTime;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.ui.adapter.ProjectConfigAdapter;
-import com.example.kat.pollinghelper.structure.scout.ScoutCell;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellClause;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellProjectEntity;
-import com.example.kat.pollinghelper.structure.scout.ScoutCellState;
-import com.example.kat.pollinghelper.structure.scout.ScoutEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCell;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellClause;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellProjectEntity;
+import com.example.kat.pollinghelper.bean.scout.ScoutCellState;
+import com.example.kat.pollinghelper.bean.scout.ScoutEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
