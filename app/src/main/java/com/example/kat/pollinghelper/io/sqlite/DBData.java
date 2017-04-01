@@ -29,6 +29,7 @@ public abstract class DBData {
     public static void closeDatabaseEvn(){
         Log.d(AppConstants.LOG_TAG, "DBData --> closeDatabaseEvn");
         db.close();
+        db = null;
         helper = null;
     }
 

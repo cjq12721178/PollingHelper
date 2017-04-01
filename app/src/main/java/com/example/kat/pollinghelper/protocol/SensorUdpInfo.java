@@ -2,7 +2,6 @@ package com.example.kat.pollinghelper.protocol;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -67,7 +66,7 @@ public class SensorUdpInfo extends SensorInfo {
     public static SensorDataType getDataType(byte value) {
         SensorDataType tmp = dataTypeMap.get(value);
         if (tmp == null) {
-            tmp = SensorDataType.getNullType(value);
+            tmp = SensorDataType.getEmptyType(value);
             synchronized (dataTypeMap) {
                 dataTypeMap.put(value, tmp);
             }

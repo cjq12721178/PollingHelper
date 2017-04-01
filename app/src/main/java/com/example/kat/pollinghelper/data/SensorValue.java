@@ -1,7 +1,6 @@
 package com.example.kat.pollinghelper.data;
 
-import android.util.Log;
-
+import com.example.kat.pollinghelper.bean.config.ScoutSensorConfig;
 import com.example.kat.pollinghelper.protocol.SensorDataType;
 import com.example.kat.pollinghelper.protocol.SensorInfo;
 
@@ -30,11 +29,12 @@ public class SensorValue {
         createTime = System.currentTimeMillis();
     }
 
-    public static SensorValue from(SensorInfo sensorInfo) {
+    public static SensorValue from(SensorInfo sensorInfo, ScoutSensorConfig sensorConfig) {
         SensorValue result = new SensorValue();
         result.dataType = sensorInfo.getDataType();
-        result.address = sensorInfo.getMacAddress();
-        result.measureName = sensorInfo.getMeasureName();
+        result.fullAddress = sensorInfo.getFullAddress();
+        result.macAddress = sensorInfo.getMacAddress();
+        result.setMeasureName(sensorInfo, sensorConfig);
         return result.addValue(sensorInfo);
     }
 
@@ -88,8 +88,12 @@ public class SensorValue {
         return dataType;
     }
 
-    public String getAddress() {
-        return address;
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    public String getFullAddress() {
+        return fullAddress;
     }
 
     public <T> T getValues(ValueReceiver<T> valueReceiver) {
@@ -111,6 +115,14 @@ public class SensorValue {
         return measureName;
     }
 
+    protected void setMeasureName(SensorInfo sensorInfo, ScoutSensorConfig sensorConfig) {
+        measureName = sensorConfig == null ?
+                (sensorInfo == null ?
+                        measureName :
+                        sensorInfo.getMeasureName()) :
+                sensorConfig.getName();
+    }
+
     public long getCreateTime() {
         return createTime;
     }
@@ -121,7 +133,8 @@ public class SensorValue {
 
     private final long createTime;
     private SensorDataType dataType;
-    private String address;
+    private String macAddress;
+    private String fullAddress;
     private String measureName;
     //用于控制数据规模
     private static final int MAX_ELEMENT_COUNT = 10;

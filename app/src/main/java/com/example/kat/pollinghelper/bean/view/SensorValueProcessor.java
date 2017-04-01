@@ -26,7 +26,7 @@ public class SensorValueProcessor {
 
         @Override
         public int compare(SensorValue lhs, SensorValue rhs) {
-            return lhs.getAddress().compareTo(rhs.getAddress());
+            return lhs.getMacAddress().compareTo(rhs.getMacAddress());
         }
     }
 
@@ -34,7 +34,7 @@ public class SensorValueProcessor {
 
         @Override
         public int compare(SensorValue lhs, SensorValue rhs) {
-            return rhs.getAddress().compareTo(lhs.getAddress());
+            return rhs.getMacAddress().compareTo(lhs.getMacAddress());
         }
     }
 
@@ -101,7 +101,7 @@ public class SensorValueProcessor {
 
         @Override
         public boolean match(SensorValue sensor) {
-            return sensor.getAddress().length() == SensorUdpInfo.ADDRESS_LEN;
+            return sensor.getMacAddress().length() == SensorUdpInfo.ADDRESS_LEN;
         }
     }
 
@@ -109,7 +109,7 @@ public class SensorValueProcessor {
 
         @Override
         public boolean match(SensorValue sensor) {
-            return sensor.getAddress().length() == SensorBleInfo.ADDRESS_LEN;
+            return sensor.getMacAddress().length() == SensorBleInfo.ADDRESS_LEN;
         }
     }
 
@@ -312,7 +312,7 @@ public class SensorValueProcessor {
                 searchContents) {
             if (searchText.length() == 0)
                 continue;
-            if (!sensor.getAddress().contains(searchText) &&
+            if (!sensor.getMacAddress().contains(searchText) &&
                     !sensor.getMeasureName().contains(searchText))
                 return false;
         }

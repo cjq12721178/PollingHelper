@@ -1,5 +1,8 @@
 package com.example.kat.pollinghelper.data;
 
+import android.text.TextUtils;
+
+import com.example.kat.pollinghelper.bean.config.ScoutSensorConfig;
 import com.example.kat.pollinghelper.protocol.SensorInfo;
 
 import java.util.Collection;
@@ -45,16 +48,18 @@ public class DataStorage {
         return target != null ? target.getLatestValue() : 0;
     }
 
-    public void receiveSensorInfo(List<SensorInfo> sensorInfos) {
+    public void receiveSensorInfo(List<SensorInfo> sensorInfos,
+                                  List<ScoutSensorConfig> sensorConfigs) {
         if (sensorInfos != null) {
             for (SensorInfo sensorInfo :
                     sensorInfos) {
-                addSensorValue(sensorInfo);
+                addSensorValue(sensorInfo, sensorConfigs);
             }
         }
     }
 
-    private void addSensorValue(SensorInfo sensorInfo) {
+    private void addSensorValue(SensorInfo sensorInfo,
+                                List<ScoutSensorConfig> sensorConfigs) {
         if (sensorInfo != null) {
             synchronized (sensorValues) {
                 String fullAddress = sensorInfo.getFullAddress();
@@ -62,11 +67,35 @@ public class DataStorage {
                 if (sensorValue != null) {
                     sensorValue.addValue(sensorInfo);
                 } else {
-                    sensorValue = SensorValue.from(sensorInfo);
+                    //根据传感器配置修改数据浏览界面传感器测量名称，效率不高，有待改进
+                    sensorValue = SensorValue.from(sensorInfo, findSensorConfigForAddress(sensorConfigs, fullAddress));
                     sensorValues.put(fullAddress, sensorValue);
                     if (onDataListener != null) {
                         onDataListener.onUpdate(sensorValue);
                     }
+                }
+            }
+        }
+    }
+
+    private ScoutSensorConfig findSensorConfigForAddress(List<ScoutSensorConfig> sensorConfigs, String sensorAddress) {
+        if (sensorConfigs == null || TextUtils.isEmpty(sensorAddress))
+            return null;
+        for (ScoutSensorConfig sensorConfig :
+                sensorConfigs) {
+            if (sensorConfig.getAddress().equals(sensorAddress))
+                return sensorConfig;
+        }
+        return null;
+    }
+
+    public void updateSensorMeasureName(List<ScoutSensorConfig> sensorConfigs) {
+        if (sensorConfigs != null) {
+            synchronized (sensorValues) {
+                for (SensorValue sensorValue :
+                        sensorValues.values()) {
+                    sensorValue.setMeasureName(null,
+                            findSensorConfigForAddress(sensorConfigs, sensorValue.getFullAddress()));
                 }
             }
         }

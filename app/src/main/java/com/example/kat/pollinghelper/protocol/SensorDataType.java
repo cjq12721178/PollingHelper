@@ -1,7 +1,5 @@
 package com.example.kat.pollinghelper.protocol;
 
-import com.example.kat.pollinghelper.utility.SimpleFormatter;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -37,6 +35,8 @@ public class SensorDataType {
                 dataType = new SensorDataType();
             } else if (localName.equals(DIRECTIONS)) {
                 directionMap = new HashMap<>();
+            } else if (localName.equals(PARAPHRASES)) {
+                paraphrases = new HashMap<>();
             }
             builder.setLength(0);
         }
@@ -53,21 +53,32 @@ public class SensorDataType {
                 case NAME:dataType.name = builder.toString();break;
                 case PATTERN:dataType.pattern = Pattern.from(Integer.parseInt(builder.toString()));break;
                 case SIGNED:dataType.signed = Boolean.parseBoolean(builder.toString());break;
-                case DECIMAL:dataType.decimal = Integer.parseInt(builder.toString());break;
+                //case DECIMAL:dataType.decimal = Integer.parseInt(builder.toString());break;
+                case DECIMAL:dataType.interpreter = FloatInterpreter.build(Integer.parseInt(builder.toString()));break;
                 case UNIT:dataType.unit = builder.toString();break;
                 case COEFFICIENT:dataType.coefficient = Double.parseDouble(builder.toString());break;
-                case TRUE:dataType.labelOn = builder.toString();break;
-                case FALSE:dataType.labelOff = builder.toString();break;
+                case ON:on = builder.toString();break;
+                case OFF:off = builder.toString();break;
+                case STATUS:dataType.interpreter = new StatusInterpreter(on, off);break;
                 case DATA_TYPE: {
+                    if (dataType.interpreter == null) {
+                        dataType.interpreter = DefaultInterpreter.getInstance();
+                    }
                     dataTypeMap.put(dataType.getValue(), dataType);
                     if (directionMap != null) {
                         measureNameMap.put(dataType, directionMap);
                         directionMap = null;
                     }
-                }break;
+                } break;
                 case INDEX:index = Byte.valueOf(builder.toString());break;
                 case INTRODUCTION:introduction = builder.toString();break;
                 case DIRECTION:directionMap.put(index, introduction);break;
+                case NUMBER:number = Double.parseDouble(builder.toString());break;
+                case TEXT:text = builder.toString();break;
+                case PARAPHRASE:paraphrases.put(number, text);break;
+                case PARAPHRASES:dataType.interpreter = new ParaphraseInterpreter(paraphrases);break;
+                case CALENDAR:dataType.interpreter = CalendarInterpreter.from(builder.toString());break;
+                default:break;
             }
         }
 
@@ -82,9 +93,15 @@ public class SensorDataType {
         private static final String DIRECTIONS = "directions";
         private static final String INDEX = "index";
         private static final String INTRODUCTION = "introduction";
-        private static final String TRUE = "true";
-        private static final String FALSE = "false";
+        private static final String ON = "on";
+        private static final String OFF = "off";
         private static final String DATA_TYPE = "DataType";
+        private static final String PARAPHRASES = "paraphrases";
+        private static final String PARAPHRASE = "paraphrase";
+        private static final String NUMBER = "number";
+        private static final String TEXT = "text";
+        private static final String STATUS = "status";
+        private static final String CALENDAR = "calendar";
         private Map<Byte, SensorDataType> dataTypeMap;
         private Map<SensorDataType, Map<Byte, String>> measureNameMap;
         private Map<Byte, String> directionMap;
@@ -92,6 +109,11 @@ public class SensorDataType {
         private String introduction;
         private SensorDataType dataType;
         private StringBuilder builder;
+        private Map<Double, String> paraphrases;
+        private Double number;
+        private String text;
+        private String on;
+        private String off;
     }
 
     public enum Pattern {
@@ -113,11 +135,11 @@ public class SensorDataType {
         return new Handler();
     }
 
-    public static SensorDataType getNullType(byte value) {
+    public static SensorDataType getEmptyType(byte value) {
         SensorDataType nullType = new SensorDataType();
         nullType.value = value;
         nullType.pattern = Pattern.DT_ANALOG;
-        nullType.decimal = 3;
+        nullType.interpreter = FloatInterpreter.build(3);
         nullType.coefficient = 1.0;
         return nullType;
     }
@@ -134,20 +156,8 @@ public class SensorDataType {
         return pattern;
     }
 
-    public int getDecimal() {
-        return decimal;
-    }
-
     public String getUnit() {
         return unit;
-    }
-
-    public String getLabelOn() {
-        return labelOn;
-    }
-
-    public String getLabelOff() {
-        return labelOff;
     }
 
     public double getCoefficient() {
@@ -159,26 +169,18 @@ public class SensorDataType {
     }
 
     public String getSignificantValue(double rawValue) {
-        switch (pattern) {
-            case DT_ANALOG:
-            case DT_COUNT:return SimpleFormatter.keepDecimal(rawValue, decimal);
-            case DT_STATUS:return rawValue == 1 ? labelOn : labelOff;
-            default:return String.valueOf(rawValue);
-        }
+        return interpreter.interpret(rawValue);
     }
 
     public String getSignificantValueWithUnit(double rawValue) {
-        return getSignificantValue(rawValue) + unit;
+        return unit != "" ? getSignificantValue(rawValue) + unit : getSignificantValue(rawValue);
     }
 
-    //private static SensorDataType nullType;
     private byte value;
     private String name;
     private Pattern pattern;
     private boolean signed;
-    private int decimal;
     private String unit = "";
     private double coefficient;
-    private String labelOn;
-    private String labelOff;
+    private ValueInterpreter interpreter;
 }

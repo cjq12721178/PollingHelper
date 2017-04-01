@@ -20,6 +20,7 @@ import com.example.kat.pollinghelper.bean.record.ScoutProjectRecord;
 import com.example.kat.pollinghelper.bean.record.ScoutRecordState;
 import com.example.kat.pollinghelper.processor.opera.ArgumentTag;
 import com.example.kat.pollinghelper.processor.opera.OperaType;
+import com.example.kat.pollinghelper.ui.dialog.AlternativeDialog;
 import com.example.kat.pollinghelper.utility.Converter;
 
 import java.util.ArrayList;
@@ -149,11 +150,12 @@ public class ScoutProjectRecordActivity extends ManagedActivity implements Adapt
     public void onBackPressed() {
         updatePollingProjectRecord();
         if (projectRecord.getPollingState() != ScoutRecordState.PS_COMPLETED) {
-            AlertDialog dialog = new AlertDialog.Builder(this).create();
-            dialog.setMessage(getString(R.string.ui_prompt_exit_polling_project));
-            dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ui_prompt_yes), exitAlertListener);
-            dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ui_prompt_no), exitAlertListener);
-            dialog.show();
+            showAlternativeDialog(R.string.ui_prompt_exit_polling_project, exitAlertListener);
+//            AlertDialog dialog = new AlertDialog.Builder(this).create();
+//            dialog.setMessage(getString(R.string.ui_prompt_exit_polling_project));
+//            dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ui_prompt_yes), exitAlertListener);
+//            dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ui_prompt_no), exitAlertListener);
+//            dialog.show();
         } else {
             exitPollingProjectRecord();
         }
@@ -201,12 +203,19 @@ public class ScoutProjectRecordActivity extends ManagedActivity implements Adapt
         super.onBackPressed();
     }
 
-    private DialogInterface.OnClickListener exitAlertListener = new DialogInterface.OnClickListener() {
+//    private DialogInterface.OnClickListener exitAlertListener = new DialogInterface.OnClickListener() {
+//        @Override
+//        public void onClick(DialogInterface dialog, int which) {
+//            if (which == DialogInterface.BUTTON_POSITIVE) {
+//                exitPollingProjectRecord();
+//            }
+//        }
+//    };
+
+    private View.OnClickListener exitAlertListener = new View.OnClickListener() {
         @Override
-        public void onClick(DialogInterface dialog, int which) {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                exitPollingProjectRecord();
-            }
+        public void onClick(View v) {
+            exitPollingProjectRecord();
         }
     };
 }

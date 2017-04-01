@@ -1,5 +1,7 @@
 package com.example.kat.pollinghelper.protocol;
 
+import com.example.kat.pollinghelper.utility.Printer;
+
 import java.util.Map;
 
 /**
@@ -17,7 +19,7 @@ public class SensorBleInfo extends SensorInfo {
             sensorBleInfo = new SensorBleInfo();
             sensorBleInfo.dataType = getDataType(data[pos]);
             sensorBleInfo.address = address >> 8;
-            sensorBleInfo.arrayAddress = (byte)((address & 0xff) + addressLow[sensorBleInfo.dataType.getValue()]++);
+            sensorBleInfo.arrayAddress = (byte)((address & 0xff) + addressLow[NumericConverter.toUInt16(sensorBleInfo.dataType.getValue())]++);
             sensorBleInfo.batteryVoltage = voltage;
             sensorBleInfo.value = Float.intBitsToFloat((int)NumericConverter.toUInt32(data[++pos], data[++pos], data[++pos], data[++pos]));
             sensorBleInfo.time = System.currentTimeMillis();
@@ -39,7 +41,7 @@ public class SensorBleInfo extends SensorInfo {
     public static SensorDataType getDataType(byte value) {
         SensorDataType tmp = dataTypeMap.get(value);
         if (tmp == null) {
-            tmp = SensorDataType.getNullType(value);
+            tmp = SensorDataType.getEmptyType(value);
             synchronized (dataTypeMap) {
                 dataTypeMap.put(value, tmp);
             }

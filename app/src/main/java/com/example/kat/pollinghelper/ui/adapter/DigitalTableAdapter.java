@@ -1,7 +1,6 @@
 package com.example.kat.pollinghelper.ui.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ public class DigitalTableAdapter extends SensorValueAdapter {
         private TextView type;
         private TextView value;
         private TextView time;
-        private long timeStamp;
+        //private long timeStamp;
     }
 
     public DigitalTableAdapter(Context context) {
@@ -44,20 +43,24 @@ public class DigitalTableAdapter extends SensorValueAdapter {
             viewHolder.type = (TextView)convertView.findViewById(R.id.tv_data_view_digital_type);
             viewHolder.value = (TextView)convertView.findViewById(R.id.tv_data_view_digital_value);
             viewHolder.time = (TextView)convertView.findViewById(R.id.tv_data_view_digital_time);
-            viewHolder.timeStamp = 0;
+            //viewHolder.timeStamp = 0;
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
         }
         SensorValue sensorValue = getItem(position);
-        long timeStamp = sensorValue.getLatestTimestamp();
-        if (viewHolder.timeStamp != timeStamp) {
-            viewHolder.timeStamp = timeStamp;
-            viewHolder.address.setText(sensorValue.getAddress());
-            viewHolder.type.setText(sensorValue.getMeasureName());
-            viewHolder.value.setText(sensorValue.getLatestSignificantValueWithUnit());
-            viewHolder.time.setText(SimpleFormatter.formatHourMinuteSecond(timeStamp));
-        }
+        viewHolder.address.setText(sensorValue.getMacAddress());
+        viewHolder.type.setText(sensorValue.getMeasureName());
+        viewHolder.value.setText(sensorValue.getLatestSignificantValueWithUnit());
+        viewHolder.time.setText(SimpleFormatter.formatHourMinuteSecond(sensorValue.getLatestTimestamp()));
+//        long timeStamp = sensorValue.getLatestTimestamp();
+//        if (viewHolder.timeStamp != timeStamp) {
+//            viewHolder.timeStamp = timeStamp;
+//            viewHolder.address.setText(sensorValue.getMacAddress());
+//            viewHolder.type.setText(sensorValue.getMeasureName());
+//            viewHolder.value.setText(sensorValue.getLatestSignificantValueWithUnit());
+//            viewHolder.time.setText(SimpleFormatter.formatHourMinuteSecond(timeStamp));
+//        }
         return convertView;
     }
 }

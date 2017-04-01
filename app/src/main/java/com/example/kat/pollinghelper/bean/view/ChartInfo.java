@@ -112,7 +112,7 @@ public class ChartInfo {
             builder.append(")");
         }
         builder.append(" - ");
-        builder.append(sensor.getAddress());
+        builder.append(sensor.getMacAddress());
         return builder.toString();
     }
 
@@ -142,11 +142,12 @@ public class ChartInfo {
             return new AxisValueFormatter() {
                 @Override
                 public String getFormattedValue(float value, AxisBase axis) {
-                    if (value == 2)
-                        return sensor.getDataType().getLabelOn();
-                    if (value == 1)
-                        return sensor.getDataType().getLabelOff();
-                    return "";
+                    return sensor.getDataType().getSignificantValue(value - 1);
+//                    if (value == 2)
+//                        return sensor.getDataType().getLabelOn();
+//                    if (value == 1)
+//                        return sensor.getDataType().getLabelOff();
+//                    return "";
                 }
 
                 @Override

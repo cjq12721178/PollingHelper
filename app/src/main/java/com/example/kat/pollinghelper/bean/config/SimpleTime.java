@@ -45,11 +45,11 @@ public class SimpleTime implements Serializable, Comparable<SimpleTime> {
         if (date == null)
             return null;
 
-        return from(date.getTime(), false);
+        return from(date.getTime(), true);
     }
 
-    //如果是用System.currentTimeMillis()，则需要考虑时区，accountTimeZone应为true
-    //如果是用Date.getTime()，则不用考虑时区，accountTimeZone应为false
+    //如果是用System.currentTimeMillis()||Date.getTime()，则需要考虑时区，accountTimeZone应为true
+    //如果已经过时区处理，则不用考虑时区，accountTimeZone应为false
     public static SimpleTime from(long milliseconds, boolean accountTimeZone) {
         long totalMinutes = (milliseconds + (accountTimeZone ? getTimeDifference() : 0)) / RATIO_SECOND_MILLIS / RATIO_MINUTE_SECOND;
         int currentMinute = (int)(totalMinutes % 60);
@@ -62,7 +62,7 @@ public class SimpleTime implements Serializable, Comparable<SimpleTime> {
     }
 
     public Date toCurrentScheduleDate(Date currentDate) {
-        return toCurrentScheduleDate(currentDate.getTime(), false);
+        return toCurrentScheduleDate(currentDate.getTime(), true);
     }
 
     //当设置时间早于当前时间时，日期为今天，否则为(包括相等的情况)上一天
@@ -76,15 +76,15 @@ public class SimpleTime implements Serializable, Comparable<SimpleTime> {
     }
 
     public Date toNextScheduleDate(Date currentDate) {
-        return toNextScheduleDate(currentDate.getTime(), false);
+        return toNextScheduleDate(currentDate.getTime(), true);
     }
 
     public Date toNextScheduleDate(long currentMilliseconds, boolean accountTimeZone) {
         return toScheduleDate(currentMilliseconds, false, accountTimeZone);
     }
 
-    //如果是用System.currentTimeMillis()，则需要考虑时区，accountTimeZone应为true
-    //如果是用Date.getTime()，则不用考虑时区，accountTimeZone应为false
+    //如果是用System.currentTimeMillis()||Date.getTime()，则需要考虑时区，accountTimeZone应为true
+    //如果已经过时区处理，则不用考虑时区，accountTimeZone应为false
     private Date toScheduleDate(long currentMilliseconds, boolean currentOrNext, boolean accountTimeZone) {
         long timeDifference = accountTimeZone ? getTimeDifference() : 0;
         long totalMinutes = (currentMilliseconds + timeDifference) / RATIO_SECOND_MILLIS / RATIO_MINUTE_SECOND;

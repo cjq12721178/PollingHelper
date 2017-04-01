@@ -111,7 +111,7 @@ public class ScoutProjectConfigActivity extends ScoutConfigBaseActivity {
             return false;
         }
 
-        ScoutCellClause projectDescriptionClause = (ScoutCellClause)getContent(R.string.ui_tv_project_config_label_description);
+        ScoutCellClause projectDescriptionClause = getContent(R.string.ui_tv_project_config_label_description);
         ScoutCellProjectEntity projectEntity = getEntity();
         ScoutProjectConfig projectConfig = projectEntity.getProjectConfig();
         projectConfig.setName((String)projectNameClause.getContent());
@@ -183,7 +183,7 @@ public class ScoutProjectConfigActivity extends ScoutConfigBaseActivity {
         public void onClick(View v) {
             //注意此处不可直接在add中new ScoutCellClause，因为这样无法使其状态变为modified
             ScoutCellClause newScheduleTime = new ScoutCellClause(getString(R.string.ui_tv_project_config_label_time), null);
-            newScheduleTime.setContent(SimpleTime.from(new Date()));
+            newScheduleTime.setContent(SimpleTime.from(System.currentTimeMillis(), true));
             getClauses().add(newScheduleTime);
             getBaseAdapter().notifyDataSetChanged();
         }

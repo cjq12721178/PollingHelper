@@ -44,18 +44,12 @@ public class ScoutConfigActivity extends ManagedActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         boolean result = true;
         if (item.getItemId() == R.id.mi_save_config) {
-            //AlertDialog dialog = new AlertDialog.Builder(this).create();
             if (isPollingConfigModified()) {
-//                dialog.setMessage(getString(R.string.ui_prompt_polling_config_modified));
-//                dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ui_prompt_yes), saveAlertListener);
-//                dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ui_prompt_no), saveAlertListener);
                 showAlternativeDialog(R.string.ui_prompt_polling_config_modified,
                         onSaveConfirmClickListener);
             } else {
-                //dialog.setMessage(getString(R.string.ui_prompt_polling_config_invariant));
                 promptMessage(R.string.ui_prompt_polling_config_invariant);
             }
-            //dialog.show();
         } else {
             result = super.onOptionsItemSelected(item);
         }
@@ -305,6 +299,8 @@ public class ScoutConfigActivity extends ManagedActivity {
             }
         }
         return false;
+        //用于简易生成巡检项目配置进行调试
+        //return true;
     }
 
     private void onPostExportPollingConfig() {

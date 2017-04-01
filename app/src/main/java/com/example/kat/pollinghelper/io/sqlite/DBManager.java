@@ -46,6 +46,7 @@ public class DBManager {
         Log.d(AppConstants.LOG_TAG, "DBManager --> closeDB");
         // 释放数据库资源
         db.close();
+        db = null;
     }
 
 

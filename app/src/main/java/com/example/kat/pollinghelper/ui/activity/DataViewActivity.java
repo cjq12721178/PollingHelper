@@ -80,12 +80,12 @@ public class DataViewActivity extends ManagedActivity {
     private List<DataViewFragment> getFragments(FragmentManager fragmentManager) {
         List<DataViewFragment> slipPages = new ArrayList<>();
         try {
-            slipPages.add(getFragment(fragmentManager, AnalogPanelSlipPage.class,
-                    0, R.string.fragment_title_analog_dial));
+//            slipPages.add(getFragment(fragmentManager, AnalogPanelSlipPage.class,
+//                    0, R.string.fragment_title_analog_dial));
             slipPages.add(getFragment(fragmentManager, DigitalTableSlipPage.class,
-                    1, R.string.fragment_title_digital_table));
+                    0, R.string.fragment_title_digital_table));
             slipPages.add(getFragment(fragmentManager, LineChartSlipPage.class,
-                    2, R.string.fragment_title_line_chart));
+                    1, R.string.fragment_title_line_chart));
         } catch (Exception ignored) {
         }
         return slipPages;

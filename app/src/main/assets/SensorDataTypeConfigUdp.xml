@@ -2,6 +2,12 @@
 <!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
 <!-- 本文件适用于udp -->
 <!-- type=0为模拟量，1为状态量，2为计数量 -->
+<!-- 数值解释方式目前为止有5种-->
+<!-- 保留若干小数位浮点型，使用decimal标签设置保留小数位数 -->
+<!-- 开关型， 使用status标签设置on和off时的名称 -->
+<!-- 数值解释型，使用paraphrases标签，然后用paraphrase标签一一定义“数值-解释” -->
+<!-- 日历时间型，使用calendar标签设置时间显示模式 -->
+<!-- 默认类型，直接显示value -->
 <!-- decimal为保留几位小数，当type为1时不存在decimal，type为2时decimal必为0 -->
 <DataTypes>
 	<DataType>
@@ -224,8 +230,10 @@
 		<name>变压器防盗</name>
 		<type>1</type>
 		<signed/>
-		<true>异常</true>
-		<false>正常</false>
+		<status>
+			<on>异常</on>
+			<off>正常</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x40</value>
@@ -266,22 +274,28 @@
 		<value>0x45</value>
 		<name>磁控开关</name>
 		<type>1</type>
-		<true>开</true>
-		<false>关</false>
+		<status>
+			<on>开</on>
+			<off>关</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x47</value>
 		<name>热释电红外</name>
 		<type>1</type>
-		<true>触发</true>
-		<false>未触发</false>
+		<status>
+			<on>触发</on>
+			<off>未触发</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x48</value>
 		<name>烟雾报警</name>
 		<type>1</type>
-		<true>有</true>
-		<false>无</false>
+		<status>
+			<on>有</on>
+			<off>无</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x49</value>
@@ -332,8 +346,10 @@
 		<value>0x50</value>
 		<name>震动状态</name>
 		<type>1</type>
-		<true>震动</true>
-		<false>未震动</false>
+		<status>
+			<on>震动</on>
+			<off>未震动</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x54</value>
@@ -582,32 +598,36 @@
 		<value>0x81</value>
 		<name>继电器状态(通道1)</name>
 		<type>1</type>
-		<decimal>2</decimal>
-		<true>线圈吸合</true>
-		<false>线圈释放</false>
+		<status>
+			<on>线圈吸合</on>
+			<off>线圈释放</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x82</value>
 		<name>继电器状态(通道2)</name>
 		<type>1</type>
-		<decimal>2</decimal>
-		<true>线圈吸合</true>
-		<false>线圈释放</false>
+		<status>
+			<on>线圈吸合</on>
+			<off>线圈释放</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x83</value>
 		<name>继电器状态(通道3)</name>
 		<type>1</type>
-		<decimal>2</decimal>
-		<true>线圈吸合</true>
-		<false>线圈释放</false>
+		<status>
+			<on>线圈吸合</on>
+			<off>线圈释放</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x84</value>
 		<name>继电器状态(通道4)</name>
 		<type>1</type>
-		<decimal>2</decimal>
-		<true>线圈吸合</true>
-		<false>线圈释放</false>
+		<status>
+			<on>线圈吸合</on>
+			<off>线圈释放</off>
+		</status>
 	</DataType>
 </DataTypes>

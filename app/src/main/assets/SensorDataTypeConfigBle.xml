@@ -2,6 +2,12 @@
 <!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
 <!-- 本文件适用于ble -->
 <!-- type=0为模拟量，1为状态量，2为计数量 -->
+<!-- 数值解释方式目前为止有5种-->
+<!-- 保留若干小数位浮点型，使用decimal标签设置保留小数位数 -->
+<!-- 开关型， 使用status标签设置on和off时的名称 -->
+<!-- 数值解释型，使用paraphrases标签，然后用paraphrase标签一一定义“数值-解释” -->
+<!-- 日历时间型，使用calendar标签设置时间显示模式 -->
+<!-- 默认类型，直接显示value -->
 <!-- decimal为保留几位小数，当type为1时不存在decimal，type为2时decimal必为0 -->
 <DataTypes>
 	<DataType>
@@ -10,7 +16,6 @@
 		<type>0</type>
 		<decimal>1</decimal>
 		<unit>℃</unit>
-		<coefficient>0.0078125</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x06</value>
@@ -18,7 +23,6 @@
 		<type>0</type>
 		<decimal>1</decimal>
 		<unit>℃</unit>
-		<coefficient>0.0078125</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x07</value>
@@ -26,7 +30,6 @@
 		<type>0</type>
 		<decimal>1</decimal>
 		<unit>℃</unit>
-		<coefficient>0.0078125</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x08</value>
@@ -34,7 +37,6 @@
 		<type>0</type>
 		<decimal>1</decimal>
 		<unit>℃</unit>
-		<coefficient>0.0078125</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x11</value>
@@ -49,7 +51,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>μA</unit>
-		<coefficient>0.1</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x1A</value>
@@ -57,7 +58,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>μA</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x1B</value>
@@ -65,7 +65,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>A</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x1D</value>
@@ -73,7 +72,6 @@
 		<type>0</type>
 		<decimal>2</decimal>
 		<unit>V</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x20</value>
@@ -81,7 +79,6 @@
 		<type>0</type>
 		<decimal>1</decimal>
 		<unit>W</unit>
-		<coefficient>0.1</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x21</value>
@@ -89,7 +86,6 @@
 		<type>0</type>
 		<decimal>1</decimal>
 		<unit>Var</unit>
-		<coefficient>0.1</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x22</value>
@@ -97,7 +93,6 @@
 		<type>0</type>
 		<decimal>1</decimal>
 		<unit>VA</unit>
-		<coefficient>0.1</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x23</value>
@@ -105,7 +100,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>°</unit>
-		<coefficient>0.0001</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x24</value>
@@ -113,7 +107,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>A</unit>
-		<coefficient>0.1</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x25</value>
@@ -121,7 +114,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>V</unit>
-		<coefficient>0.1</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x26</value>
@@ -129,7 +121,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>kwh</unit>
-		<coefficient>0.01</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x27</value>
@@ -137,7 +128,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>Hz</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x28</value>
@@ -145,7 +135,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>A</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x29</value>
@@ -153,7 +142,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>A</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x2A</value>
@@ -161,7 +149,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>A</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x2B</value>
@@ -169,7 +156,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>A</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x2C</value>
@@ -177,7 +163,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>V</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x2D</value>
@@ -185,7 +170,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>V</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x2E</value>
@@ -193,7 +177,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>V</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x2F</value>
@@ -201,7 +184,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>V</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x40</value>
@@ -209,7 +191,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>%RH</unit>
-		<coefficient>0.5</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x41</value>
@@ -217,7 +198,6 @@
 		<type>0</type>
 		<decimal>2</decimal>
 		<unit>℃</unit>
-		<coefficient>0.001</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x42</value>
@@ -225,7 +205,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m</unit>
-		<coefficient>0.001</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x45</value>
@@ -233,7 +212,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x46</value>
@@ -241,7 +219,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m/s</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x47</value>
@@ -249,14 +226,12 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>°</unit>
-		<coefficient>0.05</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x48</value>
 		<name>气压</name>
 		<type>0</type>
 		<unit>Pa</unit>
-		<coefficient>2</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x4A</value>
@@ -264,7 +239,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>Lux</unit>
-		<coefficient>0.1</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x4C</value>
@@ -272,7 +246,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>dB</unit>
-		<coefficient>0.1</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x4E</value>
@@ -280,49 +253,60 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>%RH</unit>
-		<coefficient>10.5</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x50</value>
 		<name>水浸状态</name>
 		<type>1</type>
-		<true>浸水</true>
-		<false>未浸水</false>
+		<status>
+			<on>浸水</on>
+			<off>未浸水</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x52</value>
 		<name>振动状态</name>
 		<type>1</type>
-		<true>振动</true>
-		<false>未振动</false>
+		<status>
+			<on>振动</on>
+			<off>未振动</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x54</value>
 		<name>磁控开关</name>
 		<type>1</type>
-		<true>开</true>
-		<false>关</false>
+		<status>
+			<on>开</on>
+			<off>关</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x55</value>
 		<name>烟雾报警</name>
 		<type>1</type>
-		<true>有</true>
-		<false>无</false>
+		<status>
+			<on>有</on>
+			<off>无</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x56</value>
 		<name>热释电红外</name>
 		<type>1</type>
-		<true>触发</true>
-		<false>未触发</false>
+		<status>
+			<on>触发</on>
+			<off>未触发</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x5A</value>
 		<name>继电器开关</name>
 		<type>1</type>
-		<true>吸合</true>
-		<false>释放</false>
+		<status>
+			<on>吸合</on>
+			<off>释放</off>
+		</status>
 	</DataType>
 	<DataType>
 		<value>0x5F</value>
@@ -337,7 +321,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>kg</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x62</value>
@@ -345,7 +328,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>με</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x65</value>
@@ -353,7 +335,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>mg</unit>
-		<coefficient>1.0</coefficient>
 		<directions>
 			<direction>
 				<index>1</index>
@@ -375,7 +356,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>G</unit>
-		<coefficient>1.0</coefficient>
 		<directions>
 			<direction>
 				<index>1</index>
@@ -397,7 +377,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m/s</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x68</value>
@@ -405,7 +384,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x69</value>
@@ -413,7 +391,13 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>Hz</unit>
-		<coefficient>1.0</coefficient>
+	</DataType>
+	<DataType>
+		<value>0x6A</value>
+		<name>位移</name>
+		<type>0</type>
+		<decimal>3</decimal>
+		<unit>mm</unit>
 	</DataType>
 	<DataType>
 		<value>0x6B</value>
@@ -421,7 +405,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x6D</value>
@@ -429,7 +412,86 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>°</unit>
-		<coefficient>0.1</coefficient>
+	</DataType>
+	<DataType>
+		<value>0x6E</value>
+		<name>朝向</name>
+		<type>0</type>
+		<unit/>
+		<paraphrases>
+			<paraphrase>
+				<number>0.0</number>
+				<text>识别异常</text>
+			</paraphrase>
+			<paraphrase>
+				<number>1.0</number>
+				<text>前</text>
+			</paraphrase>
+			<paraphrase>
+				<number>2.0</number>
+				<text>后</text>
+			</paraphrase>
+			<paraphrase>
+				<number>4.0</number>
+				<text>左</text>
+			</paraphrase>
+			<paraphrase>
+				<number>5.0</number>
+				<text>前左</text>
+			</paraphrase>
+			<paraphrase>
+				<number>6.0</number>
+				<text>后左</text>
+			</paraphrase>
+			<paraphrase>
+				<number>8.0</number>
+				<text>右</text>
+			</paraphrase>
+			<paraphrase>
+				<number>9.0</number>
+				<text>前右</text>
+			</paraphrase>
+			<paraphrase>
+				<number>10.0</number>
+				<text>后右</text>
+			</paraphrase>
+			<paraphrase>
+				<number>16.0</number>
+				<text>上</text>
+			</paraphrase>
+			<paraphrase>
+				<number>17.0</number>
+				<text>前上</text>
+			</paraphrase>
+			<paraphrase>
+				<number>18.0</number>
+				<text>后上</text>
+			</paraphrase>
+			<paraphrase>
+				<number>20.0</number>
+				<text>左上</text>
+			</paraphrase>
+			<paraphrase>
+				<number>21.0</number>
+				<text>前左上</text>
+			</paraphrase>
+			<paraphrase>
+				<number>24.0</number>
+				<text>右上</text>
+			</paraphrase>
+			<paraphrase>
+				<number>25.0</number>
+				<text>前右上</text>
+			</paraphrase>
+			<paraphrase>
+				<number>22.0</number>
+				<text>后左上</text>
+			</paraphrase>
+			<paraphrase>
+				<number>26.0</number>
+				<text>后右上</text>
+			</paraphrase>
+		</paraphrases>
 	</DataType>
 	<DataType>
 		<value>0x80</value>
@@ -437,7 +499,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>%VOL</unit>
-		<coefficient>0.1</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x81</value>
@@ -445,7 +506,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>ppm</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0x82</value>
@@ -453,7 +513,13 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>ppm</unit>
-		<coefficient>1.0</coefficient>
+	</DataType>
+	<DataType>
+		<value>0xF8</value>
+		<name>日历时间</name>
+		<type>0</type>
+		<unit/>
+		<calendar>yyyy-MM-dd HH:mm:ss</calendar>
 	</DataType>
 	<DataType>
 		<value>0xFA</value>
@@ -461,7 +527,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>s</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0xFB</value>
@@ -469,7 +534,6 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>s</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 	<DataType>
 		<value>0xFC</value>
@@ -477,6 +541,5 @@
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>s</unit>
-		<coefficient>1.0</coefficient>
 	</DataType>
 </DataTypes>

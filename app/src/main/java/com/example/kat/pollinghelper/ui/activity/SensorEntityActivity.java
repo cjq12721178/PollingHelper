@@ -134,6 +134,7 @@ public class SensorEntityActivity extends ManagedActivity {
         public void run() {
             closeLoadingDialog();
             promptMessage(R.string.ui_prompt_export_sensor_configs_success);
+            notifyManager(OperaType.OT_UPDATE_SENSOR_MEASURE_NAME);
         }
     };
 

@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.example.kat.pollinghelper.R;
 import com.example.kat.pollinghelper.bean.config.ScoutItemConfig;
+import com.example.kat.pollinghelper.bean.config.ScoutSensorConfig;
 import com.example.kat.pollinghelper.bean.warn.ItemWarnInfo;
 import com.example.kat.pollinghelper.bean.warn.MissionWarnInfo;
 import com.example.kat.pollinghelper.communicator.Ble;
@@ -36,13 +38,16 @@ import com.example.kat.pollinghelper.processor.opera.QueryScoutRecord;
 import com.example.kat.pollinghelper.processor.opera.RequestSensorCollection;
 import com.example.kat.pollinghelper.processor.opera.ScanBleSensor;
 import com.example.kat.pollinghelper.processor.opera.UpdateSensorData;
+import com.example.kat.pollinghelper.processor.opera.UpdateSensorMeasureName;
 import com.example.kat.pollinghelper.protocol.BaseStationUdpProtocol;
 import com.example.kat.pollinghelper.protocol.SensorBleInfo;
 import com.example.kat.pollinghelper.protocol.SensorBleProtocol;
 import com.example.kat.pollinghelper.protocol.SensorDataType;
+import com.example.kat.pollinghelper.protocol.SensorInfo;
 import com.example.kat.pollinghelper.protocol.SensorUdpInfo;
 import com.example.kat.pollinghelper.ui.toast.BeautyToast;
 import com.example.kat.pollinghelper.utility.Converter;
+import com.example.kat.pollinghelper.utility.Printer;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -184,13 +189,12 @@ public class ManagerService extends Service {
         operationMap.put(OperaType.OT_MODIFY_SCAN_BLE_CYCLE, modifyScanBleCycleOrDuration);
         operationMap.put(OperaType.OT_MODIFY_SCAN_BLE_DURATION, modifyScanBleCycleOrDuration);
         operationMap.put(OperaType.OT_INSTALL_WARN_LISTENER, new InstallWarnListener(operationInfo, warnInfo, dataStorage));
+        operationMap.put(OperaType.OT_UPDATE_SENSOR_MEASURE_NAME, new UpdateSensorMeasureName(operationInfo, dataStorage));
     }
 
     private void initOperationInfo() {
         operationInfo = new OperationInfo();
         uiEventProcessor = new Handler();
-        //operationInfo.putArgument(ArgumentTag.AT_DATA_LISTENER, dataStorage.getSensorList());
-        //operationInfo.putArgument(ArgumentTag.AT_RUNNABLE_FINISH_PROCESSOR, onFinishProcessor);
     }
 
     @Override
@@ -262,7 +266,8 @@ public class ManagerService extends Service {
         public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
             SensorBleProtocol.SensorParameter sensorParameter = bleProtocol.analyze(device.getAddress(), scanRecord);
             if (sensorParameter != null) {
-                dataStorage.receiveSensorInfo(sensorParameter.SensorInfos);
+                dataStorage.receiveSensorInfo(sensorParameter.SensorInfos,
+                        (List<ScoutSensorConfig>) operationInfo.getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG));
             }
         }
     };
@@ -272,7 +277,8 @@ public class ManagerService extends Service {
         public void onDataReceived(byte[] data) {
             BaseStationUdpProtocol.BaseStationInfo baseStationInfo = udpProtocol.analyze(data);
             if (baseStationInfo != null && baseStationInfo.CommandCode == BaseStationUdpProtocol.COMMAND_CODE_REQUEST_DATA) {
-                dataStorage.receiveSensorInfo(baseStationInfo.SensorInfos);
+                dataStorage.receiveSensorInfo(baseStationInfo.SensorInfos,
+                        (List<ScoutSensorConfig>) operationInfo.getArgument(ArgumentTag.AT_LIST_SENSOR_CONFIG));
             }
         }
     };

@@ -36,7 +36,7 @@ public abstract class Communicator {
         onConnectExecutor = new OnConnectExecutor();
         onReceiveDataExecutor = new OnReceiveDataExecutor();
         onSendDataExecutor = new OnSendDataExecutor();
-        sendDataThread = new Thread(onSendDataExecutor);
+        //sendDataThread = new Thread(onSendDataExecutor);
     }
 
     public abstract CommunicationParameter getParameter();
@@ -123,8 +123,8 @@ public abstract class Communicator {
         }
     }
 
-    //circulateTime < 0, 在当前线程发送数据
-    //circulateTime = 0, 在另一线程发送数据
+    //circulateTime < 0, 在当前调用线程发送数据
+    //circulateTime = 0, 在后台发送线程发送数据
     //circulateTime > 0, 以circulateTime为时间间隔循环发送数据
     public void sendData(byte[] data, CommunicationParameter remotePara, int circulateTime) {
         if (connected) {
@@ -136,9 +136,14 @@ public abstract class Communicator {
                     if (circulateTime == 0) {
                         enableSendDataInAnotherThread = true;
                     }
-                    if (!sendDataThread.isAlive()) {
+                    if (sendDataThread == null || !sendDataThread.isAlive()) {
+                        sendDataThread = new Thread(onSendDataExecutor);
                         sendDataThread.start();
                     }
+//                    if (!sendDataThread.isAlive()) {
+//                        //重启线程
+//                        sendDataThread.start();
+//                    }
                 } else {
                     onSendData(data, remotePara);
                 }
