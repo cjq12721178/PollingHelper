@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:padding="10dp"
+        android:padding="@dimen/margin_small"
         android:textColor="@color/dialog_alternative_message"
         android:id="@+id/tv_message" />
 
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_message"
         android:orientation="horizontal"
-        android:minWidth="200dp">
+        android:minWidth="@dimen/alternative_dialog_min_width">
 
         <Button
             android:layout_width="0dp"

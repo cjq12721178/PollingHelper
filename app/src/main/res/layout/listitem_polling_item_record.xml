@@ -7,7 +7,7 @@
         android:id="@+id/tv_polling_item_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_margin="5dp"/>
+        android:textSize="@dimen/text_size_item_record"
+        android:layout_margin="@dimen/margin_micro"/>
 
 </LinearLayout>

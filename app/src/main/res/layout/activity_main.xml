@@ -15,6 +15,6 @@
         android:id="@+id/lvFunction"
         android:choiceMode="singleChoice"
         android:divider="@null"
-        android:dividerHeight="5dp">
+        android:dividerHeight="@dimen/margin_micro">
     </ListView>
 </RelativeLayout>

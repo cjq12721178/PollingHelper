@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/iv_polling_mission"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="@dimen/image_side_size_device"
+            android:layout_height="@dimen/image_side_size_device"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"/>
         <ListView
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/style_edittext_selector"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="@dimen/margin_small"
             android:layout_below="@+id/tv_polling_mission_evaluation"
             android:orientation="horizontal">
             <RadioButton
@@ -80,9 +80,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/style_edittext_selector"
-            android:padding="5dp"
+            android:padding="@dimen/padding_micro"
             android:textColorHint="#AAAAAA"
-            android:textSize="15dp"
+            android:textSize="@dimen/text_size_mission_record_result"
             android:inputType="textMultiLine"
             android:hint="@string/ui_prompt_input_mission_record_result"
             android:layout_below="@id/rdogrp_mission_evaluation"

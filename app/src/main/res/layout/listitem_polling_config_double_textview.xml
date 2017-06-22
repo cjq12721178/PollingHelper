@@ -12,13 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_polling_config_lable"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/text_size_polling_config"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_polling_config_content"
-        android:textSize="18sp"
-        android:layout_marginTop="5dp"/>
+        android:textSize="@dimen/text_size_polling_config"
+        android:layout_marginTop="@dimen/margin_micro"/>
 
 </LinearLayout>

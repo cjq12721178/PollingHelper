@@ -3,18 +3,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:paddingLeft="@dimen/padding_middle"
+    android:paddingRight="@dimen/padding_middle">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_sort"
         android:text="@string/tv_sort"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size_dialog_sort_label"
         android:gravity="center"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"/>
+        android:paddingTop="@dimen/padding_small"
+        android:paddingBottom="@dimen/padding_small"/>
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -60,8 +60,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingTop="@dimen/padding_small"
+        android:paddingBottom="@dimen/padding_small">
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"

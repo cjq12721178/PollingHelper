@@ -17,14 +17,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_polling_config"
             android:background="@drawable/style_textview_lable"/>
         <TextView
             android:id="@+id/tv_polling_config_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size_polling_config" />
 
     </LinearLayout>
 
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_polling_config"
             android:background="@drawable/style_textview_delete"/>
     </LinearLayout>
 

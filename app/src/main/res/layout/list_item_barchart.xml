@@ -7,6 +7,6 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/bc_data_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="@dimen/list_item_chart_height" />
 
 </LinearLayout>

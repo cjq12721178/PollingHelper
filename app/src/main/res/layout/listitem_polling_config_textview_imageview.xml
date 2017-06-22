@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_mission_config_label"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/text_size_polling_config"/>
 
     <ImageView
         android:layout_width="@dimen/image_side_size_device"

@@ -2,84 +2,90 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:id="@+id/tl_dialog_filter">
+    android:padding="@dimen/margin_small"
+    android:id="@+id/tl_dialog_filter"
+    android:shrinkColumns="0,1,2,3,4">
     <TableRow
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small">
         <TextView
             android:text="@string/tv_filter"
             android:gravity="center"
-            android:textSize="22dp"
+            android:textSize="@dimen/text_size_dialog_filter_title"
             android:layout_span="5" />
     </TableRow>
     <TableRow>
         <TextView
             android:text="@string/tv_filter_data_source"
-            android:textSize="19dp"
-            android:layout_margin="3dp"/>
+            android:textSize="@dimen/text_size_dialog_filter_label"
+            android:gravity="center"
+            android:layout_margin="@dimen/margin_tiny_fixed"/>
         <Button
             android:id="@+id/btn_filter_data_source_all"
             android:text="@string/btn_filter_all"
-            android:textSize="16dp"
-            android:layout_margin="3dp"
+            android:textSize="@dimen/text_size_dialog_filter_content"
+            android:layout_margin="@dimen/margin_tiny_fixed"
             android:background="@color/background_filter_selected"/>
         <Button
             android:id="@+id/btn_filter_data_source_wifi"
             android:text="@string/btn_filter_wifi"
-            android:textSize="16dp"
-            android:layout_margin="3dp"
+            android:textSize="@dimen/text_size_dialog_filter_content"
+            android:layout_margin="@dimen/margin_tiny_fixed"
             android:background="@color/background_filter_normal"/>
         <Button
             android:id="@+id/btn_filter_data_source_ble"
             android:text="@string/btn_filter_ble"
-            android:textSize="16dp"
-            android:layout_margin="3dp"
+            android:textSize="@dimen/text_size_dialog_filter_content"
+            android:layout_margin="@dimen/margin_tiny_fixed"
             android:background="@color/background_filter_normal"/>
     </TableRow>
     <TableRow>
         <TextView
             android:text="@string/btn_filter_data_type"
-            android:textSize="19dp"
-            android:layout_margin="3dp"/>
+            android:textSize="@dimen/text_size_dialog_filter_label"
+            android:gravity="center"
+            android:layout_margin="@dimen/margin_tiny_fixed"/>
         <Button
             android:id="@+id/btn_filter_data_type_all"
             android:text="@string/btn_filter_all"
-            android:textSize="16dp"
-            android:layout_margin="3dp"
+            android:textSize="@dimen/text_size_dialog_filter_content"
+            android:layout_margin="@dimen/margin_tiny_fixed"
             android:background="@color/background_filter_selected"/>
         <Button
             android:id="@+id/btn_filter_data_type_analog"
             android:text="@string/btn_filter_analog"
-            android:textSize="16dp"
-            android:layout_margin="3dp"
+            android:textSize="@dimen/text_size_dialog_filter_content"
+            android:layout_margin="@dimen/margin_tiny_fixed"
             android:background="@color/background_filter_normal"/>
         <Button
             android:id="@+id/btn_filter_data_type_status"
             android:text="@string/btn_filter_status"
-            android:textSize="16dp"
-            android:layout_margin="3dp"
+            android:textSize="@dimen/text_size_dialog_filter_content"
+            android:layout_margin="@dimen/margin_tiny_fixed"
             android:background="@color/background_filter_normal"/>
         <Button
             android:id="@+id/btn_filter_data_type_count"
             android:text="@string/btn_filter_count"
-            android:textSize="16dp"
-            android:layout_margin="3dp"
+            android:textSize="@dimen/text_size_dialog_filter_content"
+            android:layout_margin="@dimen/margin_tiny_fixed"
             android:background="@color/background_filter_normal"/>
     </TableRow>
     <TableRow
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small">
         <Button
             android:text="@string/ui_prompt_ok"
             android:id="@+id/btn_filter_ok"
+            android:layout_column="1"
             android:layout_span="2"
+            android:layout_margin="@dimen/margin_tiny_fixed"
             android:background="@drawable/style_edittext_normal"/>
         <Button
             android:text="@string/ui_prompt_cancel"
             android:id="@+id/btn_filter_cancel"
             android:layout_column="3"
             android:layout_span="2"
+            android:layout_margin="@dimen/margin_tiny_fixed"
             android:background="@drawable/style_edittext_normal"/>
     </TableRow>
 </TableLayout>

@@ -3,22 +3,22 @@
     android:orientation="vertical" 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
+    android:padding="@dimen/padding_middle">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/tv_search"
-        android:textSize="22sp"
+        android:textSize="@dimen/text_size_dialog_search_label"
         android:gravity="center"
-        android:paddingBottom="15dp"/>
+        android:paddingBottom="@dimen/padding_dialog_search_label_and_content"/>
     
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/et_search_content"
-        android:textSize="16sp"
+        android:textSize="@dimen/text_size_dialog_search_content"
         android:drawableEnd="@drawable/ic_search"
-        android:padding="2dp"
+        android:padding="@dimen/padding_dialog_search_content_fixed"
         android:background="@drawable/style_edittext_selector"/>
 </LinearLayout>

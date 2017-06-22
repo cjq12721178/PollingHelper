@@ -8,13 +8,13 @@ def buildTime() {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '23.0.3'
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.example.kat.pollinghelper"
         minSdkVersion 18
         targetSdkVersion 18
-        versionCode 3
-        versionName "0.2.1"
+        versionCode 4
+        versionName "0.2.2"
     }
     buildTypes {
         release {
