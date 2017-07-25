@@ -515,6 +515,20 @@
 		<unit>ppm</unit>
 	</DataType>
 	<DataType>
+		<value>0xA1</value>
+		<name>线缆膨胀系数</name>
+		<type>0</type>
+		<decimal>3</decimal>
+		<unit>mm/℃</unit>
+	</DataType>
+	<DataType>
+		<value>0xA8</value>
+		<name>指示器指示范围</name>
+		<type>0</type>
+		<decimal>3</decimal>
+		<unit>mm</unit>
+	</DataType>
+	<DataType>
 		<value>0xF8</value>
 		<name>日历时间</name>
 		<type>0</type>
