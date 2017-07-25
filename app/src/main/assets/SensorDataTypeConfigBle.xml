@@ -12,7 +12,7 @@
 <DataTypes>
 	<DataType>
 		<value>0x05</value>
-		<name>温度</name>
+		<name>环境温度</name>
 		<type>0</type>
 		<decimal>1</decimal>
 		<unit>℃</unit>
@@ -394,14 +394,14 @@
 	</DataType>
 	<DataType>
 		<value>0x6A</value>
-		<name>位移</name>
+		<name>坠坨偏移</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>mm</unit>
 	</DataType>
 	<DataType>
 		<value>0x6B</value>
-		<name>距离</name>
+		<name>坠坨距离</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m</unit>
@@ -516,14 +516,14 @@
 	</DataType>
 	<DataType>
 		<value>0xA1</value>
-		<name>线缆膨胀系数</name>
+		<name>温补系数</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>mm/℃</unit>
 	</DataType>
 	<DataType>
 		<value>0xA8</value>
-		<name>指示器指示范围</name>
+		<name>指示范围</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>mm</unit>
