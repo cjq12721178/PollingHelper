@@ -24,4 +24,9 @@
     <color name="background_function_panel">#F0F0F0</color>
     <color name="background_filter_normal">#C0C0C0</color>
     <color name="background_filter_selected">#8080FF</color>
+    <color name="background_arrester_a">#E3D702</color>
+    <color name="background_arrester_b">#015E06</color>
+    <color name="background_arrester_c">#B80001</color>
+    <color name="background_arrester_group">#ABCFC1</color>
+    <color name="background_title_arrester">#003E3C</color>
 </resources>

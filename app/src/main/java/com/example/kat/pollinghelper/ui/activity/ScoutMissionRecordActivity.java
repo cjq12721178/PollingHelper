@@ -44,7 +44,7 @@ public class ScoutMissionRecordActivity extends ManagedActivity {
     private TimerTask updateSensorData = new TimerTask() {
         @Override
         public void run() {
-            notifyManager(OperaType.OT_UPDATE_SENSOR_DATA, updateItemTextList);
+            notifyManager(OperaType.OT_UPDATE_SINGLE_MISSION_SENSOR_VALUE, updateItemTextList);
         }
     };
 

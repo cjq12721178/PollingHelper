@@ -56,7 +56,7 @@
 		<value>0x1A</value>
 		<name>避雷器泄露电流</name>
 		<type>0</type>
-		<decimal>3</decimal>
+		<decimal>2</decimal>
 		<unit>μA</unit>
 	</DataType>
 	<DataType>
@@ -553,7 +553,7 @@
 		<value>0xFC</value>
 		<name>时间间隔</name>
 		<type>0</type>
-		<decimal>3</decimal>
+		<decimal>1</decimal>
 		<unit>s</unit>
 	</DataType>
 </DataTypes>

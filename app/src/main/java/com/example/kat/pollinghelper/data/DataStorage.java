@@ -48,6 +48,18 @@ public class DataStorage {
         return target != null ? target.getLatestValue() : 0;
     }
 
+    public long getRealTimeTimestamp(String sensorFullAddress) {
+        SensorValue target = sensorValues.get(sensorFullAddress);
+        return target != null ? target.getLatestTimestamp() : 0;
+    }
+
+    public boolean isSensorOffLine(String sensorFullAddress) {
+        SensorValue target = sensorValues.get(sensorFullAddress);
+        return target != null
+                ? System.currentTimeMillis() - target.getLatestTimestamp() >= 300000
+                : true;
+    }
+
     public void receiveSensorInfo(List<SensorInfo> sensorInfos,
                                   List<ScoutSensorConfig> sensorConfigs) {
         if (sensorInfos != null) {

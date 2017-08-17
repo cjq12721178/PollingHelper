@@ -8,12 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.kat.pollinghelper.R;
-import com.example.kat.pollinghelper.bean.config.ScoutItemConfig;
 import com.example.kat.pollinghelper.bean.config.ScoutSensorConfig;
-import com.example.kat.pollinghelper.bean.warn.ItemWarnInfo;
 import com.example.kat.pollinghelper.bean.warn.MissionWarnInfo;
 import com.example.kat.pollinghelper.communicator.Ble;
 import com.example.kat.pollinghelper.communicator.Communicator;
@@ -28,6 +25,7 @@ import com.example.kat.pollinghelper.processor.opera.ExportProjectRecord;
 import com.example.kat.pollinghelper.processor.opera.ExportSensorConfig;
 import com.example.kat.pollinghelper.processor.opera.ImportProjectAndSensorConfigs;
 import com.example.kat.pollinghelper.processor.opera.InstallWarnListener;
+import com.example.kat.pollinghelper.processor.opera.JudgeArresterGroup;
 import com.example.kat.pollinghelper.processor.opera.ModifyBaseStationIpOrPort;
 import com.example.kat.pollinghelper.processor.opera.ModifyScanBleCycleOrDuration;
 import com.example.kat.pollinghelper.processor.opera.ModifyUdpDataRequestCycle;
@@ -37,25 +35,22 @@ import com.example.kat.pollinghelper.processor.opera.OperationInfo;
 import com.example.kat.pollinghelper.processor.opera.QueryScoutRecord;
 import com.example.kat.pollinghelper.processor.opera.RequestSensorCollection;
 import com.example.kat.pollinghelper.processor.opera.ScanBleSensor;
-import com.example.kat.pollinghelper.processor.opera.UpdateSensorData;
+import com.example.kat.pollinghelper.processor.opera.UpdateMultipleMissionSensorValue;
+import com.example.kat.pollinghelper.processor.opera.UpdateSingleMissionSensorValue;
 import com.example.kat.pollinghelper.processor.opera.UpdateSensorMeasureName;
 import com.example.kat.pollinghelper.protocol.BaseStationUdpProtocol;
 import com.example.kat.pollinghelper.protocol.SensorBleInfo;
 import com.example.kat.pollinghelper.protocol.SensorBleProtocol;
 import com.example.kat.pollinghelper.protocol.SensorDataType;
-import com.example.kat.pollinghelper.protocol.SensorInfo;
 import com.example.kat.pollinghelper.protocol.SensorUdpInfo;
 import com.example.kat.pollinghelper.ui.toast.BeautyToast;
 import com.example.kat.pollinghelper.utility.Converter;
-import com.example.kat.pollinghelper.utility.Printer;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -173,7 +168,7 @@ public class ManagerService extends Service {
         operationMap = new HashMap<>();
         operationMap.put(OperaType.OT_IMPORT_PROJECT_AND_SENSOR_CONFIGS, new ImportProjectAndSensorConfigs(operationInfo, this));
         operationMap.put(OperaType.OT_EXPORT_POLLING_PROJECT_RECORD, new ExportProjectRecord(operationInfo));
-        operationMap.put(OperaType.OT_UPDATE_SENSOR_DATA, new UpdateSensorData(operationInfo, dataStorage));
+        operationMap.put(OperaType.OT_UPDATE_SINGLE_MISSION_SENSOR_VALUE, new UpdateSingleMissionSensorValue(operationInfo, dataStorage));
         operationMap.put(OperaType.OT_EXPORT_POLLING_CONFIGS, new ExportScoutConfig(operationInfo));
         operationMap.put(OperaType.OT_EXPORT_SENSOR_CONFIG, new ExportSensorConfig(operationInfo));
         operationMap.put(OperaType.OT_EXPORT_POLLING_MISSION_RECORD, new ExportMissionRecord(operationInfo));
@@ -190,6 +185,8 @@ public class ManagerService extends Service {
         operationMap.put(OperaType.OT_MODIFY_SCAN_BLE_DURATION, modifyScanBleCycleOrDuration);
         operationMap.put(OperaType.OT_INSTALL_WARN_LISTENER, new InstallWarnListener(operationInfo, warnInfo, dataStorage));
         operationMap.put(OperaType.OT_UPDATE_SENSOR_MEASURE_NAME, new UpdateSensorMeasureName(operationInfo, dataStorage));
+        operationMap.put(OperaType.OT_UPDATE_MULTIPLE_MISSION_SENSOR_VALUE, new UpdateMultipleMissionSensorValue(operationInfo, dataStorage));
+        operationMap.put(OperaType.OT_JUDGE_ARRESTER_GROUP, new JudgeArresterGroup(operationInfo, dataStorage));
     }
 
     private void initOperationInfo() {

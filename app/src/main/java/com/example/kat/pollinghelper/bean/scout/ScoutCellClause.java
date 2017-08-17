@@ -4,6 +4,7 @@ package com.example.kat.pollinghelper.bean.scout;
  * Created by KAT on 2016/5/24.
  */
 public class ScoutCellClause {
+
     public ScoutCellClause(String name, Object content) {
         this.label = name;
         this.content = content;

@@ -7,12 +7,12 @@ import com.example.kat.pollinghelper.bean.record.ScoutMissionRecord;
 /**
  * Created by KAT on 2016/6/13.
  */
-public class UpdateSensorData extends Operation {
+public class UpdateSingleMissionSensorValue extends Operation {
 
     private final DataStorage dataStorage;
     private ScoutMissionRecord missionRecord;
 
-    public UpdateSensorData(OperationInfo operationInfo, DataStorage dataStorage) {
+    public UpdateSingleMissionSensorValue(OperationInfo operationInfo, DataStorage dataStorage) {
         super(operationInfo);
         this.dataStorage = dataStorage;
     }

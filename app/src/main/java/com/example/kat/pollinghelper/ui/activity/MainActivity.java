@@ -208,8 +208,13 @@ public class MainActivity extends ManagedActivity implements AdapterView.OnItemC
 
     private void startPolling(int projectIndex) {
         if (projectIndex >= 0 && projectIndex < scoutInfo.getProjectRecords().size()) {
-            putArgument(ArgumentTag.AT_PROJECT_RECORD_CURRENT, scoutInfo.getProjectRecords().get(projectIndex));
-            startActivityForResult(new Intent(this, ScoutProjectRecordActivity.class), projectIndex);
+            ScoutProjectRecord record = scoutInfo.getProjectRecords().get(projectIndex);
+            putArgument(ArgumentTag.AT_PROJECT_RECORD_CURRENT, record);
+            if ("智能避雷器巡检".equals(record.getProjectConfig().getDescription())) {
+                startActivityForResult(new Intent(this, ArresterScoutRecordActivity.class), projectIndex);
+            } else {
+                startActivityForResult(new Intent(this, ScoutProjectRecordActivity.class), projectIndex);
+            }
         }
     }
 

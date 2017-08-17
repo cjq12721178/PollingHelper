@@ -225,6 +225,17 @@
     <string name="scheduled_date_format">hh:mm</string>
     <string name="deleted">（已删除）</string>
     <string name="base_station_ip">192.168.1.100</string>
+    <string name="activity_title_arrester_record">智能避雷器</string>
+    <string name="arrester_a">A相避雷器</string>
+    <string name="arrester_b">B相避雷器</string>
+    <string name="arrester_c">C相避雷器</string>
+    <string name="leakage_current_label">泄露电流值</string>
+    <string name="lightening_stroke_count_label">累计雷击数</string>
+    <string name="temperature_label">阀芯温度值</string>
+    <string name="environment_temperature_label">当前温度</string>
+    <string name="environment_humidity_label">当前湿度</string>
+    <string name="arrester_config_error">智能避雷器巡检项目配置有误</string>
+    <string name="arrester_group_offline">当前智能避雷器组均不在线</string>
 
     <!-- 常数 -->
     <integer name="main_activity_fix_item_count">3</integer>

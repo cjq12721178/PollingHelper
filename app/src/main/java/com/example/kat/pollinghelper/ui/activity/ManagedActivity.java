@@ -194,6 +194,10 @@ public class ManagedActivity extends AppCompatActivity {
                          .show(getSupportFragmentManager(), getString(resId));
     }
 
+    protected Handler getHandler() {
+        return handler;
+    }
+
     private AlternativeDialog alternativeDialog;
     private Handler handler;
     private LoadingDialog loadingDialog;

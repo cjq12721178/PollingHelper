@@ -52,6 +52,10 @@ public class ScoutItemRecord implements TreeNode {
         return itemConfig.getSensor().getType().getSignificantValue(value);
     }
 
+    public String getSignificantValueWithUnit() {
+        return itemConfig.getSensor().getType().getSignificantValueWithUnit(value);
+    }
+
     public boolean isOutOfAlarm() {
         return isOutOfDownAlarm() || isOutOfUpAlarm();
     }
