@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2013 (http://www.altova.com) by  () -->
 <!-- 本文件适用于ble -->
 <!-- type=0为模拟量，1为状态量，2为计数量 -->
@@ -12,7 +12,7 @@
 <DataTypes>
 	<DataType>
 		<value>0x05</value>
-		<name>环境温度</name>
+		<name>温度</name>
 		<type>0</type>
 		<decimal>1</decimal>
 		<unit>℃</unit>
@@ -40,7 +40,7 @@
 	</DataType>
 	<DataType>
 		<value>0x11</value>
-		<name>避雷器动作次数</name>
+		<name>动作次数</name>
 		<type>2</type>
 		<decimal>0</decimal>
 		<unit>次</unit>
@@ -54,14 +54,14 @@
 	</DataType>
 	<DataType>
 		<value>0x1A</value>
-		<name>避雷器泄露电流</name>
+		<name>泄漏电流</name>
 		<type>0</type>
 		<decimal>2</decimal>
 		<unit>μA</unit>
 	</DataType>
 	<DataType>
 		<value>0x1B</value>
-		<name>大电流</name>
+		<name>电流</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>A</unit>
@@ -187,7 +187,7 @@
 	</DataType>
 	<DataType>
 		<value>0x40</value>
-		<name>湿度</name>
+		<name>相对湿度</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>%RH</unit>
@@ -201,7 +201,7 @@
 	</DataType>
 	<DataType>
 		<value>0x42</value>
-		<name>水位</name>
+		<name>液位高度</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m</unit>
@@ -235,7 +235,7 @@
 	</DataType>
 	<DataType>
 		<value>0x4A</value>
-		<name>光照</name>
+		<name>光照度</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>Lux</unit>
@@ -249,7 +249,7 @@
 	</DataType>
 	<DataType>
 		<value>0x4E</value>
-		<name>土壤容积含水率</name>
+		<name>容积含水率</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>%RH</unit>
@@ -274,7 +274,7 @@
 	</DataType>
 	<DataType>
 		<value>0x54</value>
-		<name>磁控开关</name>
+		<name>开关状态</name>
 		<type>1</type>
 		<status>
 			<on>开</on>
@@ -283,7 +283,7 @@
 	</DataType>
 	<DataType>
 		<value>0x55</value>
-		<name>烟雾报警</name>
+		<name>报警状态</name>
 		<type>1</type>
 		<status>
 			<on>有</on>
@@ -301,7 +301,7 @@
 	</DataType>
 	<DataType>
 		<value>0x5A</value>
-		<name>继电器开关</name>
+		<name>继电器状态</name>
 		<type>1</type>
 		<status>
 			<on>吸合</on>
@@ -317,7 +317,7 @@
 	</DataType>
 	<DataType>
 		<value>0x60</value>
-		<name>导线拉力</name>
+		<name>拉力</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>kg</unit>
@@ -394,14 +394,14 @@
 	</DataType>
 	<DataType>
 		<value>0x6A</value>
-		<name>坠坨偏移</name>
+		<name>坠砣偏移</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>mm</unit>
 	</DataType>
 	<DataType>
 		<value>0x6B</value>
-		<name>坠坨距离</name>
+		<name>坠砣距离</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>m</unit>
@@ -495,28 +495,28 @@
 	</DataType>
 	<DataType>
 		<value>0x80</value>
-		<name>氧气体积</name>
+		<name>氧气浓度</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>%VOL</unit>
 	</DataType>
 	<DataType>
 		<value>0x81</value>
-		<name>一氧化碳体积</name>
+		<name>一氧化碳浓度</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>ppm</unit>
 	</DataType>
 	<DataType>
 		<value>0x82</value>
-		<name>二氧化碳体积</name>
+		<name>二氧化碳浓度</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>ppm</unit>
 	</DataType>
 	<DataType>
 		<value>0xA1</value>
-		<name>温补系数</name>
+		<name>温度系数</name>
 		<type>0</type>
 		<decimal>3</decimal>
 		<unit>mm/℃</unit>
